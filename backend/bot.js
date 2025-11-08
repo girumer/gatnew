@@ -118,22 +118,24 @@ bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const choice = query.data;
 
- if (choice === 'menu_NGAT') {
-  bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: '📄 View NGAT Exams', url: `${process.env.FRONTEND_URL}/vindimate` }]
-      ]
-    }
-  });
-}if (choice === 'menu_ERMP') {
-  bot.sendMessage(chatId, '📝 You selected ERMP. Click below to view the Vindimate exam list:', {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: '📄 View ERMP Exams', url: `${process.env.FRONTEND_URL}/vindimate` }]
-      ]
-    }
-  });
-}
+  if (choice === 'menu_NGAT') {
+    bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '📄 View NGAT Exams', url: `${process.env.FRONTEND_URL}/vindimate` }]
+        ]
+      }
+    });
+  }
 
+  if (choice === 'menu_ERMP') {
+    bot.sendMessage(chatId, '📝 You selected ERMP. Click below to view the Vindimate exam list:', {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '📄 View ERMP Exams', url: `${process.env.FRONTEND_URL}/vindimate` }]
+        ]
+      }
+    });
+  }
 });
+
