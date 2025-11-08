@@ -1,0 +1,158 @@
+/* --- Global Variables (Keep consistent with Quiz.css) --- */
+:root {
+  --primary-color: #007bff; /* Blue for primary actions/accents */
+  --secondary-color: #6c757d; /* Gray for secondary text/borders */
+  --background-light: #f8f9fa;
+  --text-dark: #343a40;
+  --card-background: #ffffff;
+  --success-color: #28a745; /* Green for correct/success */
+  --danger-color: #f30808;
+  --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-radius-base: 8px;
+}
+
+/* --- Styles for the 'Questions' Container and Content --- */
+
+.questions {
+    margin-bottom: 0px;
+    
+}
+
+/* Styling the Question Text (using text-light class from your component) */
+.questions h2.text-light {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #e9ecef; /* Light gray background for question box */
+  border-radius: var(--border-radius-base);
+  color: var(--text-dark) !important; /* Ensure visibility */
+  line-height: 1.5;
+}
+
+/* Styling the Question Image */
+.questions img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-base);
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Options List */
+.questions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Options Item */
+
+
+/* Hiding the default radio button */
+.questions ul li input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+/* Options Item (FIXED for horizontal alignment) */
+.questions ul li {
+ display: flex !important; /* 🛑 GUARANTEE Flexbox alignment */
+ align-items: center !important; /* Vertically centers the checkmark with the label text */
+ margin-bottom: 15px;
+  position: relative; 
+}
+/* Styling the Label (which is the main clickable area) */
+.questions ul li label.text-primary {
+    flex-grow: 1 !important;
+    display: block !important;
+    padding: 12px 15px;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius-base);
+    cursor: pointer;
+    color: #eaedef;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+    font-size: 1rem;
+    color: var(--text-dark) !important;
+}
+
+.questions ul li label.text-primary:hover {
+    background-color: #eaedef;
+    border-color: var(--primary-color);
+}
+/* Correct answer style */
+.questions ul li label.correct {
+  background-color: var(--success-color);
+  color: white !important;
+  border-color: var(--success-color);
+}
+
+/* Wrong answer style */
+.questions ul li label.wrong {
+  background-color: var(--danger-color);
+  color: white !important;
+  border-color: var(--danger-color);
+}
+
+/* Custom Check Div Styling */
+/* Custom Check Div Styling (FIXED FOR LEFT POSITION) */
+.check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    position: static !important;
+    /* ✅ FIX: Remove absolute position, set to relative/static */
+    position: static; /* Let Flexbox position it */
+    right: auto;
+    
+    /* ✅ FIX: Add margin space between the checkmark and the label */
+    margin-right: 15px;
+    margin-left: 0; /* Resetting the old margin-left */
+
+    transition: background-color 0.3s, border-color 0.3s;
+    flex-shrink: 0; /* Prevents shrinking on smaller screens */
+}
+/* 3. Style the label and check div when the hidden input is checked */
+.questions ul li input[type="radio"]:checked + label.text-primary {
+    background-color: var(--primary-color);
+    color: var(--card-background) !important;
+    border-color: var(--primary-color);
+    transform: scale(1.01);
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+}
+
+/* 4. Style the custom check indicator when checked */
+.questions ul li input[type="radio"]:checked ~ .check {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* Styling the visual confirmation mark (inside .check) */
+.check.checked {
+    /* If you are using the Redux result to show a permanent mark */
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+.check.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* --- Desktop/Tablet Adjustments (Media Query) --- */
+@media (min-width: 768px) {
+    .questions h2.text-light {
+        font-size: 1.25rem;
+    }
+    .questions ul li label.text-primary {
+        padding: 15px 20px;
+        font-size: 1.05rem;
+    }
+}

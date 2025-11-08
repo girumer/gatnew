@@ -1,0 +1,220 @@
+/* --- Global & Base Styles (Mobile-First) --- */
+
+:root {
+  --primary-color: #007bff; /* Blue for primary actions/accents */
+  --secondary-color: #6c757d; /* Gray for secondary text/borders */
+  --background-light: #f8f9fa; /* Light background */
+  --text-dark: hsl(210, 73%, 39%); /* Dark text */
+  --card-background: #040202; /* White for quiz card */
+  --success-color: #28a745; /* Green for correct/success */
+  --danger-color: #fc041d; /* Red for incorrect/danger */
+  --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-radius-base: 8px;
+}
+.text-timer{
+  color: red;
+  
+}
+.explanation-box {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e9ecef;
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--shadow-base);
+}
+
+.explanation-box h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.explanation-box p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.timer{
+  margin-left: 10%;
+align-items: center;
+  justify-content: center;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+}
+
+.container {
+  width: 95%;
+  max-width: 750px; /* Max width for mobile-first approach */
+  
+  margin: 30px auto;
+  padding: 20px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--shadow-base);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Title and Header --- */
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* --- Questions Component Styles (Assumed structure) --- */
+
+/* This assumes your 'Questions' component renders content within a div/section */
+.questions-container {
+    margin-bottom: 30px;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: var(--border-radius-base);
+}
+
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.option-item {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius-base);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.option-label:hover {
+  background-color: #e9f5ff;
+  border-color: var(--primary-color);
+}
+
+.option-input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+/* Styles for the selected/checked option */
+.option-input:checked + .option-label {
+  background-color: var(--primary-color);
+  color: var(--card-background);
+  border-color: var(--primary-color);
+  transform: scale(1.02);
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+}
+
+/* --- Navigation Buttons --- */
+
+.grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.btn {
+  flex-grow: 1;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn.next {
+  background-color: var(--primary-color);
+  color: var(--card-background);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn.next:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn.prev {
+  background-color: var(--secondary-color);
+  color: var(--card-background);
+}
+
+.btn.prev:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* --- Media Query for Desktop/Tablet --- */
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 600px; /* Wider container for desktop */
+    padding: 30px 40px;
+    margin: 50px auto;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .question-text {
+    font-size: 0.25rem;
+  }
+
+  .option-label {
+    padding: 15px 20px;
+    font-size: 1.05rem;
+  }
+
+  .grid {
+    justify-content: flex-end; /* Align buttons to the right */
+  }
+
+  .btn {
+    flex-grow: 0; /* Stop buttons from taking full width */
+    min-width: 150px; /* Set a minimum width */
+  }
+}

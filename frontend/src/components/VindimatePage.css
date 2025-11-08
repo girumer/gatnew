@@ -1,0 +1,73 @@
+.vindimate-wrapper {
+  background: linear-gradient(to right, #fff0f5, #f0f8ff);
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.vindimate-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #6a0572;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.vindimate-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.vindimate-box {
+  width: 220px;
+  height: 220px;
+ background: linear-gradient(135deg, #15024f, #ffb6b9);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vindimate-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+.part-one {
+  background: linear-gradient(135deg, #6a0572, #ab83a1);
+}
+
+.part-two {
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 600px) {
+  .vindimate-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .vindimate-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .vindimate-box {
+    width: 90%;
+    max-width: 320px;
+    height: 160px;
+    font-size: 1.4rem;
+  }
+}

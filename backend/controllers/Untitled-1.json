@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "question": "A 5-year-old boy is brought to the ED by his parents with complaints of fatigue, pallor, and decreased urine output for the past three days. On examination, he has petechiae on his skin, pale conjunctiva, and mild edema. His parents mention that he had a bout of bloody diarrhea about a week ago after a family picnic. Laboratory tests reveal thrombocytopenia, anemia, and hematuria.",
+    "options": [
+      "Henoch-Schönlein purpura",
+      "Hemolytic-uremic syndrome",
+      "Immune thrombocytopenic purpura",
+      "Acute post-streptococcal glomerulonephritis"
+    ],
+    "explanation": "Hemolytic-uremic syndrome/Thrombotic thrombocytopenic purpura are the prototypes for MAHA. HUS is loosely defined by the presence of MAHA and renal Impairment. It is characterized by the triad of hemolytic anemia, thrombocytopenia, and acute kidney injury (indicated by hematuria and decreased urine output). It often follows an episode of bloody diarrhea caused by Shiga toxin-producing E. coli (e.g., E. coli 0157:H7). The history of bloody diarrhea, along with the laboratory findings, strongly suggests HUS. The initial management of hemolytic uremic syndrome (HUS) is supportive, RBC transfusions for anemia (Hgb 6-7g/dL or Hct <18%), Platelet transfusion for patients who have significant clinical bleeding or if an invasive procedure is required, Stopping nephrotoxic drugs or those that are implicated in the etiology of HUS and Dialysis in patients with symptomatic uremia. Henoch-Schönlein purpura is a small vessel vasculitis that typically presents with a purpuric rash on the lower extremities, abdominal pain, arthralgia, and renal involvement. It does not usually cause significant thrombocytopenia or hemolytic anemia. Immune thrombocytopenic purpura typically presents with isolated thrombocytopenia and petechiae without anemia or renal involvement. Acute post-streptococcal glomerulonephritis usually follows a streptococcal throat or skin infection and presents with hematuria, hypertension, and edema. While APSGN can cause hematuria and renal impairment, it does not typically present with thrombocytopenia or hemolytic anemia, making this diagnosis less likely.- Nelson 21st p4872-4877, Harrison's 21st p8677, p10247, UpToDate"
+  },
+  {
+    "id": 2,
+    "question": "A 25-year-old male presents to the ED after a fall from his bike. He complains of severe pain in his forearm. An X-ray reveals fractures in the lower third and upper third of the forearm. On physical examination, there is swelling and tenderness over the fracture sites. The patient has difficulty extending his wrist and fingers, and there is sensory loss over the dorsal aspect of the hand.",
+    "options": [
+      "Lateral cutaneous nerve",
+      "Radial nerve",
+      "Ulnar nerve",
+      "Median nerve"
+    ],
+    "explanation": "The radial nerve is the most likely to be injured with fractures of the lower and upper thirds of the forearm. This nerve runs along the posterior aspect of the humerus nd then crosses over to the lateral side of the forearm, providing motor function to the extensor muscles of the wrist and fingers and sensory function to the dorsal aspect of the hand. The described symptoms of difficulty in wrist and finger extension (wrist drop) and sensory loss over the dorsal aspect of the hand are characteristic of radial nerve injury. Lateral cutaneous nerve (of forearm) is a continuation of musculocutaneous nerve and its injury affects sensation over the lateral forearm. The ulnar nerve typically affects the medial aspect of the hand and provides motor innervation to the intrinsic muscles of the hand, leading to symptoms such as claw hand and sensory loss over the fifth finger and medial half of the fourth finger. It is less commonly injured in forearm fractures compared to the radial nerve. The median nerve provides motor innervation to the flexor muscles of the forearm and some intrinsic muscles of the hand. Injury to this nerve would result in symptoms such as difficulty with thumb opposition and sensory loss over the palmar aspect of the first three and a half fingers. The symptoms described in the case are not consistent with median nerve injury. - Apley 10th p295, Tintinalli's 9th p1833, p1813, p1818"
+  }
+  
+]
