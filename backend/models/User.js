@@ -1,18 +1,19 @@
 // models/User.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
+   
     trim: true
   },
-  phoneNumber: {
+ phoneNumber: {
     type: String,
     required: true,
-    match: /^[0-9]{10,15}$/ // basic validation for phone numbers
-  }
+    unique: true // prevents duplicate phone numbers
+  },
 });
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;

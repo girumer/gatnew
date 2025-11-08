@@ -52,6 +52,19 @@ app.get('/test-images', (req, res) => {
         ]
     });
 });
+// Get questions by exam title
+
+// Register user
+app.post('/api/users', async (req, res) => {
+  const { username, phoneNumber } = req.body;
+  try {
+    const user = new User({ username, phoneNumber });
+    await user.save();
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 // Database connection and server start
 connect().then(() => {
