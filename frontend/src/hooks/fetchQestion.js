@@ -31,8 +31,7 @@ export const useFetchQustion = (title) => {
           `${process.env.REACT_APP_BACKENDURL}${endpoint}`,
           (data) => data
         );
-
-        const questions = apiResponse.q || [];
+const questions = apiResponse.questions || apiResponse.q || [];
         const answers = questions.map((q) => q.answer);
 
         if (questions.length > 0) {
