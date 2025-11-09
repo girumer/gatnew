@@ -23,7 +23,9 @@ export const useFetchQustion = (title) => {
     }
 
     setGetData(prev => ({ ...prev, isLoading: true }));
-
+const endpoint = `/api/questions/${title.trim()}`;
+const fullUrl = `${process.env.REACT_APP_BACKENDURL}${endpoint}`;
+console.log("Fetching from:", fullUrl);
     (async () => {
       try {
         const endpoint = `/api/questions/${title.trim()}`;
