@@ -29,6 +29,41 @@
   font-size: 1.1rem;
   color: var(--primary-color);
 }
+.vindimate-container1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+.vindimate-box1 {
+  width: 220px;
+  height: 220px;
+ background: linear-gradient(135deg, #7351da, #291f1f);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+.part-one1 {
+  background: linear-gradient(135deg, #d5d50e, #ab83a1);
+}
+
+.part-two1 {
+  background: linear-gradient(135deg, #10b951, #00b4d8);
+}
+.mode-popup button {
+  margin: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
 
 .explanation-box p {
   margin: 0;

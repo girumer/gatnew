@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './VindimatePage.css';
 import { Link } from 'react-router-dom';
 
-const years = ['2020', '2021', '2022', '2023', '2024'];
+const years = ['2020', '2021', '2022', '2023'];
 
 const VindimatePage = () => {
   const [selectedYear, setSelectedYear] = useState(null);
@@ -10,7 +10,7 @@ const VindimatePage = () => {
   return (
     <div className="vindimate-wrapper">
       <h1 className="vindimate-title">
-        {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'VINDIMATE EXAM LIST'}
+        {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'ERMP EXAM LIST'}
       </h1>
 
       {!selectedYear ? (

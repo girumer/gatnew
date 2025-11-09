@@ -9,6 +9,8 @@ import { PushAnswer } from '../hooks/setResult';
 import { updateResultAction } from '../redux/result_reducer';
 
 function Quiz() {
+  const [mode, setMode] = useState(null); // null | 'exam' | 'study'
+const [showPopup, setShowPopup] = useState(true);
     const [timeLeft, setTimeLeft] = useState(100 * 60);
      const { title } = useParams();
   const [cheak, setCheack] = useState(undefined);
@@ -21,6 +23,22 @@ useSelector(state => console.log(state));
   useEffect(() => {
     console.log("Results:", result);
   }, [result]);
+useEffect(() => {
+  if (mode !== 'exam') return;
+
+  const timer = setInterval(() => {
+    setTimeLeft(prev => {
+      if (prev <= 1) {
+        clearInterval(timer);
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [mode]);
+
 useEffect(() => {
   const timer = setInterval(() => {
     setTimeLeft(prev => {
@@ -73,18 +91,29 @@ function onCheak(i){
   if (result.length && result.length >= queue.length) {
     return <Navigate to="/result" replace={true} />;
   }
-
+if (showPopup) {
+  return (
+    <div className="vindimate-container1">
+      
+      <button className="vindimate-box1 part-one1" onClick={() => { setMode('exam'); setShowPopup(false); }}>Exam Mode</button>
+      <button  className="vindimate-box1 part-two1" onClick={() => { setMode('study'); setShowPopup(false); }}>Study Mode</button>
+    </div>
+  );
+}
   return (
     <div className="container">
      <div className='timer'>
       <h1 className="title text-light">Quiz Application</h1>
 
       {/* ✅ Timer directly below the title */}
-      <div className="timer">
-        <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
-      </div>
+    {mode === 'exam' && (
+  <div className="timer">
+    <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
+  </div>
+)}
+
     </div>
-      <Questions onCheak={onCheak} title={title} />
+<Questions onCheak={onCheak} title={title} mode={mode} />
 
       <div className="grid">
       {trace > 0 ? <button className="btn prev" onClick={onPrev}>Prev</button>:<div></div> }

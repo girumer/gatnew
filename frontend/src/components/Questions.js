@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateResultAction } from '../redux/result_reducer';
 import { updateResult } from '../hooks/setResult';
 
-function Questions({ onCheak, title }) {
+function Questions({ onCheak, title,mode  }) {
   
        //const { title } = useParams();
   
@@ -77,10 +77,9 @@ const [cheaked, setCheack] = useState(undefined);
 />
 
   <div className={`check ${result[trace] === i ? 'checked' : ''}`}></div>
-
- <label
+<label
   className={`text-primary ${
-    cheaked !== undefined && i === cheaked
+    mode === 'study' && cheaked !== undefined && i === cheaked
       ? i === answers[trace]
         ? 'correct'
         : 'wrong'
@@ -88,6 +87,7 @@ const [cheaked, setCheack] = useState(undefined);
   }`}
   htmlFor={`q${i}-options`}
 >
+
   {q}
 </label>
 
@@ -101,12 +101,13 @@ const [cheaked, setCheack] = useState(undefined);
     <li className="text-light">No options available</li>
   )}
 </ul>
-{cheaked !== undefined && question.explanation && (
+{mode === 'study' && cheaked !== undefined && question.explanation && (
   <div className="explanation-box">
     <h3 className="text-light">Explanation</h3>
     <p className="text-light">{question.explanation}</p>
   </div>
 )}
+
     </div>
   );
 }
