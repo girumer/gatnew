@@ -33,6 +33,8 @@ export const useFetchQustion = (title) => {
         );
 const questions = apiResponse.questions || apiResponse.q || [];
         const answers = questions.map((q) => q.answer);
+console.log("Fetched questions:", questions);
+console.log("Dispatching to Redux:", { question: questions, answers });
 
         if (questions.length > 0) {
           setGetData(prev => ({
