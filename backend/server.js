@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(cors());
-app.use(questionRoute);
+app.use('/api', questionRoute);
 // Static file serving - SINGLE DECLARATION
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
