@@ -1,6 +1,6 @@
 import Questions from "../models/question.js";
 import Results from "../models/result.js";
-import questions, { answers ,examTitle} from '../database/ERMP2023PARTONE.js'
+import questions, { answers ,examTitle} from '../database/ERMP2023PARTTWO.js'
 export async function getQuestions(req, res) {
   try {
     const baseUrl = `${req.protocol}://${req.get("host")}`;

@@ -136,8 +136,8 @@ bot.on('callback_query', async (query) => {
       reply_markup: {
         inline_keyboard: [
           [{
-  text: '📄 View NGAT Exams',
-  web_app: { url: `${process.env.FRONTEND_URL}/NGAT` }
+  text: '📄 View ERMP Exams',
+  web_app: { url: `${process.env.FRONTEND_URL}/VIDMATE` }
 }]
         ]
       }
