@@ -84,14 +84,14 @@
 /* Correct answer style */
 .questions ul li label.correct {
   background-color: var(--success-color);
-  color: white !important;
+ 
   border-color: var(--success-color);
 }
 
 /* Wrong answer style */
 .questions ul li label.wrong {
   background-color: var(--danger-color);
-  color: white !important;
+
   border-color: var(--danger-color);
 }
 
