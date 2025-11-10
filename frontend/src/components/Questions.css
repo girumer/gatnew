@@ -117,7 +117,7 @@
 /* 3. Style the label and check div when the hidden input is checked */
 .questions ul li input[type="radio"]:checked + label.text-primary {
     background-color: var(--primary-color);
-    color: var(--card-background) !important;
+
     border-color: var(--primary-color);
     transform: scale(1.01);
     box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
