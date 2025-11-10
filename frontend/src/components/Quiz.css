@@ -157,7 +157,7 @@ body {
 }
 
 .option-label:hover {
-  background-color: #e9f5ff;
+ 
   border-color: var(--primary-color);
 }
 
