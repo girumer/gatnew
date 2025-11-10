@@ -136,8 +136,8 @@
     border-color: var(--success-color);
 }
 .check.checked::after {
-    content: '✓';
-    color: white;
+   
+   
     font-size: 14px;
     position: absolute;
     top: 50%;
