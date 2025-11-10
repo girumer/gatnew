@@ -71,7 +71,7 @@
     border: 1px solid var(--secondary-color);
     border-radius: var(--border-radius-base);
     cursor: pointer;
-    color: #eaedef;
+   
     transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
     font-size: 1rem;
     color: var(--text-dark) !important;
