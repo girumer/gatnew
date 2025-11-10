@@ -78,7 +78,7 @@
 }
 
 .questions ul li label.text-primary:hover {
-    background-color: #eaedef;
+
     border-color: var(--primary-color);
 }
 /* Correct answer style */
