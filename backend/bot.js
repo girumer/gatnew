@@ -54,7 +54,7 @@ bot.on('message', async (msg) => {
       bot.sendMessage(chatId, '📚 Choose your exam menu:', {
         reply_markup: {
           inline_keyboard: [
-            [{ text: 'NGAT', callback_data: 'menu_NGAT' }],
+            [{ text: 'cheeres', callback_data: 'menu_NGAT' }],
             [{ text: 'ERMP', callback_data: 'menu_ERMP' }]
           ]
         }
