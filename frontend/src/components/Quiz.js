@@ -9,6 +9,8 @@ import { PushAnswer } from '../hooks/setResult';
 import { updateResultAction } from '../redux/result_reducer';
 
 function Quiz() {
+  const [currentPage, setCurrentPage] = useState(0);
+const buttonsPerPage = 5;
   const [mode, setMode] = useState(null); // null | 'exam' | 'study'
 const [showPopup, setShowPopup] = useState(true);
     const [timeLeft, setTimeLeft] = useState(100 * 60);
@@ -23,6 +25,13 @@ useSelector(state => console.log(state));
   useEffect(() => {
     console.log("Results:", result);
   }, [result]);
+useEffect(() => {
+  const newPage = Math.floor(trace / buttonsPerPage);
+  if (newPage !== currentPage) {
+    setCurrentPage(newPage);
+  }
+}, [trace, buttonsPerPage, currentPage]);
+
 useEffect(() => {
   if (mode !== 'exam') return;
 
@@ -113,6 +122,24 @@ if (showPopup) {
 )}
 
     </div>
+ <div className="pagination-buttons">
+  {queue
+    .slice(currentPage * buttonsPerPage, (currentPage + 1) * buttonsPerPage)
+    .map((_, index) => {
+      const actualIndex = currentPage * buttonsPerPage + index;
+      return (
+        <button
+          key={actualIndex}
+          className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
+          onClick={() => dispatch({ type: 'MOVE_TO_QUESTION', payload: actualIndex })}
+        >
+          {actualIndex + 1}
+        </button>
+      );
+    })}
+</div>
+
+
 <Questions onCheak={onCheak} title={title} mode={mode} />
 
       <div className="grid">
