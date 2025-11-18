@@ -671,7 +671,7 @@ export default [
             'Blind vagina',
         ],
          explanation: "Anatomic abnormalities associated with amenorrhea 1. Müllerian dysgenesis-congenital absence of the uterus and the upper two-thirds of the vagina. 2. Vaginal agenesis- failure of the vagina to develop. 3. Transverse vaginal septum-results from failure of fusion of the müllerian and urogenital sinus-derived portions of the vagina. 4. Imperforate hymen-If the hymen is complete, menstrual efflux cannot occur. 5. Asherman's syndrome-amenorrhea is caused by intrauterine synechiae.Differentiation of imperforate hymen and transverse vaginal septum/cervical atresia generally requires no laboratory investigation. A transabdominal or transperineal ultrasound examination will reveal the level and volume of sequestered menses; MRI helps to define the anatomy of the anomaly. - Current ObGyn 11th p1621, DC DUTTA's Gynecology p470, Danforth ObGyn 10th p1334",
-      image:'/images/ERMP2021PARTONEIMG61.png',
+      image:'https://new.adeyebingo.com/images/ERMP2021PARTONEIMG61.png',
         },
     {
         id: 62,

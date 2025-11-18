@@ -51,18 +51,19 @@ const [cheaked, setCheack] = useState(undefined);
      <h2 className='text-light'>{question?.question}</h2>
 
       {question?.image && (
-        <div>
-          <img
-            src={question.image.replace(/^http:\/\//i, 'https://')}
-            alt="question"
-            style={{ maxWidth: '100%', marginBottom: '1rem' }}
-           
-            onLoad={() => console.log('Image loaded successfully:', question.image)}
-          />
-          {/* Debug info */}
-          
-        </div>
-      )}
+        <div>
+          <img
+            // REMOVE the .replace() to use the original HTTP URL
+            src={question.image} 
+            alt="question"
+            style={{ maxWidth: '100%', marginBottom: '1rem' }}
+           
+            onLoad={() => console.log('Image loaded successfully:', question.image)}
+            // Add an onError handler for better debugging
+             onError={(e) => console.error('Image failed to load with source:', e.target.src)}
+          />
+        </div>
+      )}
     <ul key={question?.id}>
   {Array.isArray(question?.options) ? (
     question.options.map((q, i) => (
