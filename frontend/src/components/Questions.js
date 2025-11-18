@@ -53,7 +53,7 @@ const [cheaked, setCheack] = useState(undefined);
       {question?.image && (
         <div>
           <img
-            src={question.image}
+            src={question.image.replace(/^http:\/\//i, 'https://')}
             alt="question"
             style={{ maxWidth: '100%', marginBottom: '1rem' }}
            
