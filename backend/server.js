@@ -29,10 +29,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve images from database/images directory
-app.use('/images', express.static(path.join(__dirname, 'database', 'images')));
+//app.use('/images', express.static(path.join(__dirname, 'database', 'images')));
 
 // Additional fallback - serve from root images folder if exists
-app.use('/images', express.static(path.join(__dirname, 'images')));
+//app.use('/images', express.static(path.join(__dirname, 'images')));
 
 console.log('Static files served from:');
 console.log('-', path.join(__dirname, 'database', 'images'));
