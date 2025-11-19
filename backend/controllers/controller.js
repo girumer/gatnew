@@ -3,7 +3,8 @@ import Results from "../models/result.js";
 import questions, { answers ,examTitle} from '../database/ERMP2022PARTONE.js'
 export async function getQuestions(req, res) {
   try {
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    //const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const baseUrl = `https://${req.get("host")}`;
     const exams = await Questions.find().lean();
 
     if (exams.length === 0) {

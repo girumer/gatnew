@@ -17,7 +17,8 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(morgan('tiny'));
-app.use(cors());
+app.set('trust proxy', true);
+
 app.use(cors({
     origin: 'https://new.adeyebingo.com', // Replace with your actual frontend domain
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
