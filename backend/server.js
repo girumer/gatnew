@@ -18,6 +18,11 @@ const app = express();
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(cors());
+app.use(cors({
+    origin: 'https://new.adeyebingo.com', // Replace with your actual frontend domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
 app.use('/api', questionRoute);
 // Static file serving - SINGLE DECLARATION
 const __filename = fileURLToPath(import.meta.url);
