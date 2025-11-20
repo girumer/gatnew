@@ -29,6 +29,7 @@ console.log("Fetching from:", fullUrl);
     (async () => {
       try {
         const endpoint = `/api/questions/${title.trim()}`;
+        console.log("api end point is",endpoint);
         const apiResponse = await getServerData(
           `${process.env.REACT_APP_BACKENDURL}${endpoint}`,
           (data) => data
