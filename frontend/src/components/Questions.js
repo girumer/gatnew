@@ -54,7 +54,7 @@ const [cheaked, setCheack] = useState(undefined);
         <div>
           <img
             // REMOVE the .replace() to use the original HTTP URL
-            src={question.image} 
+            src={question.image.replace("http://", "https://")}
             alt="question"
             style={{ maxWidth: '100%', marginBottom: '1rem' }}
            
