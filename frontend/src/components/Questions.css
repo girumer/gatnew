@@ -24,7 +24,7 @@
   position: fixed;
   top: 40%;
   left: 30%;
-  opacity: 0.15;
+  opacity: 0;
   font-size: 3rem;
   color: red;
   pointer-events: none;
