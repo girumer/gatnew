@@ -17,7 +17,23 @@
     margin-bottom: 0px;
     
 }
+.questions {
+  user-select: none;   /* Prevents highlighting/copying */
+}
+.watermark {
+  position: fixed;
+  top: 40%;
+  left: 30%;
+  opacity: 0.15;
+  font-size: 3rem;
+  color: red;
+  pointer-events: none;
+  z-index: 9999;
+}
 
+.questions img {
+  pointer-events: none; /* Prevents right-click save on images */
+}
 /* Styling the Question Text (using text-light class from your component) */
 .questions h2.text-light {
   font-size: 1.1rem;

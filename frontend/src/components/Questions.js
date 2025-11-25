@@ -25,6 +25,25 @@ const [cheaked, setCheack] = useState(undefined);
   useEffect(() => {
   setCheack(undefined);
 }, [trace]);
+useEffect(() => {
+  // Disable right-click context menu
+  const handleContextMenu = (e) => e.preventDefault();
+  document.addEventListener("contextmenu", handleContextMenu);
+
+  // Disable copy shortcut
+  const handleKeyDown = (e) => {
+    if (e.ctrlKey && (e.key === "c" || e.key === "x")) {
+      e.preventDefault();
+    }
+  };
+  document.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    document.removeEventListener("contextmenu", handleContextMenu);
+    document.removeEventListener("keydown", handleKeyDown);
+  };
+}, []);
+
   function onSelect(i) {
     onCheak(i);
     setCheack(i);
@@ -47,7 +66,7 @@ const [cheaked, setCheack] = useState(undefined);
 
   return (
     <div className='questions'>
-      
+        <div className="watermark">Exam: {title}</div>
      <h2 className='text-light'>{question?.question}</h2>
 
       {question?.image && (

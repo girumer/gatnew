@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const questionModel = new Schema({
-    examTitle: { type: String, default: "" },
+    examTitle: { type: String, required: true,
+    unique: true  },
     questions: [{
         id: Number,
         question: String,

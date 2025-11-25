@@ -7,29 +7,15 @@ console.log('Controller keys:', Object.keys(controller));
 router.post('/questions',controller.inserQuestions); */
 router.route('/questions')
   .get(controller.getQuestions)
-  .post(controller.inserQuestions)
+   
   .delete(controller.dropQuestions);
+router.post("/questions/:examFile", controller.insertExamFromFile);
 
 // ✅ Add this route for title-based fetch
 router.get('/questions/:title', controller.getQuestionsByTitle);
-router.post("/upload-question", async (req, res) => {
-    try {
-        const { examTitle, questions, answers } = req.body;
 
-        const newExam = new question({
-            examTitle,
-            questions,
-            answers,
-        });
 
-        await newExam.save();
 
-        res.json({ message: "Exam uploaded successfully", newExam });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: "Server error" });
-    }
-});
 
 router.route('/result')
   .get(controller.getResult)

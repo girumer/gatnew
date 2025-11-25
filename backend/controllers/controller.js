@@ -1,6 +1,7 @@
 import Questions from "../models/question.js";
 import Results from "../models/result.js";
-import questions, { answers ,examTitle} from '../database/GAT1.js'
+import path from "path";
+import { fileURLToPath, pathToFileURL } from "url";
 export async function getQuestions(req, res) {
   try {
     //const baseUrl = `${req.protocol}://${req.get("host")}`;
@@ -60,7 +61,7 @@ export async function getQuestionsByTitle(req, res) {
 
 
 
-export async function inserQuestions(req, res) {
+/* export async function inserQuestions(req, res) {
   try {
     const data = await Questions.insertMany([
       { questions,  answers ,examTitle}
@@ -70,7 +71,53 @@ export async function inserQuestions(req, res) {
   } catch (error) {
     res.json({ error: error.message });
   }
+} */
+// controllers/questionController.js
+
+
+
+
+
+
+
+export async function insertExamFromFile(req, res) {
+  try {
+    const { examFile } = req.params; // e.g. "GAT1"
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    // Build absolute path to the file
+    const modulePath = path.join(__dirname, `../database/${examFile}.js`);
+
+    // Convert to file:// URL for ESM import
+    const fileUrl = pathToFileURL(modulePath).href;
+
+    // Dynamically import the exam file
+    const examModule = await import(fileUrl);
+
+    // ✅ Handle mixed exports
+    const examTitle = examModule.examTitle;
+    const questions = examModule.default; // default export
+    const answers = examModule.answers;
+
+    if (!questions || !answers || !examTitle) {
+      return res.status(400).json({ error: "Exam file missing required exports" });
+    }
+
+    // Insert into DB
+    const data = await Questions.insertMany([{ examTitle, questions, answers }]);
+
+    res.json({ msg: `Exam ${examTitle} inserted successfully`, data });
+  } catch (error) {
+    console.error("Insert exam error:", error);
+    res.status(500).json({ error: error.message });
+  }
 }
+
+
+
+
+
 
 export async function dropQuestions(req,res){
    try {
