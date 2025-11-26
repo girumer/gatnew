@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true // prevents duplicate phone numbers
   },
+  chatId: {
+    type: Number,
+    required: true,
+    unique: true // ensures one record per Telegram chat
+  }
 });
 
 const User = mongoose.model('User', userSchema);

@@ -45,7 +45,7 @@ bot.on('message', async (msg) => {
       if (existingUser) {
         bot.sendMessage(chatId, `👋 Welcome back, ${existingUser.username}!`);
       } else {
-        const user = new User({ username, phoneNumber });
+        const user = new User({ username, phoneNumber,chatId });
         await user.save();
         bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
       }
@@ -70,7 +70,7 @@ bot.on('message', async (msg) => {
 
 
 
-bot.on('message', async (msg) => {
+/* bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const state = userStates[chatId];
 
@@ -93,7 +93,7 @@ bot.on('message', async (msg) => {
     const username = userStates[chatId].username;
 
     try {
-      const user = new User({ username, phoneNumber });
+      const user = new User({ username, phoneNumber,chatId });
       await user.save();
 
       bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
@@ -113,7 +113,7 @@ bot.on('message', async (msg) => {
       userStates[chatId] = null;
     }
   }
-});
+}); */
 bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const choice = query.data;
@@ -140,7 +140,7 @@ const user = await User.findOne({ chatId });
           [{
   text: '📄 View ERMP Exams',
  web_app: { 
-              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}`
+              url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}`
             }
 }]
         ]
