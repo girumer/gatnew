@@ -7,10 +7,13 @@ import { atempts_Number,earn_pointNumber,flagresult } from '../helper/helper';
 import { resetAllAction } from '../redux/question_reducer';
 import { resetResultAction } from '../redux/result_reducer';
 import { usePublishResult } from '../hooks/setResult';
+import { useLocation } from 'react-router-dom';
 function Result() {
   const dispatch=useDispatch();
  const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
-  
+   const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const phone = params.get("phone");   
   useEffect(() => {
      console.log("Results:were", flag);
    }, []);
@@ -29,8 +32,8 @@ usePublishResult({result,username : userId,atempts,points:earnpoints,achived:fla
       <h1 className='title text-light'>QuiZ Appliction</h1>
       <div className='result flex-center'>
         <div className='flex'>
-           <span>Username </span>
-           <span className='bold'>GAT EXAM</span>
+           <span>Phone </span>
+  <span className='bold'>{phone || "No phone passed"}</span>
         </div>
           <div className='flex'>
            <span>Total Quiz Point </span>

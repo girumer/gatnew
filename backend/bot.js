@@ -125,7 +125,8 @@ const user = await User.findOne({ chatId });
           [{
   text: '📄 View NGAT Exams',
     web_app: { 
-              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}`
+             url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+
             }
 }]
         ]
@@ -140,7 +141,8 @@ const user = await User.findOne({ chatId });
           [{
   text: '📄 View ERMP Exams',
  web_app: { 
-              url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}`
+             url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+
             }
 }]
         ]

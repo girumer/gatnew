@@ -8,7 +8,8 @@ const VindimatePage = () => {
   const [selectedYear, setSelectedYear] = useState(null);
 const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const phone = params.get("phone");   
+  const phone = params.get("phone"); 
+  const username = params.get("username");  
   return (
     <div className="vindimate-wrapper">
       <h1 className="vindimate-title">
@@ -19,6 +20,7 @@ const { search } = useLocation();
         <div className="vindimate-container">
             <h1 className="vindimate-title">
         {phone ? `Phone: ${phone}` : 'No phone number passed'}
+         {username ? `Phone: ${username}` : 'No username  passed'}
       </h1>
           {years.map((year, index) => (
             <div
