@@ -117,14 +117,16 @@ bot.on('message', async (msg) => {
 bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const choice = query.data;
-
+const user = await User.findOne({ chatId });
   if (choice === 'menu_NGAT') {
     bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
       reply_markup: {
         inline_keyboard: [
           [{
   text: '📄 View NGAT Exams',
-  web_app: { url: `${process.env.FRONTEND_URL}/NGAT` }
+    web_app: { 
+              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}`
+            }
 }]
         ]
       }
@@ -137,7 +139,9 @@ bot.on('callback_query', async (query) => {
         inline_keyboard: [
           [{
   text: '📄 View ERMP Exams',
-  web_app: { url: `${process.env.FRONTEND_URL}/VIDMATE` }
+ web_app: { 
+              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}`
+            }
 }]
         ]
       }

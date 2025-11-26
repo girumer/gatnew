@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './VindimatePage.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 
 const years = ['2020', '2021', '2022', '2023'];
 
 const VindimatePage = () => {
   const [selectedYear, setSelectedYear] = useState(null);
-
+const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const phone = params.get("phone");   
   return (
     <div className="vindimate-wrapper">
       <h1 className="vindimate-title">
@@ -15,6 +17,9 @@ const VindimatePage = () => {
 
       {!selectedYear ? (
         <div className="vindimate-container">
+            <h1 className="vindimate-title">
+        {phone ? `Phone: ${phone}` : 'No phone number passed'}
+      </h1>
           {years.map((year, index) => (
             <div
               key={index}
