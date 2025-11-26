@@ -11,24 +11,30 @@ const { search } = useLocation();
   const phone = params.get("phone"); 
   const username = params.get("username");
   useEffect(() => {
+  localStorage.removeItem("phone");
+  localStorage.removeItem("username");
+
   if (phone) localStorage.setItem("phone", phone);
   if (username) localStorage.setItem("username", username);
-}, [phone, username]);  
+}, [phone, username]);
+ 
 const userphone = localStorage.getItem("phone");
 const userusername = localStorage.getItem("username");
   return (
     <div className="vindimate-wrapper">
+      <h1>
+        welcome
+             {userusername ? `User: ${userusername}` : 'No username passed'}
+      </h1>
       <h1 className="vindimate-title">
         {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'ERMP EXAM LIST'}
       </h1>
 
       {!selectedYear ? (
         <div className="vindimate-container">
-            <h1 className="vindimate-title">
-      {userphone ? `Phone: ${userphone}` : 'No phone number passed'}
-            {" | "}
-            {userusername ? `User: ${userusername}` : 'No username passed'}
-      </h1>
+         
+            
+     
           {years.map((year, index) => (
             <div
               key={index}
