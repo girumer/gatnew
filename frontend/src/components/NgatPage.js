@@ -21,7 +21,7 @@ const userusername = localStorage.getItem("username");
     <div className="ngat-wrapper">
       <h1>
         welcome
-             {userusername ? `User: ${userusername}` : 'No username passed'}
+             {username ? `User: ${username}` : 'No username passed'}
       </h1>
       <h1 className="ngat-title">NGAT EXAM LIST</h1>
       <div className="ngat-container">

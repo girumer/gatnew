@@ -14,12 +14,13 @@ function Result() {
    const { search } = useLocation();
   const params = new URLSearchParams(search);
   const phone = params.get("phone");   
+   const username = params.get("username");
   useEffect(() => {
      console.log("Results:were", flag);
    }, []);
- const totalpoints=queue.length*5;
+ const totalpoints=queue.length;
  const atempts=atempts_Number(result);
- const earnpoints=earn_pointNumber(result,answers,5);
+ const earnpoints=earn_pointNumber(result,answers,1);
  const flag=flagresult(totalpoints,earnpoints);
 usePublishResult({result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"})
  console.log("result is",{result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"}
@@ -35,8 +36,8 @@ const userusername = localStorage.getItem("username");
       <h1 className='title text-light'>QuiZ Appliction</h1>
       <div className='result flex-center'>
         <div className='flex'>
-           <span>Phone </span>
-  <span className='bold'>{userphone || "No phone passed"}</span>
+           <span>User Name </span>
+  <span className='bold'>{username || "No phone passed"}</span>
         </div>
           <div className='flex'>
            <span>Total Quiz Point </span>

@@ -24,7 +24,7 @@ const userusername = localStorage.getItem("username");
     <div className="vindimate-wrapper">
       <h1>
         welcome
-             {userusername ? `User: ${userusername}` : 'No username passed'}
+             {username ? `User: ${username}` : 'No username passed'}
       </h1>
       <h1 className="vindimate-title">
         {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'ERMP EXAM LIST'}
