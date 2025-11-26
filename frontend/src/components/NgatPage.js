@@ -1,7 +1,7 @@
 import React from 'react';
-import React, { useState,useEffect } from 'react';
+import  { useState,useEffect } from 'react';
 import './NgatPage.css';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 const NgatPage = () => {
   const exams = ['GAT1', 'GAT2', 'GAT3', 'GAT4'];
 const { search } = useLocation();
