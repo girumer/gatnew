@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './VindimatePage.css';
 import { Link, useLocation  } from 'react-router-dom';
 
@@ -9,7 +9,13 @@ const VindimatePage = () => {
 const { search } = useLocation();
   const params = new URLSearchParams(search);
   const phone = params.get("phone"); 
-  const username = params.get("username");  
+  const username = params.get("username");
+  useEffect(() => {
+  if (phone) localStorage.setItem("phone", phone);
+  if (username) localStorage.setItem("username", username);
+}, [phone, username]);  
+const userphone = localStorage.getItem("phone");
+const userusername = localStorage.getItem("username");
   return (
     <div className="vindimate-wrapper">
       <h1 className="vindimate-title">
@@ -19,8 +25,9 @@ const { search } = useLocation();
       {!selectedYear ? (
         <div className="vindimate-container">
             <h1 className="vindimate-title">
-        {phone ? `Phone: ${phone}` : 'No phone number passed'}
-         {username ? `Phone: ${username}` : 'No username  passed'}
+      {userphone ? `Phone: ${userphone}` : 'No phone number passed'}
+            {" | "}
+            {userusername ? `User: ${userusername}` : 'No username passed'}
       </h1>
           {years.map((year, index) => (
             <div

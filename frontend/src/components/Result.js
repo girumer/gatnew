@@ -22,7 +22,10 @@ function Result() {
  const earnpoints=earn_pointNumber(result,answers,5);
  const flag=flagresult(totalpoints,earnpoints);
 usePublishResult({result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"})
- console.log("result is",{result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"})
+ console.log("result is",{result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"}
+   )
+   const userphone = localStorage.getItem("phone");
+const userusername = localStorage.getItem("username");
  function onRestart(){
     dispatch(resetAllAction());
     dispatch(resetResultAction());
@@ -33,7 +36,7 @@ usePublishResult({result,username : userId,atempts,points:earnpoints,achived:fla
       <div className='result flex-center'>
         <div className='flex'>
            <span>Phone </span>
-  <span className='bold'>{phone || "No phone passed"}</span>
+  <span className='bold'>{userphone || "No phone passed"}</span>
         </div>
           <div className='flex'>
            <span>Total Quiz Point </span>
