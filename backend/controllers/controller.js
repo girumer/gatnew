@@ -136,7 +136,8 @@ export async function getResult(req, res) {
       return res.status(400).json({ error: "Phone number is required" });
     }
 
-    const results = await Results.find({phoneNumber}).sort({ createdAt: -1 });
+    // ✅ FIXED: use phoneNumber: phone
+    const results = await Results.find({ phoneNumber: phone }).sort({ createdAt: -1 });
 
     res.json({ results });
   } catch (error) {
@@ -144,6 +145,7 @@ export async function getResult(req, res) {
     res.status(500).json({ error: "Failed to load results" });
   }
 }
+
 
 export async function insertResult(req, res) {
   try {
