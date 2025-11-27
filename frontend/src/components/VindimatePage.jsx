@@ -47,8 +47,8 @@ const userusername = localStorage.getItem("username");
         </div>
       ) : (
         <div className="vindimate-container">
-    <Link className="vindimate-box part-one" to={`/quiz/ERMP${selectedYear}PARTONE`}>PART ONE</Link>
-    <Link className="vindimate-box part-two" to={`/quiz/ERMP${selectedYear}PARTTWO`}>PART TWO</Link>
+    <Link className="vindimate-box part-one" to={`/quiz/ERMP${selectedYear}PARTONE`} onClick={() => localStorage.setItem("examPath", `ERMP${selectedYear}PARTONE`)}>PART ONE</Link>
+    <Link className="vindimate-box part-two" to={`/quiz/ERMP${selectedYear}PARTTWO`} onClick={() => localStorage.setItem("examPath", `ERMP${selectedYear}PARTTWO`)}>PART TWO</Link>
 
         </div>
       )}

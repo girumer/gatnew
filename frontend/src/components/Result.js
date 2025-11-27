@@ -21,12 +21,27 @@ function Result() {
  const totalpoints=queue.length;
  const atempts=atempts_Number(result);
  const earnpoints=earn_pointNumber(result,answers,1);
+
  const flag=flagresult(totalpoints,earnpoints);
-usePublishResult({result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"})
+ const examPath = localStorage.getItem("examPath");
+ const exam = examPath.slice(0, 4);
+const year = examPath.slice(4, 8);
+const part = examPath.slice(8);
+usePublishResult({
+  username: username,
+  result,
+  attempts: atempts,
+  points: earnpoints,
+  achived: flag ? "passed" : "failed",
+   exam,
+  year,
+  part
+});
+
+
  console.log("result is",{result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"}
    )
-   const userphone = localStorage.getItem("phone");
-const userusername = localStorage.getItem("username");
+  
  function onRestart(){
     dispatch(resetAllAction());
     dispatch(resetResultAction());
