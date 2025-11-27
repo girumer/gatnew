@@ -40,10 +40,11 @@ function UserResults({ phone }) {
                 <td>{r.part}</td>
                 <td>{r.attempts}</td>
                 <td>{r.points}</td>
-                <td style={{ color: r.achived === "passed" ? "green" : "red" }}>
-                  {r.achived}
-                </td>
-                
+                <td className={`status ${r.achived === "passed" ? "status-passed" : "status-failed"}`}>
+                 {r.achived}
+                    </td>
+
+                <td>{new Date(r.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

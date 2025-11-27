@@ -1,4 +1,4 @@
-.user-results {
+/* .user-results {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
@@ -89,7 +89,6 @@
   background: rgba(255,255,255,0.9);
 }
 
-/* Status styling */
 .results-table td:nth-child(6) {
   font-weight: 700;
   text-transform: uppercase;
@@ -112,21 +111,20 @@
   font-size: 0.9rem;
 }
 
-/* Points styling */
+
 .results-table td:nth-child(5) {
   font-weight: 700;
   font-size: 1.1rem;
   color: #8b5cf6;
 }
 
-/* Date styling */
+
 .results-table td:last-child {
   font-size: 0.95rem;
   color: #6b7280;
   font-style: italic;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .user-results {
     padding: 1rem;
@@ -181,7 +179,7 @@
   }
 }
 
-/* Add data-label attributes in JS for mobile */
+
 @media (max-width: 768px) {
   .results-table td:nth-child(1):before { content: "Exam"; }
   .results-table td:nth-child(2):before { content: "Year"; }
@@ -192,7 +190,6 @@
   .results-table td:nth-child(7):before { content: "Date"; }
 }
 
-/* Loading animation (optional enhancement) */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
@@ -200,4 +197,81 @@
 
 .user-results:where(:has(.results-table tbody tr.skeleton)) tbody tr {
   animation: pulse 1.5s infinite;
+}
+ */
+ .user-results {
+  margin-top: 40px;
+  padding: 20px;
+  background: #ffffff10;
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  color: #fff;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.user-results h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2aff95;
+  letter-spacing: 1px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.results-table thead {
+  background: #1e1e1e;
+}
+
+.results-table th {
+  padding: 14px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2aff95;
+  border-bottom: 2px solid #2aff95;
+}
+
+.results-table td {
+  padding: 12px;
+  font-size: 14px;
+  color: #e6e6e6;
+  border-bottom: 1px solid #333;
+}
+
+.results-table tr {
+  transition: background 0.25s ease;
+}
+
+.results-table tr:hover {
+  background: #2aff9520;
+}
+
+/* ✅ Passed / Failed badge styles */
+.results-table td.status {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-passed {
+  color: #2aff95;
+  font-weight: 700;
+}
+
+.status-failed {
+  color: #ff2a66;
+  font-weight: 700;
+}
+
+/* ✅ Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
