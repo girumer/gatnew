@@ -13,8 +13,9 @@ function Result() {
  const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
    const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const phone = params.get("phone");   
-   const username = params.get("username");
+  const phone1 = params.get("phone");   
+   const username1 = params.get("username");
+   const username=localStorage.getItem("username1")
   useEffect(() => {
      console.log("Results:were", flag);
    }, []);

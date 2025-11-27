@@ -138,17 +138,26 @@ export async function getResult(req,res){
     }
 }
 export async function insertResult(req,res){
-    try {
-    const {username,result,attempts,points,achived} = req.body;
-    if(!username&&!result)throw new Error('data not Provided!');
-    Results.create({username,result,attempts,points,achived})
+  try {
+    console.log("✅ Incoming POST /result");
+    console.log("✅ Body:", req.body);
 
-   
-     res.json({ msg: "result saved successfully" });
+    const {username,result,attempts,points,achived} = req.body;
+
+    if(!username && !result)
+      throw new Error('data not Provided!');
+
+    const saved = await Results.create({username,result,attempts,points,achived});
+
+    console.log("✅ Saved to DB:", saved);
+
+    res.json({ msg: "result saved successfully" });
   } catch (error) {
+    console.log("❌ Error in insertResult:", error);
     res.json({ error: error.message });
   }
 }
+
 export async function dropresult(req,res){
     try {
     const data = await Results.deleteMany();

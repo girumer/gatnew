@@ -14,8 +14,8 @@ const { search } = useLocation();
   localStorage.removeItem("phone");
   localStorage.removeItem("username");
 
-  if (phone) localStorage.setItem("phone", phone);
-  if (username) localStorage.setItem("username", username);
+  if (phone) localStorage.setItem("phone1", phone);
+  if (username) localStorage.setItem("username1", username);
 }, [phone, username]);
  
 const userphone = localStorage.getItem("phone");
