@@ -1,0 +1,203 @@
+.user-results {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.user-results h2 {
+  text-align: center;
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.user-results p {
+  text-align: center;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.2rem;
+  padding: 3rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  backdrop-filter: blur(20px);
+}
+
+.results-table thead {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.results-table th {
+  padding: 1.5rem 1rem;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.results-table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.results-table tbody tr:hover {
+  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.results-table tbody tr:hover td {
+  color: white;
+}
+
+.results-table td {
+  padding: 1.2rem 1rem;
+  font-size: 1rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.results-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.7);
+}
+
+.results-table tbody tr:nth-child(odd) {
+  background: rgba(255,255,255,0.9);
+}
+
+/* Status styling */
+.results-table td:nth-child(6) {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.results-table td:nth-child(6):where([style*="green"]) {
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.8rem 1rem !important;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.results-table td:nth-child(6):where([style*="red"]) {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 0.8rem 1rem !important;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Points styling */
+.results-table td:nth-child(5) {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #8b5cf6;
+}
+
+/* Date styling */
+.results-table td:last-child {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-results {
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .user-results h2 {
+    font-size: 2rem;
+  }
+  
+  .results-table {
+    font-size: 0.9rem;
+  }
+  
+  .results-table th,
+  .results-table td {
+    padding: 0.8rem 0.5rem;
+  }
+  
+  .results-table thead {
+    display: none;
+  }
+  
+  .results-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+  
+  .results-table tbody tr:hover {
+    transform: none;
+  }
+  
+  .results-table td {
+    display: block;
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+    padding-right: 1rem;
+    border-bottom: 1px dotted rgba(0,0,0,0.1);
+  }
+  
+  .results-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.5rem;
+    width: 45%;
+    font-weight: 700;
+    color: #4facfe;
+    text-align: left;
+  }
+}
+
+/* Add data-label attributes in JS for mobile */
+@media (max-width: 768px) {
+  .results-table td:nth-child(1):before { content: "Exam"; }
+  .results-table td:nth-child(2):before { content: "Year"; }
+  .results-table td:nth-child(3):before { content: "Part"; }
+  .results-table td:nth-child(4):before { content: "Attempts"; }
+  .results-table td:nth-child(5):before { content: "Points"; }
+  .results-table td:nth-child(6):before { content: "Status"; }
+  .results-table td:nth-child(7):before { content: "Date"; }
+}
+
+/* Loading animation (optional enhancement) */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.user-results:where(:has(.results-table tbody tr.skeleton)) tbody tr {
+  animation: pulse 1.5s infinite;
+}

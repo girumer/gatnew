@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import './useresult.css';
 function UserResults({ phone }) {
   const [results, setResults] = useState([]);
 
@@ -43,7 +43,7 @@ function UserResults({ phone }) {
                 <td style={{ color: r.achived === "passed" ? "green" : "red" }}>
                   {r.achived}
                 </td>
-                <td>{new Date(r.createdAt).toLocaleString()}</td>
+                
               </tr>
             ))}
           </tbody>
