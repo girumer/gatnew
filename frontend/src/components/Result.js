@@ -8,6 +8,7 @@ import { resetAllAction } from '../redux/question_reducer';
 import { resetResultAction } from '../redux/result_reducer';
 import { usePublishResult } from '../hooks/setResult';
 import { useLocation } from 'react-router-dom';
+import UserResults from './UserResults';
 function Result() {
   const dispatch=useDispatch();
  const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
