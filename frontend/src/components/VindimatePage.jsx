@@ -11,15 +11,14 @@ const { search } = useLocation();
   const phone = params.get("phone"); 
   const username = params.get("username");
   useEffect(() => {
-  localStorage.removeItem("phone");
-  localStorage.removeItem("username");
+  localStorage.removeItem("phone1");
+  localStorage.removeItem("username1");
 
   if (phone) localStorage.setItem("phone1", phone);
   if (username) localStorage.setItem("username1", username);
 }, [phone, username]);
  
-const userphone = localStorage.getItem("phone");
-const userusername = localStorage.getItem("username");
+
   return (
     <div className="vindimate-wrapper">
       <h1>

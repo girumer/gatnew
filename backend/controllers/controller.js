@@ -128,26 +128,34 @@ export async function dropQuestions(req,res){
     res.json({ error: error.message });
   }
 }
-export async function getResult(req,res){
-    try{
-      const r= await Results.find()
-      res.json({r});
+export async function getResult(req, res) {
+  try {
+    const { phone } = req.query;
+
+    if (!phone) {
+      return res.status(400).json({ error: "Phone number is required" });
     }
-    catch(error){
-        res.json({error})
-    }
+
+    const results = await Results.find({phoneNumber}).sort({ createdAt: -1 });
+
+    res.json({ results });
+  } catch (error) {
+    console.error("Get result error:", error);
+    res.status(500).json({ error: "Failed to load results" });
+  }
 }
+
 export async function insertResult(req,res){
   try {
     console.log("✅ Incoming POST /result");
     console.log("✅ Body:", req.body);
 
-    const {username,result,attempts,points,achived} = req.body;
+    const {username,phoneNumber,result,attempts,points,achived} = req.body;
 
     if(!username && !result)
       throw new Error('data not Provided!');
 
-    const saved = await Results.create({username,result,attempts,points,achived});
+    const saved = await Results.create({username,phoneNumber,result,attempts,points,achived,exam,year,part});
 
     console.log("✅ Saved to DB:", saved);
 

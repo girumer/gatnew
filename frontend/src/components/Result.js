@@ -13,9 +13,9 @@ function Result() {
  const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
    const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const phone1 = params.get("phone");   
-   const username1 = params.get("username");
+ ;
    const username=localStorage.getItem("username1")
+  const phoneNumber=localStorage.getItem("phone1");
   useEffect(() => {
      console.log("Results:were", flag);
    }, []);
@@ -30,6 +30,7 @@ const year = examPath.slice(4, 8);
 const part = examPath.slice(8);
 usePublishResult({
   username: username,
+  phoneNumber:phoneNumber,
   result,
   attempts: atempts,
   points: earnpoints,
@@ -80,7 +81,7 @@ usePublishResult({
     <Link className='btn' to={'/'} onClick={onRestart}>RESTART</Link>
    </div>
     <div className='contianer'>
-      <ResultTable></ResultTable>
+      <UserResults phone={phoneNumber} />
     </div>
     </div>
   )
