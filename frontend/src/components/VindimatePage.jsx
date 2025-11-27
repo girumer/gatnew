@@ -25,6 +25,10 @@ const { search } = useLocation();
         welcome
              {username ? `User: ${username}` : 'No username passed'}
       </h1>
+        <h1>
+        your phone
+             {phone ? `phone: ${phone}` : 'No phone passed'}
+      </h1>
       <h1 className="vindimate-title">
         {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'ERMP EXAM LIST'}
       </h1>
