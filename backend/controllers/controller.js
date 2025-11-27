@@ -145,17 +145,27 @@ export async function getResult(req, res) {
   }
 }
 
-export async function insertResult(req,res){
+export async function insertResult(req, res) {
   try {
     console.log("✅ Incoming POST /result");
     console.log("✅ Body:", req.body);
 
-    const {username,phoneNumber,result,attempts,points,achived} = req.body;
+    const { username, phoneNumber, result, attempts, points, achived, exam, year, part } = req.body;
 
-    if(!username && !result)
+    if (!username && !result)
       throw new Error('data not Provided!');
 
-    const saved = await Results.create({username,phoneNumber,result,attempts,points,achived,exam,year,part});
+    const saved = await Results.create({
+      username,
+      phoneNumber,
+      result,
+      attempts,
+      points,
+      achived,
+      exam,
+      year,
+      part
+    });
 
     console.log("✅ Saved to DB:", saved);
 
@@ -165,6 +175,7 @@ export async function insertResult(req,res){
     res.json({ error: error.message });
   }
 }
+
 
 export async function dropresult(req,res){
     try {
