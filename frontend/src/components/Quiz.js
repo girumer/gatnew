@@ -6,7 +6,7 @@ import { moveNextquestion, movePrevquestion } from '../hooks/fetchQestion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { PushAnswer } from '../hooks/setResult';
-import { moveNextquestion } from '../hooks/fetchQestion';
+import { moveToQuestionAction } from '../redux/question_reducer';
 function Quiz() {
     const { title } = useParams();
     const dispatch = useDispatch();
