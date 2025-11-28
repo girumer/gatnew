@@ -44,14 +44,19 @@ useEffect(() => {
   const savedPopup = localStorage.getItem("showPopup");
 
   if (savedTrace !== null) {
-    dispatch({ type: "MOVE_TO_QUESTION", payload: Number(savedTrace) });
+    const traceNum = Number(savedTrace);
+    dispatch({ type: "MOVE_TO_QUESTION", payload: traceNum });
+
+    // ✅ restore currentPage directly from trace
+    setCurrentPage(Math.floor(traceNum / buttonsPerPage));
   }
 
   if (savedMode) setMode(savedMode);
   if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup));
 
-  setRestored(true);                  // ✅ mark restore as done
-}, [queue.length, title, restored]);
+  setRestored(true);                  // mark restore as done
+}, [queue.length, title, restored, dispatch, buttonsPerPage]);
+
 
 
 
