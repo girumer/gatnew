@@ -11,9 +11,18 @@ import { updateResultAction } from '../redux/result_reducer';
 function Quiz() {
   const [currentPage, setCurrentPage] = useState(0);
 const buttonsPerPage = 5;
-  const [mode, setMode] = useState(null); // null | 'exam' | 'study'
-const [showPopup, setShowPopup] = useState(true);
-    const [timeLeft, setTimeLeft] = useState(100 * 60);
+  const savedMode = localStorage.getItem("mode");
+const savedPopup = localStorage.getItem("showPopup");
+const [showPopup, setShowPopup] = useState(
+  savedPopup !== null ? JSON.parse(savedPopup) : true
+);
+
+const savedTime = localStorage.getItem("timeLeft");
+
+const [mode, setMode] = useState(savedMode || null);
+
+const [timeLeft, setTimeLeft] = useState(savedTime ? Number(savedTime) : 100 * 60);
+
      const { title } = useParams();
   const [cheak, setCheack] = useState(undefined);
   const dispatch = useDispatch();
@@ -25,7 +34,7 @@ useEffect(() => {
   if (!queue.length) return;
 
   const savedTitle = localStorage.getItem("examTitle");
-  if (savedTitle !== title) return; // ✅ different exam → do NOT restore
+  if (savedTitle !== title) return;
 
   const savedTrace = localStorage.getItem("trace");
   const savedMode = localStorage.getItem("mode");
@@ -36,8 +45,9 @@ useEffect(() => {
   }
 
   if (savedMode) setMode(savedMode);
-  if (savedPopup !== null) setShowPopup(savedPopup === "true");
+  if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup)); // ✅ FIXED
 }, [queue.length, dispatch, title]);
+
 
 
 useEffect(() => {
@@ -49,7 +59,7 @@ useEffect(() => {
 }, [mode]);
 
 useEffect(() => {
-  localStorage.setItem("showPopup", showPopup);
+  localStorage.setItem("showPopup", JSON.stringify(showPopup));
 }, [showPopup]);
 
   useEffect(() => {
