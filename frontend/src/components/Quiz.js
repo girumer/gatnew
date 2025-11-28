@@ -45,9 +45,11 @@ useEffect(() => {
 
   if (savedTrace !== null) {
     const traceNum = Number(savedTrace);
+
+    // ✅ restore trace in Redux
     dispatch({ type: "MOVE_TO_QUESTION", payload: traceNum });
 
-    // ✅ restore currentPage directly from trace
+    // ✅ restore currentPage immediately from saved trace
     setCurrentPage(Math.floor(traceNum / buttonsPerPage));
   }
 
@@ -56,6 +58,7 @@ useEffect(() => {
 
   setRestored(true);                  // mark restore as done
 }, [queue.length, title, restored, dispatch, buttonsPerPage]);
+
 
 
 
