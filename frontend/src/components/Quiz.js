@@ -119,7 +119,9 @@ function Quiz() {
       </div>
     );
   }
-
+if (!restored) {
+    return <h2 className="text-light">Restoring progress...</h2>;
+  }
   return (
     <div className="container">
       <div className='timer'>
