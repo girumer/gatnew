@@ -6,7 +6,7 @@ import { moveNextquestion, movePrevquestion } from '../hooks/fetchQestion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { PushAnswer } from '../hooks/setResult';
-
+import { moveToQuestionAction } from '../redux/question_reducer';
 function Quiz() {
     const { title } = useParams();
     const dispatch = useDispatch();
@@ -36,41 +36,36 @@ function Quiz() {
     // ---------------------------------------------------------
     // 1. RESTORATION EFFECT (The Fix for Refresh)
     // ---------------------------------------------------------
-    useEffect(() => {
-        if (!queue.length) return; // Wait for Redux to load questions
-        if (restored) return;      // Stop if already restored
+useEffect(() => {
+    if (!queue.length) return;
+    if (restored) return;
 
-        const savedTitle = localStorage.getItem("examTitle");
-        
-        // If the saved title is different from current URL title, 
-        // it means we are starting a NEW exam. We should NOT restore old data.
-        if (savedTitle !== title) {
-            setRestored(true); // ✅ Allow saving for this new exam
-            return;
-        }
-
-        const savedTrace = localStorage.getItem("trace");
-        const savedModeStorage = localStorage.getItem("mode");
-        const savedPopupStorage = localStorage.getItem("showPopup");
-
-        // Restore Trace (Question Number)
-        if (savedTrace !== null) {
-            const traceNum = Number(savedTrace);
-            // Only restore if valid
-            if (traceNum < queue.length) {
-                dispatch({ type: "MOVE_TO_QUESTION", payload: traceNum });
-                setCurrentPage(Math.floor(traceNum / buttonsPerPage));
-            }
-        }
-
-        // Restore Mode and Popup settings
-        if (savedModeStorage) setMode(savedModeStorage);
-        if (savedPopupStorage !== null) setShowPopup(JSON.parse(savedPopupStorage));
-
-        // ✅ Mark restoration as complete so saving can begin
+    const savedTitle = localStorage.getItem("examTitle");
+    
+    // Logic to handle new exams (as discussed previously)
+    if (savedTitle !== title) {
         setRestored(true); 
+        return;
+    }
 
-    }, [queue.length, title, restored, dispatch, buttonsPerPage]);
+    const savedTrace = localStorage.getItem("trace");
+    const savedMode = localStorage.getItem("mode");
+    const savedPopup = localStorage.getItem("showPopup");
+
+    if (savedTrace !== null) {
+        const traceNum = Number(savedTrace);
+        
+        // ✅ Use the correct Redux Toolkit action creator!
+        dispatch(moveToQuestionAction(traceNum)); 
+
+        setCurrentPage(Math.floor(traceNum / buttonsPerPage));
+    }
+
+    if (savedMode) setMode(savedMode);
+    if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup));
+
+    setRestored(true); 
+}, [queue.length, title, restored, dispatch, buttonsPerPage]);
 
     // ---------------------------------------------------------
     // 2. SAVE EFFECT (Guarded by 'restored')

@@ -29,7 +29,12 @@ export const questionReducer=createSlice({
            trace: state.trace-1, 
           }
         },
-       
+       moveToQuestionAction: (state, action) => {
+            return {
+                ...state,
+                trace: action.payload, // The payload will be the trace number (e.g., 5)
+            }
+        },
         resetAllAction:()=>{
             return{
               queue:[],
