@@ -9,7 +9,9 @@ import { PushAnswer } from '../hooks/setResult';
 import { updateResultAction } from '../redux/result_reducer';
 
 function Quiz() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const savedPage = localStorage.getItem("currentPage");
+  const [currentPage, setCurrentPage] = useState(savedPage ? Number(savedPage) : 0);
+
   const [restored, setRestored] = useState(false);
 
 const buttonsPerPage = 5;
