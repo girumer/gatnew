@@ -21,10 +21,53 @@ useSelector(state => console.log(state));
   const { queue, trace } = useSelector(state => state.questions);
 
    const result = useSelector(state => state.result.result); 
+useEffect(() => {
+  if (!queue.length) return;
+
+  const savedTitle = localStorage.getItem("examTitle");
+  if (savedTitle !== title) return; // ✅ different exam → do NOT restore
+
+  const savedTrace = localStorage.getItem("trace");
+  const savedMode = localStorage.getItem("mode");
+  const savedPopup = localStorage.getItem("showPopup");
+
+  if (savedTrace !== null) {
+    dispatch({ type: "MOVE_TO_QUESTION", payload: Number(savedTrace) });
+  }
+
+  if (savedMode) setMode(savedMode);
+  if (savedPopup !== null) setShowPopup(savedPopup === "true");
+}, [queue.length, dispatch, title]);
+
+
+useEffect(() => {
+  localStorage.setItem("trace", trace);
+}, [trace]);
+
+useEffect(() => {
+  localStorage.setItem("mode", mode);
+}, [mode]);
+
+useEffect(() => {
+  localStorage.setItem("showPopup", showPopup);
+}, [showPopup]);
 
   useEffect(() => {
     console.log("Results:", result);
   }, [result]);
+useEffect(() => {
+  localStorage.setItem("timeLeft", timeLeft);
+}, [timeLeft]);
+
+useEffect(() => {
+  const savedTime = localStorage.getItem("timeLeft");
+  if (savedTime !== null) {
+    setTimeLeft(Number(savedTime));
+  }
+}, []);
+useEffect(() => {
+  localStorage.setItem("examTitle", title);
+}, [title]);
 useEffect(() => {
   const newPage = Math.floor(trace / buttonsPerPage);
   if (newPage !== currentPage) {
@@ -48,19 +91,7 @@ useEffect(() => {
   return () => clearInterval(timer);
 }, [mode]);
 
-useEffect(() => {
-  const timer = setInterval(() => {
-    setTimeLeft(prev => {
-      if (prev <= 1) {
-        clearInterval(timer);
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
 
-  return () => clearInterval(timer); // cleanup on unmount
-}, []);
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
@@ -104,7 +135,7 @@ if (showPopup) {
   return (
     <div className="vindimate-container1">
       
-      <button className="vindimate-box1 part-one1" onClick={() => { setMode('exam'); setShowPopup(false); }}>Exam Mode</button>
+      <button className="vindimate-box1 part-one1" onClick={() => { setMode('exam'); setShowPopup(false);setTimeLeft(100 * 60); localStorage.setItem("timeLeft", 100 * 60);  }}>Exam Mode</button>
       <button  className="vindimate-box1 part-two1" onClick={() => { setMode('study'); setShowPopup(false); }}>Study Mode</button>
     </div>
   );
