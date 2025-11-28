@@ -202,11 +202,11 @@
  .user-results {
   margin-top: 40px;
   padding: 20px;
-  background: #ffffff10;
+  background: #d26e6e;
   backdrop-filter: blur(8px);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  color: #fff;
+  color: #141313;
   animation: fadeIn 0.6s ease-in-out;
 }
 
@@ -227,7 +227,7 @@
 }
 
 .results-table thead {
-  background: #1e1e1e;
+  background: #f8f2f2;
 }
 
 .results-table th {

@@ -20,12 +20,11 @@ function UserResults({ phone }) {
         <p>No results found.</p>
       ) : (
         <table className="results-table">
-          <thead>
+          <thead className="results-head">
             <tr>
               <th>Exam</th>
               <th>Year</th>
               <th>Part</th>
-              <th>Attempts</th>
               <th>Points</th>
               <th>Status</th>
               <th>Date</th>
@@ -38,13 +37,11 @@ function UserResults({ phone }) {
                 <td>{r.exam}</td>
                 <td>{r.year}</td>
                 <td>{r.part}</td>
-                <td>{r.attempts}</td>
                 <td>{r.points}</td>
                 <td className={`status ${r.achived === "passed" ? "status-passed" : "status-failed"}`}>
                  {r.achived}
                     </td>
 
-                <td>{new Date(r.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
@@ -55,3 +52,5 @@ function UserResults({ phone }) {
 }
 
 export default UserResults;
+
+               /*--  <th>Attempts</th><td>{new Date(r.createdAt).toLocaleString()}</td>--*/
