@@ -10,6 +10,8 @@ import { updateResultAction } from '../redux/result_reducer';
 
 function Quiz() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [restored, setRestored] = useState(false);
+
 const buttonsPerPage = 5;
   const savedMode = localStorage.getItem("mode");
 const savedPopup = localStorage.getItem("showPopup");
@@ -31,7 +33,8 @@ useSelector(state => console.log(state));
 
    const result = useSelector(state => state.result.result); 
 useEffect(() => {
-  if (!queue.length) return;
+  if (!queue.length) return;          // wait for questions
+  if (restored) return;               // prevent double restore
 
   const savedTitle = localStorage.getItem("examTitle");
   if (savedTitle !== title) return;
@@ -45,8 +48,12 @@ useEffect(() => {
   }
 
   if (savedMode) setMode(savedMode);
-  if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup)); // ✅ FIXED
-}, [queue.length, dispatch, title]);
+  if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup));
+
+  setRestored(true);                  // ✅ mark restore as done
+}, [queue.length, title, restored]);
+
+
 
 
 
