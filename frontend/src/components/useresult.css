@@ -215,7 +215,7 @@
   margin-bottom: 20px;
   font-size: 26px;
   font-weight: 700;
-  color: #2aff95;
+  color: #070707;
   letter-spacing: 1px;
 }
 
@@ -235,8 +235,8 @@
   text-align: left;
   font-size: 15px;
   font-weight: 600;
-  color: #2aff95;
-  border-bottom: 2px solid #2aff95;
+  color: #0f0f0f;
+  border-bottom: 2px solid #101312;
 }
 
 .results-table td {
@@ -266,7 +266,7 @@
 }
 
 .status-failed {
-  color: #ff2a66;
+  color: #045273;
   font-weight: 700;
 }
 

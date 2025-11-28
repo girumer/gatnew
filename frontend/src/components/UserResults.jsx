@@ -27,7 +27,7 @@ function UserResults({ phone }) {
               <th>Part</th>
               <th>Points</th>
               <th>Status</th>
-              <th>Date</th>
+           
             </tr>
           </thead>
 
