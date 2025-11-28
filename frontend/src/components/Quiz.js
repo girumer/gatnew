@@ -128,7 +128,10 @@ useEffect(() => {
     function onCheak(i) {
         setCheack(i);
     }
-
+/** finished exam after the last question */
+if(result.length && result.length >= queue.length){
+    return <Navigate to={'/result'} replace={true}></Navigate>
+}
     function onPrev() {
         if (trace > 0) {
             dispatch(movePrevquestion());

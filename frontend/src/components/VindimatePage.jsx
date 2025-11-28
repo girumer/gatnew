@@ -53,13 +53,15 @@ const { search } = useLocation();
     <Link className="vindimate-box part-one" to={`/quiz/ERMP${selectedYear}PARTONE`} onClick={() => {
       localStorage.removeItem("trace");
      localStorage.removeItem("timeLeft"); // Clear the remaining time
-      localStorage.removeItem("examTitle"); // Clear the previously saved exam title
+      localStorage.removeItem("examTitle");
+        localStorage.removeItem("showPopup"); // Clear the previously saved exam title
       localStorage.removeItem("mode");
       localStorage.setItem("examPath", `ERMP${selectedYear}PARTONE`)}}>PART ONE</Link>
     <Link className="vindimate-box part-two" to={`/quiz/ERMP${selectedYear}PARTTWO`} onClick={() =>{ 
       localStorage.removeItem("trace");
      localStorage.removeItem("timeLeft"); // Clear the remaining time
-      localStorage.removeItem("examTitle"); // Clear the previously saved exam title
+      localStorage.removeItem("examTitle");
+      localStorage.removeItem("showPopup"); // Clear the previously saved exam title
       localStorage.removeItem("mode");
       localStorage.setItem("examPath", `ERMP${selectedYear}PARTTWO`)}}>PART TWO</Link>
 
