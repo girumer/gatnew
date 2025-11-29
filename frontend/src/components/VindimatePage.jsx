@@ -25,10 +25,7 @@ const { search } = useLocation();
         welcome
              {username ? `User: ${username}` : 'No username passed'}
       </h1>
-        <h1>
-        your phone
-             {phone ? `phone: ${phone}` : 'No phone passed'}
-      </h1>
+      
       <h1 className="vindimate-title">
         {selectedYear ? `VINDIMATE ${selectedYear} PARTS` : 'ERMP EXAM LIST'}
       </h1>
@@ -38,32 +35,57 @@ const { search } = useLocation();
          
             
      
-          {years.map((year, index) => (
-            <div
-              key={index}
-              className="vindimate-box"
-              onClick={() => setSelectedYear(year)}
-            >
-              ERMP{year}
-            </div>
-          ))}
+         {years.map((year, index) => (
+  <div
+    key={index}
+    className="vindimate-box"
+    onClick={() => setSelectedYear(year)}
+  >
+    <div className="vindimate-box-content">
+      <span className="vindimate-icon">🩺</span>
+      <span>ERMP {year}</span>
+    </div>
+  </div>
+))}
+
         </div>
       ) : (
         <div className="vindimate-container">
-    <Link className="vindimate-box part-one" to={`/quiz/ERMP${selectedYear}PARTONE`} onClick={() => {
-      localStorage.removeItem("trace");
-     localStorage.removeItem("timeLeft"); // Clear the remaining time
-      localStorage.removeItem("examTitle");
-        localStorage.removeItem("showPopup"); // Clear the previously saved exam title
-      localStorage.removeItem("mode");
-      localStorage.setItem("examPath", `ERMP${selectedYear}PARTONE`)}}>PART ONE</Link>
-    <Link className="vindimate-box part-two" to={`/quiz/ERMP${selectedYear}PARTTWO`} onClick={() =>{ 
-      localStorage.removeItem("trace");
-     localStorage.removeItem("timeLeft"); // Clear the remaining time
-      localStorage.removeItem("examTitle");
-      localStorage.removeItem("showPopup"); // Clear the previously saved exam title
-      localStorage.removeItem("mode");
-      localStorage.setItem("examPath", `ERMP${selectedYear}PARTTWO`)}}>PART TWO</Link>
+  <Link 
+  className="vindimate-box part-one" 
+  to={`/quiz/ERMP${selectedYear}PARTONE`} 
+  onClick={() => {
+    localStorage.removeItem("trace");
+    localStorage.removeItem("timeLeft");
+    localStorage.removeItem("examTitle");
+    localStorage.removeItem("showPopup");
+    localStorage.removeItem("mode");
+    localStorage.setItem("examPath", `ERMP${selectedYear}PARTONE`);
+  }}
+>
+  <div className="vindimate-box-content">
+    <span className="vindimate-icon">🩺</span>
+    <span>PART ONE</span>
+  </div>
+</Link>
+
+<Link 
+  className="vindimate-box part-two" 
+  to={`/quiz/ERMP${selectedYear}PARTTWO`} 
+  onClick={() => { 
+    localStorage.removeItem("trace");
+    localStorage.removeItem("timeLeft");
+    localStorage.removeItem("examTitle");
+    localStorage.removeItem("showPopup");
+    localStorage.removeItem("mode");
+    localStorage.setItem("examPath", `ERMP${selectedYear}PARTTWO`);
+  }}
+>
+  <div className="vindimate-box-content">
+    <span className="vindimate-icon">🩺</span>
+    <span>PART TWO</span>
+  </div>
+</Link>
 
         </div>
       )}

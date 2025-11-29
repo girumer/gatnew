@@ -162,22 +162,39 @@ if(result.length && result.length >= queue.length){
         return <Navigate to={'/result'} replace={true}></Navigate>;
     }
 
-    if (showPopup) {
-        return (
-            <div className="vindimate-container1">
-                <button className="vindimate-box1 part-one1" onClick={() => { 
-                    setMode('exam'); 
-                    setShowPopup(false); 
-                    setTimeLeft(100 * 60); 
-                    localStorage.setItem("timeLeft", 100 * 60); 
-                }}>Exam Mode</button>
-                <button className="vindimate-box1 part-two1" onClick={() => { 
-                    setMode('study'); 
-                    setShowPopup(false); 
-                }}>Study Mode</button>
-            </div>
-        );
-    }
+  if (showPopup) {
+  return (
+    <div className="vindimate-container1">
+
+      {/* ✅ EXAM MODE BUTTON */}
+      <button 
+        className="vindimate-box1 part-one1" 
+        onClick={() => { 
+          setMode('exam'); 
+          setShowPopup(false); 
+          setTimeLeft(100 * 60); 
+          localStorage.setItem("timeLeft", 100 * 60); 
+        }}
+      >
+        <span className="mode-icon">⏱️</span>
+        <span>EXAM MODE</span>
+      </button>
+
+      {/* ✅ STUDY MODE BUTTON */}
+      <button 
+        className="vindimate-box1 part-two1" 
+        onClick={() => { 
+          setMode('study'); 
+          setShowPopup(false); 
+        }}
+      >
+        <span className="mode-icon">📖</span>
+        <span>STUDY MODE</span>
+      </button>
+
+    </div>
+  );
+}
 
     return (
         <div className="container">

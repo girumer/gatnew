@@ -53,11 +53,17 @@
   text-align: center;
 }
 .part-one1 {
-  background: linear-gradient(135deg, #d5d50e, #ab83a1);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
 }
 
 .part-two1 {
-  background: linear-gradient(135deg, #10b951, #00b4d8);
+   background: linear-gradient(135deg, #a8edea, #fed6e3);
+   color: #1f2933;
+}
+.mode-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 8px;
 }
 .mode-popup button {
   margin: 1rem;

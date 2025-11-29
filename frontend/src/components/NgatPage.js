@@ -25,15 +25,19 @@ const userusername = localStorage.getItem("username");
       </h1>
       <h1 className="ngat-title">NGAT EXAM LIST</h1>
       <div className="ngat-container">
-        {exams.map((exam, index) => (
-          <Link 
-            key={index} 
-            className="ngat-box" 
-            to={`/quiz/${exam}`}
-          >
-            {exam}
-          </Link>
-        ))}
+       {exams.map((exam, index) => (
+  <Link 
+    key={index} 
+    className="ngat-box" 
+    to={`/quiz/${exam}`}
+  >
+    <div className="ngat-box-content">
+      <span className="ngat-icon">📊</span>
+      <span className="ngat-label">{exam}</span>
+    </div>
+  </Link>
+))}
+
       </div>
     </div>
   );

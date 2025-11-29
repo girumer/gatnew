@@ -114,7 +114,7 @@ bot.on('message', async (msg) => {
     }
   }
 }); */
-bot.on('callback_query', async (query) => {
+/* bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const choice = query.data;
 const user = await User.findOne({ chatId });
@@ -149,5 +149,47 @@ const user = await User.findOne({ chatId });
       }
     });
   }
-});
+}); */
 
+bot.on('callback_query', async (query) => {
+  const chatId = query.message.chat.id;
+  const messageId = query.message.message_id; // the message to edit
+  const choice = query.data;
+  const user = await User.findOne({ chatId });
+
+  // Remove old menu buttons
+  await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
+
+  if (choice === 'menu_NGAT') {
+    bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
+      reply_markup: {
+        inline_keyboard: [
+          [{
+            text: '📄 View NGAT Exams',
+            web_app: { 
+              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+            }
+          }]
+        ]
+      }
+    });
+  }
+
+  if (choice === 'menu_ERMP') {
+    bot.sendMessage(chatId, '📝 You selected ERMP. Click below to view the Vindimate exam list:', {
+      reply_markup: {
+        inline_keyboard: [
+          [{
+            text: '📄 View ERMP Exams',
+            web_app: { 
+              url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+            }
+          }]
+        ]
+      }
+    });
+  }
+
+  // ✅ Answer callback to remove "loading" state
+  bot.answerCallbackQuery(query.id);
+});
