@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { PushAnswer } from '../hooks/setResult';
 import { moveToQuestionAction } from '../redux/question_reducer';
+import { pushResultAction } from '../redux/result_reducer';
 function Quiz() {
     const { title } = useParams();
     const dispatch = useDispatch();
@@ -136,15 +137,21 @@ useEffect(() => {
         }
     }
 
-    function onNext() {
-        if (trace < queue.length) {
-            dispatch(moveNextquestion());
-            if (result.length <= trace) {
-                dispatch(PushAnswer(cheak));
-            }
+    function onNext(){
+    if(trace < queue.length){
+        // increase the trace value by one
+        dispatch(moveNextquestion());
+
+        // insert a new result in the array. 
+        // 👇 USE THE CORRECT ACTION CREATOR
+        if(result.length <= trace){
+            dispatch(pushResultAction(cheak)) // FIX: Using pushResultAction
         }
-        setCheack(undefined);
     }
+    
+    // reset the value of the checked variable
+    setCheack(undefined)
+}
 if(result.length && result.length >= queue.length){
     return <Navigate to={'/result'} replace={true}></Navigate>
 }
@@ -192,7 +199,7 @@ if(result.length && result.length >= queue.length){
                             <button
                                 key={actualIndex}
                                 className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
-                                onClick={() => dispatch({ type: 'MOVE_TO_QUESTION', payload: actualIndex })}
+                                onClick={() => dispatch(moveToQuestionAction(actualIndex))}
                             >
                                 {actualIndex + 1}
                             </button>
