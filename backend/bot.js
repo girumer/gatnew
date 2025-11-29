@@ -153,42 +153,46 @@ const user = await User.findOne({ chatId });
 
 bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
-  const messageId = query.message.message_id; // the message containing the inline keyboard
+  const messageId = query.message.message_id;
   const choice = query.data;
   const user = await User.findOne({ chatId });
 
-  // ✅ 1. Get the current keyboard
-  const oldKeyboard = query.message.reply_markup.inline_keyboard;
+  // ✅ Keep only main menu (first 2 rows)
+  const mainMenu = query.message.reply_markup.inline_keyboard.slice(0, 2);
 
-  // ✅ 2. Remove all existing child buttons but keep main menu
-  // Assuming main menu is first two rows
-  const newKeyboard = oldKeyboard.slice(0, 2); // keep first 2 rows (main menu)
-  
-  // ✅ 3. Add the new child buttons based on choice
+  // ✅ Add an empty row as a spacer to create gap
+  const spacerRow = [{ text: '────────', callback_data: 'spacer' }]; // this is just visual
+
+  // ✅ Add child buttons based on choice
+  let childButtons = [];
   if (choice === 'menu_NGAT') {
-    newKeyboard.push([
-      {
+    childButtons = [
+      [{
         text: '📄 View NGAT Exams',
         web_app: {
           url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
         }
-      }
-    ]);
+      }]
+    ];
   } else if (choice === 'menu_ERMP') {
-    newKeyboard.push([
-      {
+    childButtons = [
+      [{
         text: '📄 View ERMP Exams',
         web_app: {
           url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
         }
-      }
-    ]);
+      }]
+    ];
   }
 
-  // ✅ 4. Update the keyboard
+  // ✅ Merge keyboard: main menu + spacer + child buttons
+  const newKeyboard = [...mainMenu, spacerRow, ...childButtons];
+
+  // ✅ Update the message
   await bot.editMessageReplyMarkup({ inline_keyboard: newKeyboard }, { chat_id: chatId, message_id: messageId });
 
-  // ✅ 5. Answer callback to remove "loading" circle
+  // ✅ Answer callback to remove "loading"
   bot.answerCallbackQuery(query.id);
 });
+
 
