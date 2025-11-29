@@ -153,43 +153,42 @@ const user = await User.findOne({ chatId });
 
 bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
-  const messageId = query.message.message_id; // the message to edit
+  const messageId = query.message.message_id; // the message containing the inline keyboard
   const choice = query.data;
   const user = await User.findOne({ chatId });
 
-  // Remove old menu buttons
-  await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
+  // ✅ 1. Get the current keyboard
+  const oldKeyboard = query.message.reply_markup.inline_keyboard;
 
+  // ✅ 2. Remove all existing child buttons but keep main menu
+  // Assuming main menu is first two rows
+  const newKeyboard = oldKeyboard.slice(0, 2); // keep first 2 rows (main menu)
+  
+  // ✅ 3. Add the new child buttons based on choice
   if (choice === 'menu_NGAT') {
-    bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
-      reply_markup: {
-        inline_keyboard: [
-          [{
-            text: '📄 View NGAT Exams',
-            web_app: { 
-              url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
-            }
-          }]
-        ]
+    newKeyboard.push([
+      {
+        text: '📄 View NGAT Exams',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+        }
       }
-    });
+    ]);
+  } else if (choice === 'menu_ERMP') {
+    newKeyboard.push([
+      {
+        text: '📄 View ERMP Exams',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+        }
+      }
+    ]);
   }
 
-  if (choice === 'menu_ERMP') {
-    bot.sendMessage(chatId, '📝 You selected ERMP. Click below to view the Vindimate exam list:', {
-      reply_markup: {
-        inline_keyboard: [
-          [{
-            text: '📄 View ERMP Exams',
-            web_app: { 
-              url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
-            }
-          }]
-        ]
-      }
-    });
-  }
+  // ✅ 4. Update the keyboard
+  await bot.editMessageReplyMarkup({ inline_keyboard: newKeyboard }, { chat_id: chatId, message_id: messageId });
 
-  // ✅ Answer callback to remove "loading" state
+  // ✅ 5. Answer callback to remove "loading" circle
   bot.answerCallbackQuery(query.id);
 });
+
