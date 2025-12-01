@@ -30,32 +30,37 @@ mongoose.connect('mongodb://localhost:27017/exam-bot', {
 // ✅ Continue with your bot logic...
 function getMainMenu(user) {
   return [
-    [{
-      text: '🧠 NGAT',
-      web_app: {
-        url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+    [
+      {
+        text: '🧠 NGAT',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+        }
+      },
+      {
+        text: '🩺 ERMP',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+        }
       }
-    }],
-    [{
-      text: '🩺 ERMP',
-      web_app: {
-        url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+    ],
+    [
+      {
+        text: '🧪 ERMP Sample',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/VIDMATE?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+        }
+      },
+      {
+        text: '📊 View My Results',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+        }
       }
-    }],
-     [{
-      text: '🧪 ERMP Sample',
-      web_app: {
-        url: `${process.env.FRONTEND_URL}/VIDMATE?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-      }
-    }],
-    [{
-      text: '📊 View My Results',
-      web_app: {
-        url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-      }
-    }]
+    ]
   ];
 }
+
 
 // Store temporary user states
 const userStates = {};
