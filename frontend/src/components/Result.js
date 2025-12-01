@@ -14,12 +14,22 @@ function Result() {
  const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
    const { search } = useLocation();
   const params = new URLSearchParams(search);
- ;
-   const username=localStorage.getItem("username1")
+  
+   //const username=localStorage.getItem("username1")
+  //const phoneNumber=localStorage.getItem("phone1");
+     const username=localStorage.getItem("username1")
   const phoneNumber=localStorage.getItem("phone1");
   useEffect(() => {
      console.log("Results:were", flag);
    }, []);
+  useEffect(() => {
+    localStorage.removeItem("phone1");
+    localStorage.removeItem("username1");
+
+    if (phoneNumber) localStorage.setItem("phone1", phoneNumber);
+    if (username) localStorage.setItem("username1", username);
+  }, [phoneNumber, username]);
+
  const totalpoints=queue.length;
  const atempts=atempts_Number(result);
  const earnpoints=earn_pointNumber(result,answers,1);
