@@ -15,7 +15,18 @@ mongoose.connect('mongodb://localhost:27017/exam-bot', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-
+function getMainMenu(user) {
+  return [
+    [{ text: 'cheeres', callback_data: 'menu_NGAT' }],
+    [{ text: 'ERMP', callback_data: 'menu_ERMP' }],
+    [{
+      text: '📊 View My Results',
+      web_app: {
+        url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+      }
+    }]
+  ];
+}
 // ✅ Continue with your bot logic...
 
 // Store temporary user states
@@ -40,159 +51,93 @@ bot.on('message', async (msg) => {
     const username = msg.contact.first_name;
 
     try {
-      const existingUser = await User.findOne({ phoneNumber });
+      let user = await User.findOne({ phoneNumber });
 
-      if (existingUser) {
-        bot.sendMessage(chatId, `👋 Welcome back, ${existingUser.username}!`);
+      if (user) {
+        // ✅ Update old users missing chatId
+        if (!user.chatId) {
+          user.chatId = chatId;
+          await user.save();
+        }
+
+        bot.sendMessage(chatId, `👋 Welcome back, ${user.username}!`);
       } else {
-        const user = new User({ username, phoneNumber,chatId });
+        // ✅ Register new user
+        user = new User({ username, phoneNumber, chatId });
         await user.save();
         bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
       }
 
-      // Show exam menu
-      bot.sendMessage(chatId, '📚 Choose your exam menu:', {
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: 'cheeres', callback_data: 'menu_NGAT' }],
-            [{ text: 'ERMP', callback_data: 'menu_ERMP' }]
-          ]
-        }
-      });
-    } catch (err) {
-      console.error('Registration error:', err);
-      bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
-    }
-  } else {
-    bot.sendMessage(chatId, '❌ Invalid contact. Please tap "Send Phone Number" to register.');
+      // ✅ MAIN MENU WITH RESULTS BUTTON
+    bot.sendMessage(chatId, '📚 Choose your exam menu:', {
+  reply_markup: {
+    inline_keyboard: getMainMenu(user)
   }
 });
 
 
-
-/* bot.on('message', async (msg) => {
-  const chatId = msg.chat.id;
-  const state = userStates[chatId];
-
-  if (!state) return;
-
-  if (state.step === 'askName') {
-    userStates[chatId].username = msg.text;
-    userStates[chatId].step = 'askPhone';
-
-    bot.sendMessage(chatId, '📱 Please share your phone number:', {
-      reply_markup: {
-        keyboard: [[{ text: 'Send Phone Number', request_contact: true }]],
-        one_time_keyboard: true
-      }
-    });
-  }
-
-  else if (state.step === 'askPhone' && msg.contact) {
-    const phoneNumber = msg.contact.phone_number;
-    const username = userStates[chatId].username;
-
-    try {
-      const user = new User({ username, phoneNumber,chatId });
-      await user.save();
-
-      bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
-      userStates[chatId] = null;
-
-      // Show menu
-      bot.sendMessage(chatId, '📚 Choose your exam menu:', {
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: 'NGAT', callback_data: 'menu_NGAT' }],
-            [{ text: 'ERMP', callback_data: 'menu_ERMP' }]
-          ]
-        }
-      });
     } catch (err) {
-      bot.sendMessage(chatId, '❌ Registration failed. You might already be registered.');
-      userStates[chatId] = null;
+      console.error('Registration error:', err);
+      bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
     }
   }
-}); */
-/* bot.on('callback_query', async (query) => {
-  const chatId = query.message.chat.id;
-  const choice = query.data;
-const user = await User.findOne({ chatId });
-  if (choice === 'menu_NGAT') {
-    bot.sendMessage(chatId, '📝 You selected NGAT. Click below to view the exam list:', {
-      reply_markup: {
-        inline_keyboard: [
-          [{
-  text: '📄 View NGAT Exams',
-    web_app: { 
-             url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
-
-            }
-}]
-        ]
-      }
-    });
-  }
-
-  if (choice === 'menu_ERMP') {
-    bot.sendMessage(chatId, '📝 You selected ERMP. Click below to view the Vindimate exam list:', {
-      reply_markup: {
-        inline_keyboard: [
-          [{
-  text: '📄 View ERMP Exams',
- web_app: { 
-             url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
-
-            }
-}]
-        ]
-      }
-    });
-  }
-}); */
+});
 
 bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const messageId = query.message.message_id;
   const choice = query.data;
-  const user = await User.findOne({ chatId });
 
-  // ✅ Keep only main menu (first 2 rows)
-  const mainMenu = query.message.reply_markup.inline_keyboard.slice(0, 2);
+  // ✅ Load user safely
+  let user = await User.findOne({ chatId });
+  if (!user) {
+    return bot.sendMessage(chatId, "⚠️ Please register first using /start");
+  }
 
-  // ✅ Add an empty row as a spacer to create gap
-  const spacerRow = [{ text: '────────', callback_data: 'spacer' }]; // this is just visual
+  // ✅ Main menu (first 2 rows)
+ const mainMenu = getMainMenu(user);
 
-  // ✅ Add child buttons based on choice
+
+  // ✅ Spacer row (visual only)
+  const spacerRow = [{ text: '────────', callback_data: 'spacer' }];
+
+  // ✅ Child menus
   let childButtons = [];
+
   if (choice === 'menu_NGAT') {
     childButtons = [
       [{
         text: '📄 View NGAT Exams',
         web_app: {
-          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
-        }
-      }]
-    ];
-  } else if (choice === 'menu_ERMP') {
-    childButtons = [
-      [{
-        text: '📄 View ERMP Exams',
-        web_app: {
-          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user?.phoneNumber || '')}&username=${encodeURIComponent(user?.username || '')}`
+          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
       }]
     ];
   }
 
-  // ✅ Merge keyboard: main menu + spacer + child buttons
+  if (choice === 'menu_ERMP') {
+    childButtons = [
+      [{
+        text: '📄 View ERMP Exams',
+        web_app: {
+          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+        }
+      }]
+    ];
+  }
+
+  // ✅ Merge keyboard: main menu + spacer + child menu
   const newKeyboard = [...mainMenu, spacerRow, ...childButtons];
 
   // ✅ Update the message
-  await bot.editMessageReplyMarkup({ inline_keyboard: newKeyboard }, { chat_id: chatId, message_id: messageId });
+  await bot.editMessageReplyMarkup(
+    { inline_keyboard: newKeyboard },
+    { chat_id: chatId, message_id: messageId }
+  );
 
-  // ✅ Answer callback to remove "loading"
+  // ✅ Remove loading animation
   bot.answerCallbackQuery(query.id);
 });
+
 
 
