@@ -38,7 +38,7 @@ function getMainMenu(user) {
         }
       },
       {
-        text: '👨‍⚕️ ERMP',
+        text: '🩺 ERMP',
         web_app: {
           url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
@@ -68,6 +68,19 @@ const userStates = {};
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
 
+  // ✅ Check if user already exists
+  const existingUser = await User.findOne({ chatId });
+
+  if (existingUser) {
+    // ✅ User already registered → show menu immediately
+    return bot.sendMessage(chatId, `👋 Welcome back, ${existingUser.username}!`, {
+      reply_markup: {
+        inline_keyboard: getMainMenu(existingUser)
+      }
+    });
+  }
+
+  // ✅ New user → ask for phone number
   bot.sendMessage(chatId, '👋 Welcome to All In One Exam!\nPlease share your contact to register:', {
     reply_markup: {
       keyboard: [[{ text: '📱 Send Phone Number', request_contact: true }]],
@@ -75,6 +88,7 @@ bot.onText(/\/start/, async (msg) => {
     }
   });
 });
+
 
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
