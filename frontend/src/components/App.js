@@ -6,7 +6,7 @@ import Quiz from './Quiz';
 import Result from './Result';
 import NgatPage from './NgatPage';
 import VindimatePage from './VindimatePage';
-
+import Result from './Result';
 
 const router=createBrowserRouter([
   {
