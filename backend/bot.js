@@ -105,7 +105,7 @@ bot.on('message', async (msg) => {
   }
 });
 
-bot.on('callback_query', async (query) => {
+/* bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const messageId = query.message.message_id;
   const choice = query.data;
@@ -160,6 +160,6 @@ bot.on('callback_query', async (query) => {
   // ✅ Remove loading animation
   bot.answerCallbackQuery(query.id);
 });
-
+ */
 
 
