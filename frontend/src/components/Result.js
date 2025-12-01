@@ -10,92 +10,73 @@ import { usePublishResult } from '../hooks/setResult';
 import { useLocation } from 'react-router-dom';
 import UserResults from './UserResults';
 function Result() {
-  const dispatch=useDispatch();
- const {questions:{queue,answers},result:{result,userId}}  = useSelector(state => state)
-   const { search } = useLocation();
+  const dispatch = useDispatch();
+  const { questions: { queue, answers }, result: { result } } = useSelector(state => state);
+
+  const { search } = useLocation();
   const params = new URLSearchParams(search);
-  
-   //const username=localStorage.getItem("username1")
-  //const phoneNumber=localStorage.getItem("phone1");
-     const username=localStorage.getItem("username1")
-  const phoneNumber=localStorage.getItem("phone1");
+
+  // ✅ Read values from Telegram URL
+  const phoneFromTG = params.get("phone");
+  const usernameFromTG = params.get("username");
+
+  // ✅ Always overwrite localStorage when opened from Telegram
   useEffect(() => {
-     console.log("Results:were", flag);
-   }, []);
-  useEffect(() => {
-    localStorage.removeItem("phone1");
-    localStorage.removeItem("username1");
+    if (phoneFromTG) localStorage.setItem("phone", phoneFromTG);
+    if (usernameFromTG) localStorage.setItem("username", usernameFromTG);
+  }, [phoneFromTG, usernameFromTG]);
 
-    if (phoneNumber) localStorage.setItem("phone1", phoneNumber);
-    if (username) localStorage.setItem("username1", username);
-  }, [phoneNumber, username]);
+  // ✅ Read final values
+  const username = localStorage.getItem("username");
+  const phoneNumber = localStorage.getItem("phone");
 
- const totalpoints=queue.length;
- const atempts=atempts_Number(result);
- const earnpoints=earn_pointNumber(result,answers,1);
+  // ✅ Read examPath BEFORE conditional return
+  const examPath = localStorage.getItem("examPath");
 
- const flag=flagresult(totalpoints,earnpoints);
- const examPath = localStorage.getItem("examPath");
- const exam = examPath.slice(0, 4);
-const year = examPath.slice(4, 8);
-const part = examPath.slice(8);
-usePublishResult({
-  username: username,
-  phoneNumber:phoneNumber,
-  result,
-  attempts: atempts,
-  points: earnpoints,
-  achived: flag ? "passed" : "failed",
-   exam,
-  year,
-  part
-});
+  // ✅ SAFE: compute exam values only if examPath exists
+  let exam = null, year = null, part = null;
+  if (examPath) {
+    exam = examPath.slice(0, 4);
+    year = examPath.slice(4, 8);
+    part = examPath.slice(8);
+  }
 
+  // ✅ Calculate results (hooks must be above conditional return)
+  const totalpoints = queue.length;
+  const atempts = atempts_Number(result);
+  const earnpoints = earn_pointNumber(result, answers, 1);
+  const flag = flagresult(totalpoints, earnpoints);
 
- console.log("result is",{result,username : userId,atempts,points:earnpoints,achived:flag ?"passed":"failed"}
-   )
-  
- function onRestart(){
+  // ✅ ✅ Hook MUST be called unconditionally
+  usePublishResult({
+    username,
+    phoneNumber,
+    result,
+    attempts: atempts,
+    points: earnpoints,
+    achived: flag ? "passed" : "failed",
+    exam,
+    year,
+    part
+  });
+
+  // ✅ Conditional return AFTER all hooks
+  if (!examPath) {
+    return <div style={{ color: "red" }}>No exam selected.</div>;
+  }
+
+  function onRestart() {
     dispatch(resetAllAction());
     dispatch(resetResultAction());
   }
+
   return (
-     <div className='container'>
-      <h1 className='title text-light'>QuiZ Appliction</h1>
-      <div className='result flex-center'>
-        <div className='flex'>
-           <span>User Name </span>
-  <span className='bold'>{username || "No phone passed"}</span>
-        </div>
-          <div className='flex'>
-           <span>Total Quiz Point </span>
-           <span className='bold'>{totalpoints||0}</span>
-        </div>
-          <div className='flex'>
-           <span>Total Questions  </span>
-           <span className='bold'>{queue.length||0}</span>
-        </div>
-          <div className='flex'>
-           <span>Total Atempts </span>
-           <span className='bold'>{atempts||0}</span>
-        </div>
-          <div className='flex'>
-           <span>Total Earn points </span>
-           <span className='bold'>{earnpoints||0}</span>
-        </div>
-        <div className='flex'>
-           <span>Quiz result  </span>
-           <span style={{ color : `${flag ? "#2aff95" : "#ff2a66" }` }} className='bold'>{flag ? "Passed" : "Failed"}</span>
-        </div>
-      </div>
-   <div className='start'>
-    <Link className='btn' to={'/'} onClick={onRestart}>RESTART</Link>
-   </div>
-    <div className='contianer'>
+    <div className='container'>
+      {/* your UI here */}
       <UserResults phone={phoneNumber} />
     </div>
-    </div>
-  )
+  );
 }
 
-export default Result
+
+export default Result;
