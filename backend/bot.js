@@ -38,7 +38,7 @@ function getMainMenu(user) {
         }
       },
       {
-        text: '🩺 ERMP',
+        text: '👨‍⚕️ ERMP',
         web_app: {
           url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }

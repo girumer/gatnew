@@ -5,7 +5,7 @@
   --secondary-color: #6c757d; /* Gray for secondary text/borders */
   --background-light: #f8f9fa; /* Light background */
   --text-dark: hsl(210, 73%, 39%); /* Dark text */
-  --card-background: #040202; /* White for quiz card */
+  --card-background: #a8be79bd; /* White for quiz card */
   --success-color: #28a745; /* Green for correct/success */
   --danger-color: #fc041d; /* Red for incorrect/danger */
   --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
