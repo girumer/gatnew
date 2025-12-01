@@ -18,6 +18,7 @@ const VindimatePage = () => {
   const params = new URLSearchParams(search);
   const phone = params.get("phone"); 
   const username = params.get("username");
+const sampleMode = params.get("sample") === "true";
 
   useEffect(() => {
     localStorage.removeItem("phone1");
@@ -37,37 +38,40 @@ const VindimatePage = () => {
         {selectedExam ? `${selectedExam}` : 'ERMP EXAM LIST'}
       </h1>
 
-      {!selectedExam ? (
-        <div className="vindimate-container">
-          {/* Normal year exams */}
-          {years.map((year, index) => (
-            <div
-              key={index}
-              className="vindimate-box"
-              onClick={() => setSelectedExam(`ERMP${year}`)}
-            >
-              <div className="vindimate-box-content">
-                <span className="vindimate-icon">🩺</span>
-                <span>ERMP {year}</span>
-              </div>
-            </div>
-          ))}
+  {!selectedExam ? (
+  <div className="vindimate-container">
 
-          {/* Sample exams */}
-          {sampleExams.map((exam, index) => (
-            <div
-              key={index}
-              className="vindimate-box"
-              onClick={() => setSelectedExam(exam)}
-            >
-              <div className="vindimate-box-content">
-                <span className="vindimate-icon">🧪</span>
-                <span>{exam}</span>
-              </div>
-            </div>
-          ))}
+    {/* ✅ Show normal exams ONLY if not sample mode */}
+    {!sampleMode && years.map((year, index) => (
+      <div
+        key={index}
+        className="vindimate-box"
+        onClick={() => setSelectedExam(`ERMP${year}`)}
+      >
+        <div className="vindimate-box-content">
+          <span className="vindimate-icon">🩺</span>
+          <span>ERMP {year}</span>
         </div>
-      ) : (
+      </div>
+    ))}
+
+    {/* ✅ Always show sample exams */}
+    {sampleExams.map((exam, index) => (
+      <div
+        key={index}
+        className="vindimate-box"
+        onClick={() => setSelectedExam(exam)}
+      >
+        <div className="vindimate-box-content">
+          <span className="vindimate-icon">🧪</span>
+          <span>{exam}</span>
+        </div>
+      </div>
+    ))}
+
+  </div>
+) : (
+
         <div className="vindimate-container">
           {selectedExam.includes("SAMPLE") ? (
             // Single sample exam

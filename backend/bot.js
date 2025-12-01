@@ -42,6 +42,12 @@ function getMainMenu(user) {
         url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
       }
     }],
+     [{
+      text: '🧪 ERMP Sample',
+      web_app: {
+        url: `${process.env.FRONTEND_URL}/VIDMATE?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+      }
+    }],
     [{
       text: '📊 View My Results',
       web_app: {
