@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/exam-bot', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-function getMainMenu(user) {
+/* function getMainMenu(user) {
   return [
     [{ text: 'cheeres', callback_data: 'menu_NGAT' }],
     [{ text: 'ERMP', callback_data: 'menu_ERMP' }],
@@ -26,8 +26,30 @@ function getMainMenu(user) {
       }
     }]
   ];
-}
+} */
 // ✅ Continue with your bot logic...
+function getMainMenu(user) {
+  return [
+    [{
+      text: '🧠 NGAT',
+      web_app: {
+        url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+      }
+    }],
+    [{
+      text: '🩺 ERMP',
+      web_app: {
+        url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+      }
+    }],
+    [{
+      text: '📊 View My Results',
+      web_app: {
+        url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+      }
+    }]
+  ];
+}
 
 // Store temporary user states
 const userStates = {};
