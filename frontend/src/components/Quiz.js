@@ -1,52 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import Questions from './Questions';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import './Quiz.css';
 import { moveNextquestion, movePrevquestion } from '../hooks/fetchQestion';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { PushAnswer } from '../hooks/setResult';
 import { moveToQuestionAction } from '../redux/question_reducer';
 import { pushResultAction } from '../redux/result_reducer';
+
 function Quiz() {
-    const { title } = useParams();
-    const dispatch = useDispatch();
-    
-    // Redux State
-    const { queue, trace } = useSelector(state => state.questions);
-    const result = useSelector(state => state.result.result);
+  const { title } = useParams();
+  const dispatch = useDispatch();
 
-    // Local State
-    const savedPage = localStorage.getItem("currentPage");
-    const [currentPage, setCurrentPage] = useState(savedPage ? Number(savedPage) : 0);
-    const [restored, setRestored] = useState(false); // ✅ Crucial Flag
-    const buttonsPerPage = 5;
+  // Redux State
+  const { queue, trace } = useSelector(state => state.questions);
+  const result = useSelector(state => state.result.result);
 
-    // Mode & Popup State
-    const savedMode = localStorage.getItem("mode");
-    const savedPopup = localStorage.getItem("showPopup");
-    const [showPopup, setShowPopup] = useState(savedPopup !== null ? JSON.parse(savedPopup) : true);
-    const [mode, setMode] = useState(savedMode || null);
+  // Local State
+  const savedPage = localStorage.getItem("currentPage");
+  const [currentPage, setCurrentPage] = useState(savedPage ? Number(savedPage) : 0);
+  const [restored, setRestored] = useState(false);
+  const buttonsPerPage = 5;
 
-    // Timer State
-    const savedTime = localStorage.getItem("timeLeft");
-    const [timeLeft, setTimeLeft] = useState(savedTime ? Number(savedTime) : 100 * 60);
+  // Mode & Popup State
+  const savedMode = localStorage.getItem("mode");
+  const savedPopup = localStorage.getItem("showPopup");
+  const [showPopup, setShowPopup] = useState(savedPopup !== null ? JSON.parse(savedPopup) : true);
+  const [mode, setMode] = useState(savedMode || null);
 
-    const [cheak, setCheack] = useState(undefined);
+  // Timer State
+  const savedTime = localStorage.getItem("timeLeft");
+  const [timeLeft, setTimeLeft] = useState(savedTime ? Number(savedTime) : 100 * 60);
 
-    // ---------------------------------------------------------
-    // 1. RESTORATION EFFECT (The Fix for Refresh)
-    // ---------------------------------------------------------
-useEffect(() => {
+  const [cheak, setCheack] = useState(undefined);
+  const [examPath, setExamPath] = useState(title);
+
+  // ---------------------------------------------------------
+  // 1. RESTORATION EFFECT
+  // ---------------------------------------------------------
+  useEffect(() => {
     if (!queue.length) return;
     if (restored) return;
 
     const savedTitle = localStorage.getItem("examTitle");
-    
-    // Logic to handle new exams (as discussed previously)
-    if (savedTitle !== title) {
-        setRestored(true); 
-        return;
+    if (savedTitle !== examPath) {
+      setRestored(true);
+      return;
     }
 
     const savedTrace = localStorage.getItem("trace");
@@ -54,184 +52,172 @@ useEffect(() => {
     const savedPopup = localStorage.getItem("showPopup");
 
     if (savedTrace !== null) {
-        const traceNum = Number(savedTrace);
-        
-        // ✅ Use the correct Redux Toolkit action creator!
-        dispatch(moveToQuestionAction(traceNum)); 
-
-        setCurrentPage(Math.floor(traceNum / buttonsPerPage));
+      const traceNum = Number(savedTrace);
+      dispatch(moveToQuestionAction(traceNum));
+      setCurrentPage(Math.floor(traceNum / buttonsPerPage));
     }
 
     if (savedMode) setMode(savedMode);
     if (savedPopup !== null) setShowPopup(JSON.parse(savedPopup));
 
-    setRestored(true); 
-}, [queue.length, title, restored, dispatch, buttonsPerPage]);
+    setRestored(true);
+  }, [queue.length, examPath, restored, dispatch, buttonsPerPage]);
 
-    // ---------------------------------------------------------
-    // 2. SAVE EFFECT (Guarded by 'restored')
-    // ---------------------------------------------------------
-    useEffect(() => {
-        // ✅ Only save if we have finished restoring
-        if (restored) {
-            localStorage.setItem("trace", trace);
+  // ---------------------------------------------------------
+  // 2. SAVE EFFECTS
+  // ---------------------------------------------------------
+  useEffect(() => {
+    if (restored) {
+      localStorage.setItem("trace", trace);
+    }
+  }, [trace, restored]);
+
+  // ✅ Save examTitle consistently from examPath
+  useEffect(() => {
+    const storedExamPath = localStorage.getItem("examPath");
+    if (storedExamPath) {
+      setExamPath(storedExamPath);
+      localStorage.setItem("examTitle", storedExamPath);
+    } else {
+      localStorage.setItem("examTitle", title);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    localStorage.setItem("mode", mode);
+  }, [mode]);
+
+  useEffect(() => {
+    localStorage.setItem("showPopup", JSON.stringify(showPopup));
+  }, [showPopup]);
+
+  useEffect(() => {
+    localStorage.setItem("timeLeft", timeLeft);
+  }, [timeLeft]);
+
+  useEffect(() => {
+    const newPage = Math.floor(trace / buttonsPerPage);
+    if (newPage !== currentPage) {
+      setCurrentPage(newPage);
+    }
+  }, [trace, buttonsPerPage, currentPage]);
+
+  // Timer Logic
+  useEffect(() => {
+    if (mode !== 'exam') return;
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
         }
-    }, [trace, restored]);
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [mode]);
 
-    // ---------------------------------------------------------
-    // Other Side Effects
-    // ---------------------------------------------------------
-    useEffect(() => {
-        localStorage.setItem("mode", mode);
-    }, [mode]);
+  // Helper Functions
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
 
-    useEffect(() => {
-        localStorage.setItem("showPopup", JSON.stringify(showPopup));
-    }, [showPopup]);
+  function onCheak(i) {
+    setCheack(i);
+  }
 
-    useEffect(() => {
-        localStorage.setItem("timeLeft", timeLeft);
-    }, [timeLeft]);
-
-    useEffect(() => {
-        localStorage.setItem("examTitle", title);
-    }, [title]);
-
-    useEffect(() => {
-        const newPage = Math.floor(trace / buttonsPerPage);
-        if (newPage !== currentPage) {
-            setCurrentPage(newPage);
-        }
-    }, [trace, buttonsPerPage, currentPage]);
-
-    // Timer Logic
-    useEffect(() => {
-        if (mode !== 'exam') return;
-        const timer = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-        return () => clearInterval(timer);
-    }, [mode]);
-
-    // Helper Functions
-    function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  function onPrev() {
+    if (trace > 0) {
+      dispatch(movePrevquestion());
     }
+  }
 
-    function onCheak(i) {
-        setCheack(i);
+  function onNext() {
+    if (trace < queue.length) {
+      dispatch(moveNextquestion());
+      if (result.length <= trace) {
+        dispatch(pushResultAction(cheak));
+      }
     }
-/** finished exam after the last question */
+    setCheack(undefined);
+  }
 
-    function onPrev() {
-        if (trace > 0) {
-            dispatch(movePrevquestion());
-        }
-    }
+  if (result.length && result.length >= queue.length) {
+    return <Navigate to={'/result'} replace={true} />;
+  }
 
-    function onNext(){
-    if(trace < queue.length){
-        // increase the trace value by one
-        dispatch(moveNextquestion());
-
-        // insert a new result in the array. 
-        // 👇 USE THE CORRECT ACTION CREATOR
-        if(result.length <= trace){
-            dispatch(pushResultAction(cheak)) // FIX: Using pushResultAction
-        }
-    }
-    
-    // reset the value of the checked variable
-    setCheack(undefined)
-}
-if(result.length && result.length >= queue.length){
-    return <Navigate to={'/result'} replace={true}></Navigate>
-}
-    // ---------------------------------------------------------
-    // Render Logic
-    // ---------------------------------------------------------
-    if (result.length && result.length >= queue.length) {
-        return <Navigate to={'/result'} replace={true}></Navigate>;
-    }
-
+  // ---------------------------------------------------------
+  // Render Logic
+  // ---------------------------------------------------------
   if (showPopup) {
+    return (
+      <div className="vindimate-container1">
+        <button
+          className="vindimate-box1 part-one1"
+          onClick={() => {
+            setMode('exam');
+            setShowPopup(false);
+            setTimeLeft(100 * 60);
+            localStorage.setItem("timeLeft", 100 * 60);
+          }}
+        >
+          <span className="mode-icon">⏱️</span>
+          <span>EXAM MODE</span>
+        </button>
+
+        <button
+          className="vindimate-box1 part-two1"
+          onClick={() => {
+            setMode('study');
+            setShowPopup(false);
+          }}
+        >
+          <span className="mode-icon">📖</span>
+          <span>STUDY MODE</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="vindimate-container1">
+    <div className="container">
+      <div className='timer'>
+        <h1 className="title text-light">Quiz Application</h1>
+        {mode === 'exam' && (
+          <div className="timer">
+            <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
+          </div>
+        )}
+      </div>
 
-      {/* ✅ EXAM MODE BUTTON */}
-      <button 
-        className="vindimate-box1 part-one1" 
-        onClick={() => { 
-          setMode('exam'); 
-          setShowPopup(false); 
-          setTimeLeft(100 * 60); 
-          localStorage.setItem("timeLeft", 100 * 60); 
-        }}
-      >
-        <span className="mode-icon">⏱️</span>
-        <span>EXAM MODE</span>
-      </button>
+      <div className="pagination-buttons">
+        {queue
+          .slice(currentPage * buttonsPerPage, (currentPage + 1) * buttonsPerPage)
+          .map((_, index) => {
+            const actualIndex = currentPage * buttonsPerPage + index;
+            return (
+              <button
+                key={actualIndex}
+                className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
+                onClick={() => dispatch(moveToQuestionAction(actualIndex))}
+              >
+                {actualIndex + 1}
+              </button>
+            );
+          })}
+      </div>
 
-      {/* ✅ STUDY MODE BUTTON */}
-      <button 
-        className="vindimate-box1 part-two1" 
-        onClick={() => { 
-          setMode('study'); 
-          setShowPopup(false); 
-        }}
-      >
-        <span className="mode-icon">📖</span>
-        <span>STUDY MODE</span>
-      </button>
+      {/* ✅ Pass examPath instead of raw title */}
+      <Questions onCheak={onCheak} title={examPath} mode={mode} />
 
+      <div className="grid">
+        {trace > 0 ? <button className="btn prev" onClick={onPrev}>Prev</button> : <div></div>}
+        <button className="btn next" onClick={onNext}>Next</button>
+      </div>
     </div>
   );
-}
-
-    return (
-        <div className="container">
-            <div className='timer'>
-                <h1 className="title text-light">Quiz Application</h1>
-                {mode === 'exam' && (
-                    <div className="timer">
-                        <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
-                    </div>
-                )}
-            </div>
-
-            <div className="pagination-buttons">
-                {queue
-                    .slice(currentPage * buttonsPerPage, (currentPage + 1) * buttonsPerPage)
-                    .map((_, index) => {
-                        const actualIndex = currentPage * buttonsPerPage + index;
-                        return (
-                            <button
-                                key={actualIndex}
-                                className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
-                                onClick={() => dispatch(moveToQuestionAction(actualIndex))}
-                            >
-                                {actualIndex + 1}
-                            </button>
-                        );
-                    })}
-            </div>
-
-            <Questions onCheak={onCheak} title={title} mode={mode} />
-
-            <div className="grid">
-                {trace > 0 ? <button className="btn prev" onClick={onPrev}>Prev</button> : <div></div>}
-                <button className="btn next" onClick={onNext}>Next</button>
-            </div>
-        </div>
-    );
 }
 
 export default Quiz;
