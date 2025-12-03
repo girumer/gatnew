@@ -16,19 +16,17 @@
   
 }
 .fixed-header {
-  position: fixed;      /* lock to viewport */
-  top: 0;               /* stick at the very top */
-  left: 0;
-  width: 100%;          /* span full width */
-  background: #fff;     /* or your theme color */
-  z-index: 1000;        /* keep above other content */
+  position: sticky;   /* instead of fixed */
+  top: 0;             /* stick when reaching the top */
+  background: #fff;   /* or your theme color */
+  z-index: 1000;      /* keep above other content */
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* push the rest of the quiz down so it doesn’t overlap */
+/* with sticky, you usually don’t need to add margin-top to .container */
 .container {
-  margin-top: 120px;    /* adjust depending on header height */
+  margin-top: 20px;   /* just a little spacing if desired */
 }
 
 .pagination-buttons {
