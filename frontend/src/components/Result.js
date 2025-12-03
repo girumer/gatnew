@@ -72,18 +72,19 @@ function Result() {
 
   return (
     <div className='container'>
-      {result.length >= queue.length && (
-      <div className="summary-boxes">
-        <div className="box">Exam: {exam}</div>
-        <div className="box">Year: {year}</div>
-        <div className="box">Part: {part}</div>
-        <div className="box">Username: {username}</div>
-        <div className="box">Phone: {phoneNumber}</div>
-        <div className="box">Attempts: {atempts}</div>
-        <div className="box">Points: {earnpoints} / {totalpoints}</div>
-        <div className={`box ${flag ? 'passed' : 'failed'}`}>
-          Status: {flag ? 'Passed ✅' : 'Failed ❌'}
-        </div>
+    {result.length >= queue.length && (
+      <div className="summary-box">
+        <h2>Exam Summary</h2>
+        <p><strong>Exam:</strong> {exam}</p>
+        <p><strong>Year:</strong> {year}</p>
+        <p><strong>Part:</strong> {part}</p>
+        <p><strong>Username:</strong> {username}</p>
+        <p><strong>Phone:</strong> {phoneNumber}</p>
+        <p><strong>Attempts:</strong> {atempts}</p>
+        <p><strong>Points:</strong> {earnpoints} / {totalpoints}</p>
+        <p className={flag ? 'passed' : 'failed'}>
+          <strong>Status:</strong> {flag ? 'Passed ✅' : 'Failed ❌'}
+        </p>
       </div>
     )}
       <UserResults phone={phoneNumber} />
