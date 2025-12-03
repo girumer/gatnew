@@ -259,6 +259,31 @@
   font-weight: bold;
   text-transform: capitalize;
 }
+.summary-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.box {
+  flex: 1 1 200px;
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.box.passed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.box.failed {
+  background: #f8d7da;
+  color: #721c24;
+}
 
 .status-passed {
   color: #2aff95;

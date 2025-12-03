@@ -72,8 +72,26 @@ function Result() {
 
   return (
     <div className='container'>
-      {/* your UI here */}
+      {result.length >= queue.length && (
+      <div className="summary-boxes">
+        <div className="box">Exam: {exam}</div>
+        <div className="box">Year: {year}</div>
+        <div className="box">Part: {part}</div>
+        <div className="box">Username: {username}</div>
+        <div className="box">Phone: {phoneNumber}</div>
+        <div className="box">Attempts: {atempts}</div>
+        <div className="box">Points: {earnpoints} / {totalpoints}</div>
+        <div className={`box ${flag ? 'passed' : 'failed'}`}>
+          Status: {flag ? 'Passed ✅' : 'Failed ❌'}
+        </div>
+      </div>
+    )}
       <UserResults phone={phoneNumber} />
+      <div className="restart">
+      <Link to="/" onClick={onRestart} className="btn">
+        Restart Quiz
+      </Link>
+    </div>
     </div>
   );
 }
