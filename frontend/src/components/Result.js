@@ -70,9 +70,10 @@ function Result() {
     dispatch(resetResultAction());
   }
 
-  return (
+ return (
   <div className="container">
-    {result.length >= queue.length  (
+    {/* Show summary box only if quiz finished AND not opened via Telegram */}
+    {result.length >= queue.length && !phoneFromTG && !usernameFromTG && (
       <div className="result-box">
         <h2>Exam Summary</h2>
         <p><strong>Exam:</strong> {exam}</p>
@@ -86,17 +87,14 @@ function Result() {
           <strong>Status:</strong> {flag ? 'Passed ✅' : 'Failed ❌'}
         </p>
 
-        {/* Table inside the same box */}
         <div className="result-table-wrapper">
-          <UserResults phone={phoneNumber} />
+        
         </div>
       </div>
     )}
 
-    {/* Table only (when quiz not finished) */}
-    {result.length < queue.length && earnpoints===0 (
-   <UserResults phone={phoneNumber} />
-    )}
+    {/* Always show the table */}
+   
 
     <UserResults phone={phoneNumber} />
 
@@ -107,6 +105,7 @@ function Result() {
     </div>
   </div>
 );
+
 }
 
 
