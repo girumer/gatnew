@@ -72,7 +72,7 @@ function Result() {
 
   return (
   <div className="container">
-    {result.length >= queue.length && (
+    {result.length >= queue.length  (
       <div className="result-box">
         <h2>Exam Summary</h2>
         <p><strong>Exam:</strong> {exam}</p>
@@ -94,7 +94,7 @@ function Result() {
     )}
 
     {/* Table only (when quiz not finished) */}
-    {result.length < queue.length && (
+    {result.length < queue.length && earnpoints===0 (
    <UserResults phone={phoneNumber} />
     )}
 
