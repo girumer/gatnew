@@ -183,31 +183,34 @@ function Quiz() {
 
   return (
     <div className="container">
-      <div className='timer'>
-        <h1 className="title text-light">Quiz Application</h1>
-        {mode === 'exam' && (
-          <div className="timer">
-            <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
-          </div>
-        )}
+    <div className="fixed-header">
+  <div className="timer">
+    <h1 className="title text-light">Quiz Application</h1>
+    {mode === 'exam' && (
+      <div className="timer">
+        <h3 className="text-timer">Time Left: {formatTime(timeLeft)}</h3>
       </div>
+    )}
+  </div>
 
-      <div className="pagination-buttons">
-        {queue
-          .slice(currentPage * buttonsPerPage, (currentPage + 1) * buttonsPerPage)
-          .map((_, index) => {
-            const actualIndex = currentPage * buttonsPerPage + index;
-            return (
-              <button
-                key={actualIndex}
-                className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
-                onClick={() => dispatch(moveToQuestionAction(actualIndex))}
-              >
-                {actualIndex + 1}
-              </button>
-            );
-          })}
-      </div>
+  <div className="pagination-buttons">
+    {queue
+      .slice(currentPage * buttonsPerPage, (currentPage + 1) * buttonsPerPage)
+      .map((_, index) => {
+        const actualIndex = currentPage * buttonsPerPage + index;
+        return (
+          <button
+            key={actualIndex}
+            className={`pagination-btn ${actualIndex === trace ? 'active' : ''}`}
+            onClick={() => dispatch(moveToQuestionAction(actualIndex))}
+          >
+            {actualIndex + 1}
+          </button>
+        );
+      })}
+  </div>
+</div>
+
 
       {/* ✅ Pass examPath instead of raw title */}
       <Questions onCheak={onCheak} title={examPath} mode={mode} />

@@ -15,6 +15,29 @@
   color: red;
   
 }
+.fixed-header {
+  position: fixed;      /* lock to viewport */
+  top: 0;               /* stick at the very top */
+  left: 0;
+  width: 100%;          /* span full width */
+  background: #fff;     /* or your theme color */
+  z-index: 1000;        /* keep above other content */
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* push the rest of the quiz down so it doesn’t overlap */
+.container {
+  margin-top: 120px;    /* adjust depending on header height */
+}
+
+.pagination-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
 .explanation-box {
   margin-top: 20px;
   padding: 15px;
