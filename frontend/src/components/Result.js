@@ -1,4 +1,76 @@
-return (
+import React, { useEffect } from 'react'
+import '../styles/Result.css';
+import { Link } from 'react-router-dom';
+import ResultTable from './ResultTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { atempts_Number,earn_pointNumber,flagresult } from '../helper/helper';
+import { resetAllAction } from '../redux/question_reducer';
+import { resetResultAction } from '../redux/result_reducer';
+import { usePublishResult } from '../hooks/setResult';
+import { useLocation } from 'react-router-dom';
+import UserResults from './UserResults';
+function Result() {
+  const dispatch = useDispatch();
+  const { questions: { queue, answers }, result: { result } } = useSelector(state => state);
+
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+
+  // ✅ Read values from Telegram URL
+  const phoneFromTG = params.get("phone");
+  const usernameFromTG = params.get("username");
+
+  // ✅ Always overwrite localStorage when opened from Telegram
+  useEffect(() => {
+    if (phoneFromTG) localStorage.setItem("phone", phoneFromTG);
+    if (usernameFromTG) localStorage.setItem("username", usernameFromTG);
+  }, [phoneFromTG, usernameFromTG]);
+
+  // ✅ Read final values
+  const username = localStorage.getItem("username");
+  const phoneNumber = localStorage.getItem("phone");
+
+  // ✅ Read examPath BEFORE conditional return
+  const examPath = localStorage.getItem("examPath");
+
+  // ✅ SAFE: compute exam values only if examPath exists
+  let exam = null, year = null, part = null;
+  if (examPath) {
+    exam = examPath.slice(0, 4);
+    year = examPath.slice(4, 8);
+    part = examPath.slice(8);
+  }
+
+  // ✅ Calculate results (hooks must be above conditional return)
+  const totalpoints = queue.length;
+  const atempts = atempts_Number(result);
+  const earnpoints = earn_pointNumber(result, answers, 1);
+  const flag = flagresult(totalpoints, earnpoints);
+
+  // ✅ ✅ Hook MUST be called unconditionally
+  usePublishResult({
+    username,
+    phoneNumber,
+    result,
+    attempts: atempts,
+    points: earnpoints,
+    achived: flag ? "passed" : "failed",
+    exam,
+    year,
+    part
+  });
+
+  // ✅ Conditional return AFTER all hooks
+  if (!examPath) {
+    return <div style={{ color: "red" }}>No exam selected.</div>;
+  }
+
+  function onRestart() {
+    dispatch(resetAllAction());
+    dispatch(resetResultAction());
+  }
+
+  return (
   <div className="container">
     {result.length >= queue.length && (
       <div className="result-box">
@@ -35,3 +107,7 @@ return (
     </div>
   </div>
 );
+}
+
+
+export default Result;
