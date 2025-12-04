@@ -7,7 +7,7 @@ import Quiz from './Quiz';
 import NgatPage from './NgatPage';
 import VindimatePage from './VindimatePage';
 import Result from './Result';
-
+import UserList from './UserList';
 const router=createBrowserRouter([
   {
     path : '/',
@@ -22,6 +22,11 @@ const router=createBrowserRouter([
    {
     path : '/result',
     element:<Result></Result>
+  },
+  
+   {
+    path : '/user',
+    element:<UserList></UserList>
   },
  {
     path : '/NGAT',
