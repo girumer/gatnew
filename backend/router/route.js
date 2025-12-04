@@ -16,15 +16,27 @@ router.post("/questions/:examFile", controller.insertExamFromFile);
 router.get('/questions/:title', controller.getQuestionsByTitle);
 
 
-
-router.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.route("/users")
+  // GET all users
+  .get(async (req, res) => {
+    try {
+      const users = await User.find({});
+      res.json(users);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  })
+  // POST new user
+  .post(async (req, res) => {
+    const { username, phoneNumber, chatId } = req.body;
+    try {
+      const user = new User({ username, phoneNumber, chatId });
+      await user.save();
+      res.status(201).json(user);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
 router.route('/result')
   .get(controller.getResult)
   .post(controller.insertResult)
