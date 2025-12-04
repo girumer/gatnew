@@ -20,7 +20,7 @@ app.use(morgan('tiny'));
 app.set('trust proxy', true);
 
 app.use(cors({
-    origin: 'https://new.adeyebingo.com', // Replace with your actual frontend domain
+    origin: ['https://new.adeyebingo.com', 'http://localhost:3000'], // Replace with your actual frontend domain
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -42,6 +42,7 @@ console.log('-', path.join(__dirname, 'images'));
 const port = process.env.PORT;
 
 // Routes
+app.use("/", router);
 app.use('/api', router);
 
 app.get('/', (req, res) => {
