@@ -11,7 +11,7 @@ const token = process.env.BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
 // ✅ Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/exam-bot', {
+mongoose.connect('mongodb://localhost:27017/examdb', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
