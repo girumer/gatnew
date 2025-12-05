@@ -172,6 +172,7 @@ bot.on('callback_query', async (query) => {
   let instructionsMsg = '';
   let amountDep = 0;
 
+  // ✅ ERMP — TeleBirr (300 birr)
   if (choice === 'pay_telebirr_ermp') {
     amountDep = 300;
     instructionsMsg = `
@@ -189,6 +190,7 @@ Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 [እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
   }
 
+  // ✅ ERMP — CBE (300 birr)
   if (choice === 'pay_cbe_ermp') {
     amountDep = 300;
     instructionsMsg = `
@@ -206,7 +208,41 @@ Account: \`${process.env.CBE_ACCOUNT}\`
 [እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
   }
 
-  // Similar blocks for NGAT (200 birr) with pay_telebirr_ngat / pay_cbe_ngat
+  // ✅ NGAT — TeleBirr (200 birr)
+  if (choice === 'pay_telebirr_ngat') {
+    amountDep = 200;
+    instructionsMsg = `
+📲 ማኑዋል ዲፖዚት መመሪያ ቴሌብር
+Account: \`${process.env.TELEBIRR_ACCOUNT}\`
+ዲፖዚት መጠን: ${amountDep} ብር
+
+1\\. ከላይ ባለው ቁጥር TeleBirr በመጠቀም ${amountDep} ብር ያስገቡ
+2\\. ብሩን ስትልኩ የከፈላችሁበትን መረጃ የያዘ አጭር የጹሁፍ መልክት (sms) ከ TeleBirr ይደርሳችኋል
+3\\. የደረሳችሁን ትራንዛክሸን ቁጥር ብቻ ኮፒ አርጋችሁ ወደዚህ ቦት ይላኩ
+⚠️ አስፈላጊ ማሳሰቢያ:
+• ከTeleBirr የደረሳችሁን sms ሙሉዉን መላክ ያረጋግጡ
+• ብር ማስገባት የምችሉት ከቴሌብር ወደ ኤጀንት ቴሌብር ብቻ
+• ከሲቢኢ ብር ወደ ኤጀንት ሲቢኢ ብር ብቻ
+[እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
+  }
+
+  // ✅ NGAT — CBE (200 birr)
+  if (choice === 'pay_cbe_ngat') {
+    amountDep = 200;
+    instructionsMsg = `
+🏦 ማኑዋል ዲፖዚት መመሪያ CBE
+Account: \`${process.env.CBE_ACCOUNT}\`
+ዲፖዚት መጠን: ${amountDep} ብር
+
+1\\. ከላይ ባለው ቁጥር CBE በመጠቀም ${amountDep} ብር ያስገቡ
+2\\. ብሩን ስትልኩ የከፈላችሁበትን መረጃ የያዘ sms ይደርሳችኋል
+3\\. የደረሳችሁን ትራንዛክሸን ቁጥር ብቻ ኮፒ አርጋችሁ ወደዚህ ቦት ይላኩ
+⚠️ አስፈላጊ ማሳሰቢያ:
+• ከCBE sms ሙሉዉን መላክ ያረጋግጡ
+• ብር ማስገባት የምችሉት ከቴሌብር ወደ ኤጀንት ቴሌብር ብቻ
+• ከሲቢኢ ብር ወደ ኤጀንት ሲቢኢ ብር ብቻ
+[እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
+  }
 
   if (instructionsMsg) {
     await bot.sendMessage(chatId, instructionsMsg, { parse_mode: 'Markdown' });
