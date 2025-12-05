@@ -17,8 +17,10 @@ mongoose.connect('mongodb://localhost:27017/examdb', {
   useUnifiedTopology: true
 });
 
-// ✅ Register side menu commands (persistent)
+// ✅ Register side menu commands (persistent) — includes exam_menu and my_results
 bot.setMyCommands([
+  { command: 'exam_menu', description: '📚 Open Exam Menu' },
+  { command: 'my_results', description: '📊 View My Results' },
   { command: 'upgrade_ermp', description: '⚡ Upgrade ERMP exam' },
   { command: 'upgrade_ngat', description: '⚡ Upgrade NGAT exam' }
 ]);
@@ -138,6 +140,38 @@ bot.on('message', async (msg) => {
       await bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
     }
   }
+});
+
+// ✅ Side command: exam_menu (opens the exam inline menu)
+bot.onText(/\/exam_menu/, async (msg) => {
+  const chatId = msg.chat.id;
+  const user = await User.findOne({ chatId });
+
+  if (!user) {
+    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+  }
+
+  await bot.sendMessage(chatId, '📚 Choose your exam menu:', {
+    reply_markup: { inline_keyboard: getMainMenu(user) }
+  });
+});
+
+// ✅ Side command: my_results (quick access)
+bot.onText(/\/my_results/, async (msg) => {
+  const chatId = msg.chat.id;
+  const user = await User.findOne({ chatId });
+
+  if (!user) {
+    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+  }
+
+  await bot.sendMessage(chatId, '📊 Your results:', {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: '📊 Open Results', web_app: { url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}` } }]
+      ]
+    }
+  });
 });
 
 // Side commands still work (optional)
