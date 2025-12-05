@@ -3,6 +3,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User from './models/User.js';
+
 // ✅ Load .env
 dotenv.config();
 
@@ -15,19 +16,14 @@ mongoose.connect('mongodb://localhost:27017/examdb', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-/* function getMainMenu(user) {
-  return [
-    [{ text: 'cheeres', callback_data: 'menu_NGAT' }],
-    [{ text: 'ERMP', callback_data: 'menu_ERMP' }],
-    [{
-      text: '📊 View My Results',
-      web_app: {
-        url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-      }
-    }]
-  ];
-} */
-// ✅ Continue with your bot logic...
+
+// ✅ Register side menu commands (persistent)
+bot.setMyCommands([
+  { command: 'upgrade_ermp', description: '⚡ Upgrade ERMP exam (300 birr, 1 year)' },
+  { command: 'upgrade_ngat', description: '⚡ Upgrade NGAT exam (200 birr, 1 year)' }
+]);
+
+// ✅ Inline menu (optional). If you want only side menu, you can remove getMainMenu and its usage.
 function getMainMenu(user) {
   return [
     [
@@ -40,7 +36,8 @@ function getMainMenu(user) {
       {
         text: '🩺 ERMP',
         web_app: {
-          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+          // NOTE: Consider changing /VIDMATE to /ERMP if that was a placeholder.
+          url: `${process.env.FRONTEND_URL}/ERMP?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
       }
     ],
@@ -48,7 +45,7 @@ function getMainMenu(user) {
       {
         text: '🧪 ERMP Sample',
         web_app: {
-          url: `${process.env.FRONTEND_URL}/VIDMATE?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+          url: `${process.env.FRONTEND_URL}/ERMP?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
       },
       {
@@ -61,26 +58,17 @@ function getMainMenu(user) {
   ];
 }
 
-
-// Store temporary user states
-const userStates = {};
-
+// ✅ /start: registration + optional inline menu
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
 
-  // ✅ Check if user already exists
   const existingUser = await User.findOne({ chatId });
-
   if (existingUser) {
-    // ✅ User already registered → show menu immediately
     return bot.sendMessage(chatId, `👋 Welcome back, ${existingUser.username}!`, {
-      reply_markup: {
-        inline_keyboard: getMainMenu(existingUser)
-      }
+      reply_markup: { inline_keyboard: getMainMenu(existingUser) } // Remove if you want only side menu
     });
   }
 
-  // ✅ New user → ask for phone number
   bot.sendMessage(chatId, '👋 Welcome to All In One Exam!\nPlease share your contact to register:', {
     reply_markup: {
       keyboard: [[{ text: '📱 Send Phone Number', request_contact: true }]],
@@ -89,11 +77,11 @@ bot.onText(/\/start/, async (msg) => {
   });
 });
 
-
+// ✅ Handle registration via contact
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
 
-  if (msg.contact && msg.contact.phone_number && msg.contact.first_name) {
+  if (msg.contact?.phone_number && msg.contact?.first_name) {
     const phoneNumber = msg.contact.phone_number;
     const username = msg.contact.first_name;
 
@@ -101,28 +89,21 @@ bot.on('message', async (msg) => {
       let user = await User.findOne({ phoneNumber });
 
       if (user) {
-        // ✅ Update old users missing chatId
         if (!user.chatId) {
           user.chatId = chatId;
           await user.save();
         }
-
         bot.sendMessage(chatId, `👋 Welcome back, ${user.username}!`);
       } else {
-        // ✅ Register new user
         user = new User({ username, phoneNumber, chatId });
         await user.save();
         bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
       }
 
-      // ✅ MAIN MENU WITH RESULTS BUTTON
-    bot.sendMessage(chatId, '📚 Choose your exam menu:', {
-  reply_markup: {
-    inline_keyboard: getMainMenu(user)
-  }
-});
-
-
+      // Optional: show inline menu. If you want only side menu, remove this block.
+      bot.sendMessage(chatId, '📚 Choose your exam menu:', {
+        reply_markup: { inline_keyboard: getMainMenu(user) }
+      });
     } catch (err) {
       console.error('Registration error:', err);
       bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
@@ -130,61 +111,32 @@ bot.on('message', async (msg) => {
   }
 });
 
-/* bot.on('callback_query', async (query) => {
-  const chatId = query.message.chat.id;
-  const messageId = query.message.message_id;
-  const choice = query.data;
+// ✅ Side menu command: Upgrade ERMP
+bot.onText(/\/upgrade_ermp/, async (msg) => {
+  const chatId = msg.chat.id;
+  const user = await User.findOne({ chatId });
 
-  // ✅ Load user safely
-  let user = await User.findOne({ chatId });
   if (!user) {
-    return bot.sendMessage(chatId, "⚠️ Please register first using /start");
+    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
   }
 
-  // ✅ Main menu (first 2 rows)
- const mainMenu = getMainMenu(user);
-
-
-  // ✅ Spacer row (visual only)
-  const spacerRow = [{ text: '────────', callback_data: 'spacer' }];
-
-  // ✅ Child menus
-  let childButtons = [];
-
-  if (choice === 'menu_NGAT') {
-    childButtons = [
-      [{
-        text: '📄 View NGAT Exams',
-        web_app: {
-          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-        }
-      }]
-    ];
-  }
-
-  if (choice === 'menu_ERMP') {
-    childButtons = [
-      [{
-        text: '📄 View ERMP Exams',
-        web_app: {
-          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-        }
-      }]
-    ];
-  }
-
-  // ✅ Merge keyboard: main menu + spacer + child menu
-  const newKeyboard = [...mainMenu, spacerRow, ...childButtons];
-
-  // ✅ Update the message
-  await bot.editMessageReplyMarkup(
-    { inline_keyboard: newKeyboard },
-    { chat_id: chatId, message_id: messageId }
+  bot.sendMessage(
+    chatId,
+    '💳 To upgrade ERMP for 1 year, deposit 300 birr.\nOnce paid, send your receipt or payment confirmation.'
   );
-
-  // ✅ Remove loading animation
-  bot.answerCallbackQuery(query.id);
 });
- */
 
+// ✅ Side menu command: Upgrade NGAT
+bot.onText(/\/upgrade_ngat/, async (msg) => {
+  const chatId = msg.chat.id;
+  const user = await User.findOne({ chatId });
 
+  if (!user) {
+    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+  }
+
+  bot.sendMessage(
+    chatId,
+    '💳 To upgrade NGAT for 1 year, deposit 200 birr.\nOnce paid, send your receipt or payment confirmation.'
+  );
+});
