@@ -38,7 +38,7 @@ function getMainMenu(user) {
       {
         text: '🩺 ERMP',
         web_app: {
-          url: `${process.env.FRONTEND_URL}/ERMP?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
       }
     ],
@@ -46,7 +46,7 @@ function getMainMenu(user) {
       {
         text: '🧪 ERMP Sample',
         web_app: {
-          url: `${process.env.FRONTEND_URL}/ERMP?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+          url: `${process.env.FRONTEND_URL}/VIDMATE?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
       },
       {
