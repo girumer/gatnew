@@ -19,8 +19,8 @@ mongoose.connect('mongodb://localhost:27017/examdb', {
 
 // ✅ Register side menu commands (persistent)
 bot.setMyCommands([
-  { command: 'upgrade_ermp', description: '⚡ Upgrade ERMP exam (300 birr, 1 year)' },
-  { command: 'upgrade_ngat', description: '⚡ Upgrade NGAT exam (200 birr, 1 year)' }
+  { command: 'upgrade_ermp', description: '⚡ Upgrade ERMP exam' },
+  { command: 'upgrade_ngat', description: '⚡ Upgrade NGAT exam' }
 ]);
 
 // ✅ Inline menu (optional). If you want only side menu, you can remove getMainMenu and its usage.
@@ -111,7 +111,6 @@ bot.on('message', async (msg) => {
   }
 });
 
-// ✅ Side menu command: Upgrade ERMP
 bot.onText(/\/upgrade_ermp/, async (msg) => {
   const chatId = msg.chat.id;
   const user = await User.findOne({ chatId });
@@ -120,11 +119,25 @@ bot.onText(/\/upgrade_ermp/, async (msg) => {
     return bot.sendMessage(chatId, '⚠️ Please register first using /start');
   }
 
+  const amountDep = 300; // ERMP deposit
+
   bot.sendMessage(
     chatId,
-    '💳 To upgrade ERMP for 1 year, deposit 300 birr.\nOnce paid, send your receipt or payment confirmation.'
+    `💳 To upgrade ERMP for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`,
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: '📲 TELEBIRR', callback_data: `pay_telebirr_ermp` },
+            { text: '🏦 CBE', callback_data: `pay_cbe_ermp` }
+          ]
+        ]
+      }
+    }
   );
 });
+
+
 
 // ✅ Side menu command: Upgrade NGAT
 bot.onText(/\/upgrade_ngat/, async (msg) => {
@@ -135,8 +148,70 @@ bot.onText(/\/upgrade_ngat/, async (msg) => {
     return bot.sendMessage(chatId, '⚠️ Please register first using /start');
   }
 
+  const amountDep = 200; // NGAT deposit
+
   bot.sendMessage(
     chatId,
-    '💳 To upgrade NGAT for 1 year, deposit 200 birr.\nOnce paid, send your receipt or payment confirmation.'
+    `💳 To upgrade NGAT for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`,
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: '📲 TELEBIRR', callback_data: `pay_telebirr_ngat` },
+            { text: '🏦 CBE', callback_data: `pay_cbe_ngat` }
+          ]
+        ]
+      }
+    }
   );
 });
+bot.on('callback_query', async (query) => {
+  const chatId = query.message.chat.id;
+  const choice = query.data;
+
+  let instructionsMsg = '';
+  let amountDep = 0;
+
+  if (choice === 'pay_telebirr_ermp') {
+    amountDep = 300;
+    instructionsMsg = `
+📲 ማኑዋል ዲፖዚት መመሪያ ቴሌብር
+Account: \`${process.env.TELEBIRR_ACCOUNT}\`
+ዲፖዚት መጠን: ${amountDep} ብር
+
+1\\. ከላይ ባለው ቁጥር TeleBirr በመጠቀም ${amountDep} ብር ያስገቡ
+2\\. ብሩን ስትልኩ የከፈላችሁበትን መረጃ የያዘ አጭር የጹሁፍ መልክት (sms) ከ TeleBirr ይደርሳችኋል
+3\\. የደረሳችሁን ትራንዛክሸን ቁጥር ብቻ ኮፒ አርጋችሁ ወደዚህ ቦት ይላኩ
+⚠️ አስፈላጊ ማሳሰቢያ:
+• ከTeleBirr የደረሳችሁን sms ሙሉዉን መላክ ያረጋግጡ
+• ብር ማስገባት የምችሉት ከቴሌብር ወደ ኤጀንት ቴሌብር ብቻ
+• ከሲቢኢ ብር ወደ ኤጀንት ሲቢኢ ብር ብቻ
+[እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
+  }
+
+  if (choice === 'pay_cbe_ermp') {
+    amountDep = 300;
+    instructionsMsg = `
+🏦 ማኑዋል ዲፖዚት መመሪያ CBE
+Account: \`${process.env.CBE_ACCOUNT}\`
+ዲፖዚት መጠን: ${amountDep} ብር
+
+1\\. ከላይ ባለው ቁጥር CBE በመጠቀም ${amountDep} ብር ያስገቡ
+2\\. ብሩን ስትልኩ የከፈላችሁበትን መረጃ የያዘ sms ይደርሳችኋል
+3\\. የደረሳችሁን ትራንዛክሸን ቁጥር ብቻ ኮፒ አርጋችሁ ወደዚህ ቦት ይላኩ
+⚠️ አስፈላጊ ማሳሰቢያ:
+• ከCBE sms ሙሉዉን መላክ ያረጋግጡ
+• ብር ማስገባት የምችሉት ከቴሌብር ወደ ኤጀንት ቴሌብር ብቻ
+• ከሲቢኢ ብር ወደ ኤጀንት ሲቢኢ ብር ብቻ
+[እዚህ ይጫኑ](${process.env.SUPPORT_GROUP}) ለእገዛ ቪዲዮ`;
+  }
+
+  // Similar blocks for NGAT (200 birr) with pay_telebirr_ngat / pay_cbe_ngat
+
+  if (instructionsMsg) {
+    await bot.sendMessage(chatId, instructionsMsg, { parse_mode: 'Markdown' });
+  }
+
+  bot.answerCallbackQuery(query.id);
+});
+
