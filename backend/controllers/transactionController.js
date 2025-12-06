@@ -1,7 +1,7 @@
 // controllers/transactionController.js
 
 import Transaction from "../models/Transaction.js";
-
+import User from '../models/User.js';
 // --- Helper Functions (Private to this file, no export needed) ---
 
 function parseTelebirrMessage(message) {
@@ -230,7 +230,7 @@ const depositAmount = async (req, res) => {
         }
 
         // --- Step 3: Find the User ---
-        const user = await BingoBord.findOne({ phoneNumber });
+        const user = await  User.findOne({ phoneNumber });
         if (!user) {
             return res.status(404).json({ error: "User not found. Please register or provide a valid phone number." });
         }
@@ -304,7 +304,7 @@ const autoDepositConfirm = async (req, res) => {
         }
 
         // 1. Find the User and Check Intent
-        const user = await BingoBord.findOne({ phoneNumber });
+        const user = await  User.findOne({ phoneNumber });
         if (!user) {
             return res.status(404).json({ error: "User not found." });
         }
