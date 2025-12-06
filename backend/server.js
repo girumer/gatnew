@@ -46,6 +46,7 @@ const port = process.env.PORT;
 app.use("/", router);
 app.use('/api', router);
 app.use("/api", transactionRoutesd);
+app.use("/api/transactions", transactionRoutesd);
 app.get('/', (req, res) => {
     res.json("Server is running");
 });
