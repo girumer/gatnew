@@ -109,37 +109,118 @@ bot.onText(/\/start/, async (msg) => {
 });
 
 // ✅ Handle registration via contact
+// ✅ Handle registration via contact AND transaction SMS
 bot.on('message', async (msg) => {
-  const chatId = msg.chat.id;
+    const chatId = msg.chat.id;
+    const text = msg.text; // ⬅️ Define 'text' and 'user' at the top of the scope
+    let user; // ⬅️ Initialize user here
 
-  if (msg.contact?.phone_number && msg.contact?.first_name) {
-    const phoneNumber = msg.contact.phone_number;
-    const username = msg.contact.first_name;
+    // ----------------------------------------------------------------------
+    // --- 1. HANDLE CONTACT REGISTRATION (Priority 1) ---
+    // ----------------------------------------------------------------------
+    if (msg.contact?.phone_number && msg.contact?.first_name) {
+        const phoneNumber = msg.contact.phone_number;
+        const username = msg.contact.first_name;
 
-    try {
-      let user = await User.findOne({ phoneNumber });
+        try {
+            user = await User.findOne({ phoneNumber }); // Assign to the 'user' variable
 
-      if (user) {
-        if (!user.chatId) {
-          user.chatId = chatId;
-          await user.save();
+            if (user) {
+                if (!user.chatId) {
+                    user.chatId = chatId;
+                    await user.save();
+                }
+                await bot.sendMessage(chatId, `👋 Welcome back, ${user.username}!`);
+            } else {
+                user = new User({ username, phoneNumber, chatId });
+                await user.save();
+                await bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
+            }
+
+            // Send main menu
+            await bot.sendMessage(chatId, 'Main menu:', {
+                reply_markup: buildMainKeyboard(user)
+            });
+            return; // ⬅️ VITAL: Exit after successful registration
+        } catch (err) {
+            console.error('Registration error:', err);
+            await bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
+            return;
         }
-        await bot.sendMessage(chatId, `👋 Welcome back, ${user.username}!`);
-      } else {
-        user = new User({ username, phoneNumber, chatId });
-        await user.save();
-        await bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
-      }
-
-      // Send main menu with Back to Main above upgrade buttons
-      await bot.sendMessage(chatId, 'Main menu:', {
-        reply_markup: buildMainKeyboard(user)
-      });
-    } catch (err) {
-      console.error('Registration error:', err);
-      await bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
     }
-  }
+
+    // ----------------------------------------------------------------------
+    // --- 2. CHECK FOR REGISTERED USER (Priority 2) ---
+    // ----------------------------------------------------------------------
+    
+    // We only proceed if a user object exists for this chat ID
+    if (!user) {
+        user = await User.findOne({ chatId });
+    }
+    
+    if (!user) {
+        // If the user isn't registered, ignore the message or prompt /start
+        if (!text || text.startsWith('/')) return;
+        return bot.sendMessage(chatId, '⚠️ Please use /start to register first.');
+    }
+    
+    // ----------------------------------------------------------------------
+    // --- 3. AUTO-CONFIRM TRANSACTION (Priority 3) ---
+    // ----------------------------------------------------------------------
+
+    // Check if the message is a long text (potential transaction SMS) and not a command
+    if (text && text.length > 5000 && !text.startsWith('/')) {
+        
+        // ⬅️ YOUR TRANSACTION CONFIRMATION LOGIC STARTS HERE 
+        
+        // Check if the user has a pending intent
+        if (!user.lastDepositIntent) {
+            // User pasted text without selecting an upgrade option first
+            return bot.sendMessage(chatId, 'Please use the /exam_menu or upgrade buttons to begin a transaction.', {
+                reply_markup: buildMainKeyboard(user)
+            });
+        }
+
+        await bot.sendMessage(chatId, '🔍 Checking your transaction details...');
+
+        try {
+            // Make sure to import fetch at the top of bot.js if running older Node
+            const response = await fetch(`${process.env.BACKEND_URL}/api/transactions/auto-confirm`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    rawMessage: text, 
+                    phoneNumber: user.phoneNumber 
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                await bot.sendMessage(
+                    chatId, 
+                    `✅ **SUCCESS!** Access to **${data.grantfor}** granted.\n\nTransaction ID: \`${data.transactionNumber}\`\nExpires: ${new Date(data.expires).toLocaleDateString('en-GB')}.\n\nGo to /exam_menu to start.`,
+                    { parse_mode: 'Markdown' }
+                );
+            } else {
+                // Handle errors from the backend (e.g., amount mismatch, duplicate)
+                await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
+            }
+
+        } catch (error) {
+            console.error('Backend communication error:', error);
+            await bot.sendMessage(chatId, '❌ A connection error occurred. Please try again.');
+        }
+
+        return; // ⬅️ VITAL: Exit after processing the potential transaction message
+    }
+
+    // ----------------------------------------------------------------------
+    // --- 4. CATCH-ALL (Ignore or Default Reply) ---
+    // ----------------------------------------------------------------------
+    
+    // If the message is short, not a command, and not a transaction, we ignore it.
+    // return; // Uncomment this if you don't want any further default replies.
 });
 
 // ✅ Side command: exam_menu (opens the exam inline menu)
@@ -298,6 +379,7 @@ Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the TeleBirr SMS/transaction ID or screenshot here.`;
+await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
     } else if (choice === 'pay_cbe_ermp') {
       amountDep = 300;
       instructionsMsg = `
@@ -306,6 +388,7 @@ Account: \`${process.env.CBE_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the bank SMS/transaction ID or screenshot here.`;
+await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
     } else if (choice === 'pay_telebirr_ngat') {
       amountDep = 200;
       instructionsMsg = `
@@ -314,6 +397,7 @@ Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the TeleBirr SMS/transaction ID or screenshot here.`;
+await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
     } else if (choice === 'pay_cbe_ngat') {
       amountDep = 200;
       instructionsMsg = `
@@ -322,6 +406,7 @@ Account: \`${process.env.CBE_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the bank SMS/transaction ID or screenshot here.`;
+await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
     }
 
     if (instructionsMsg) {

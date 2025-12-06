@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 import router from './router/route.js';
 import connect from './database/conn.js';
 import path from 'path';
-
+import transactionRoutesd from'./router/transaction.js';
 import { fileURLToPath } from 'url';
 import questionRoute from './router/questionRoute.js';
 
@@ -45,7 +45,7 @@ const port = process.env.PORT;
 // Routes
 app.use("/", router);
 app.use('/api', router);
-
+app.use("/api", transactionRoutesd);
 app.get('/', (req, res) => {
     res.json("Server is running");
 });
