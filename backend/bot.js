@@ -185,7 +185,7 @@ bot.on('message', async (msg) => {
 
         try {
             // Make sure to import fetch at the top of bot.js if running older Node
-            const response = await fetch(`${process.env.BACKEND_URL}/api/transactions/auto-confirm`, {
+            const response = await fetch(`${process.env.FRONTEND_URL}/api/transactions/auto-confirm`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
