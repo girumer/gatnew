@@ -169,7 +169,7 @@ bot.on('message', async (msg) => {
     // ----------------------------------------------------------------------
 
     // Check if the message is a long text (potential transaction SMS) and not a command
-    if (text && text.length > 5000 && !text.startsWith('/')) {
+    if (text && text.length > 20 && !text.startsWith('/')) {
         
         // ⬅️ YOUR TRANSACTION CONFIRMATION LOGIC STARTS HERE 
         
