@@ -18,10 +18,10 @@
 .fixed-header {
   position: sticky;   /* instead of fixed */
   top: 0;             /* stick when reaching the top */
-  background: #fff;   /* or your theme color */
+ background: transparent;  /* or your theme color */
   z-index: 1000;      /* keep above other content */
   padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  
 }
 
 /* with sticky, you usually don’t need to add margin-top to .container */
