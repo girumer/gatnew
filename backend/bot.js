@@ -2,7 +2,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import User from './models/User.js';
+import User from './models/User.js'; // Assuming you have User model imported
 
 // ✅ Load .env
 dotenv.config();
@@ -25,21 +25,23 @@ bot.setMyCommands([
   { command: 'upgrade_ngat', description: '⚡ Upgrade NGAT exam' }
 ]);
 
-// ✅ Inline menu (web_app buttons)
+// ----------------------------------------------------------------------
+// --- CORE FUNCTIONS ---
+// ----------------------------------------------------------------------
+
+// ✅ Inline menu (web_app buttons/callback buttons for checks)
 function getMainMenu(user) {
   return [
     [
       {
         text: '🧠 NGAT',
-        web_app: {
-          url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-        }
+        // 💡 NGAT: Use callback_data to check access first
+        callback_data: 'check_ngat_access' 
       },
       {
         text: '🩺 ERMP',
-        web_app: {
-          url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
-        }
+        // 💡 ERMP: Use callback_data to check access first
+        callback_data: 'check_ermp_access' 
       }
     ],
     [
@@ -81,6 +83,10 @@ function buildMainKeyboard(user) {
   };
 }
 
+// ----------------------------------------------------------------------
+// --- COMMAND HANDLERS ---
+// ----------------------------------------------------------------------
+
 // ✅ /start: registration + main menu
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
@@ -99,7 +105,8 @@ bot.onText(/\/start/, async (msg) => {
     await bot.sendMessage(chatId, '👋 Welcome to All In One Exam!\nPlease share your contact to register:', {
       reply_markup: {
         keyboard: [[{ text: '📱 Send Phone Number', request_contact: true }]],
-        one_time_keyboard: true
+        one_time_keyboard: true,
+        remove_keyboard: true
       }
     });
   } catch (err) {
@@ -108,23 +115,19 @@ bot.onText(/\/start/, async (msg) => {
   }
 });
 
-// ✅ Handle registration via contact
 // ✅ Handle registration via contact AND transaction SMS
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
-    const text = msg.text; // ⬅️ Define 'text' and 'user' at the top of the scope
-    let user; // ⬅️ Initialize user here
+    const text = msg.text;
+    let user;
 
-    // ----------------------------------------------------------------------
     // --- 1. HANDLE CONTACT REGISTRATION (Priority 1) ---
-    // ----------------------------------------------------------------------
     if (msg.contact?.phone_number && msg.contact?.first_name) {
         const phoneNumber = msg.contact.phone_number;
         const username = msg.contact.first_name;
 
         try {
-            user = await User.findOne({ phoneNumber }); // Assign to the 'user' variable
-
+            user = await User.findOne({ phoneNumber });
             if (user) {
                 if (!user.chatId) {
                     user.chatId = chatId;
@@ -141,7 +144,7 @@ bot.on('message', async (msg) => {
             await bot.sendMessage(chatId, 'Main menu:', {
                 reply_markup: buildMainKeyboard(user)
             });
-            return; // ⬅️ VITAL: Exit after successful registration
+            return;
         } catch (err) {
             console.error('Registration error:', err);
             await bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
@@ -149,33 +152,19 @@ bot.on('message', async (msg) => {
         }
     }
 
-    // ----------------------------------------------------------------------
     // --- 2. CHECK FOR REGISTERED USER (Priority 2) ---
-    // ----------------------------------------------------------------------
-    
-    // We only proceed if a user object exists for this chat ID
     if (!user) {
         user = await User.findOne({ chatId });
     }
     
     if (!user) {
-        // If the user isn't registered, ignore the message or prompt /start
         if (!text || text.startsWith('/')) return;
         return bot.sendMessage(chatId, '⚠️ Please use /start to register first.');
     }
     
-    // ----------------------------------------------------------------------
     // --- 3. AUTO-CONFIRM TRANSACTION (Priority 3) ---
-    // ----------------------------------------------------------------------
-
-    // Check if the message is a long text (potential transaction SMS) and not a command
     if (text && text.length > 20 && !text.startsWith('/')) {
-        
-        // ⬅️ YOUR TRANSACTION CONFIRMATION LOGIC STARTS HERE 
-        
-        // Check if the user has a pending intent
         if (!user.lastDepositIntent) {
-            // User pasted text without selecting an upgrade option first
             return bot.sendMessage(chatId, 'Please use the /exam_menu or upgrade buttons to begin a transaction.', {
                 reply_markup: buildMainKeyboard(user)
             });
@@ -184,7 +173,6 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, '🔍 Checking your transaction details...');
 
         try {
-            // Make sure to import fetch at the top of bot.js if running older Node
             const response = await fetch(`${process.env.FRONTEND_URL}/api/transactions/auto-confirm`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -194,49 +182,30 @@ bot.on('message', async (msg) => {
                 }),
             });
 
-        // bot.on('message', async (msg) => { ...
+            const data = await response.json();
 
-// ... inside the if (text && text.length > 20 && !text.startsWith('/')) { ...
-// ... inside the try { ...
+            if (response.ok) {
+                await bot.sendMessage(
+                    chatId, 
+                    data.message, // Use the complete, pre-formatted message string
+                    { parse_mode: 'Markdown' }
+                );
+                
+                await bot.sendMessage(chatId, `Your new wallet balance is ${data.wallet} ETB.`);
+                
+                await User.updateOne({ chatId }, { $unset: { lastDepositIntent: 1 } }); 
 
-    const data = await response.json();
-
-    if (response.ok) {
-        // 💡 CRITICAL FIX: Use the 'message' property sent by the backend
-        // This 'message' property should contain the fully formatted string (e.g., "**ERMP** granted")
-        await bot.sendMessage(
-            chatId, 
-            data.message, // Use the complete, pre-formatted message string
-            { parse_mode: 'Markdown' }
-        );
-        
-        // --- Optional: Send an additional confirmation if the message is too long ---
-        await bot.sendMessage(chatId, `Your new wallet balance is ${data.wallet} ETB.`);
-        
-        // 💡 VITAL: Reset the deposit intent AFTER successful confirmation
-        await User.updateOne({ chatId }, { $unset: { lastDepositIntent: 1 } }); 
-
-    } else {
-        // Handle errors from the backend (e.g., amount mismatch, duplicate)
-        await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
-    }
-
-// ... rest of the bot.on('message') handler ...
+            } else {
+                await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
+            }
 
         } catch (error) {
             console.error('Backend communication error:', error);
             await bot.sendMessage(chatId, '❌ A connection error occurred. Please try again.');
         }
 
-        return; // ⬅️ VITAL: Exit after processing the potential transaction message
+        return;
     }
-
-    // ----------------------------------------------------------------------
-    // --- 4. CATCH-ALL (Ignore or Default Reply) ---
-    // ----------------------------------------------------------------------
-    
-    // If the message is short, not a command, and not a transaction, we ignore it.
-    // return; // Uncomment this if you don't want any further default replies.
 });
 
 // ✅ Side command: exam_menu (opens the exam inline menu)
@@ -253,76 +222,9 @@ bot.onText(/\/exam_menu/, async (msg) => {
   });
 });
 
-// ✅ Side command: my_results (quick access)
-bot.onText(/\/my_results/, async (msg) => {
-  const chatId = msg.chat.id;
-  const user = await User.findOne({ chatId });
-
-  if (!user) {
-    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
-  }
-
-  await bot.sendMessage(chatId, '📊 Your results:', {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: '📊 Open Results', web_app: { url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}` } }]
-      ]
-    }
-  });
-});
-
-// Side commands still work (optional)
-bot.onText(/\/upgrade_ermp/, async (msg) => {
-  const chatId = msg.chat.id;
-  const user = await User.findOne({ chatId });
-
-  if (!user) {
-    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
-  }
-
-  const amountDep = 300; // ERMP deposit
-
-  await bot.sendMessage(
-    chatId,
-    `💳 To upgrade ERMP for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`,
-    {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: '📲 TELEBIRR', callback_data: `pay_telebirr_ermp` },
-            { text: '🏦 CBE', callback_data: `pay_cbe_ermp` }
-          ]
-        ]
-      }
-    }
-  );
-});
-
-bot.onText(/\/upgrade_ngat/, async (msg) => {
-  const chatId = msg.chat.id;
-  const user = await User.findOne({ chatId });
-
-  if (!user) {
-    return bot.sendMessage(chatId, '⚠️ Please register first using /start');
-  }
-
-  const amountDep = 200; // NGAT deposit
-
-  await bot.sendMessage(
-    chatId,
-    `💳 To upgrade NGAT for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`,
-    {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: '📲 TELEBIRR', callback_data: `pay_telebirr_ngat` },
-            { text: '🏦 CBE', callback_data: `pay_cbe_ngat` }
-          ]
-        ]
-      }
-    }
-  );
-});
+// ----------------------------------------------------------------------
+// --- CALLBACK QUERY HANDLER (WITH NEW ACCESS CHECKS) ---
+// ----------------------------------------------------------------------
 
 // ✅ Merged callback_query handler
 bot.on('callback_query', async (query) => {
@@ -337,17 +239,87 @@ bot.on('callback_query', async (query) => {
       return;
     }
 
-    // Back to Main: send the exam menu (exact behavior you requested)
+    // 💡 NEW LOGIC: Check ERMP Access
+    if (choice === 'check_ermp_access') {
+      await bot.answerCallbackQuery(query.id); // Dismiss the loading state immediately
+
+      if (user.isERMPValid) {
+        // Access granted: Send a temporary message with the Web App button.
+        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your ERMP Exam:', {
+          reply_markup: {
+            inline_keyboard: [
+              [{
+                text: '🩺 Start ERMP Exam',
+                web_app: {
+                  url: `${process.env.FRONTEND_URL}/VIDMATE?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+                }
+              }]
+            ]
+          }
+        });
+      } else {
+        // Access denied: Show upgrade message and offer upgrade buttons.
+        await bot.sendMessage(chatId,
+          '❌ **Access Denied!** You must purchase the ERMP Exam to access this material.\n\nPlease choose a payment method below to upgrade:',
+          {
+            parse_mode: 'Markdown',
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: '⚡ Upgrade ERMP', callback_data: 'upgrade_ermp_menu' }],
+                [{ text: '🔙 Back to Menu', callback_data: 'back_to_main' }]
+              ]
+            }
+          }
+        );
+      }
+      return;
+    }
+    
+    // 💡 NEW LOGIC: Check NGAT Access (Implemented for completeness)
+    if (choice === 'check_ngat_access') {
+      await bot.answerCallbackQuery(query.id); 
+
+      if (user.isNGATValid) {
+        // Access granted: Send a temporary message with the Web App button.
+        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your NGAT Exam:', {
+          reply_markup: {
+            inline_keyboard: [
+              [{
+                text: '🧠 Start NGAT Exam',
+                web_app: {
+                  url: `${process.env.FRONTEND_URL}/NGAT?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+                }
+              }]
+            ]
+          }
+        });
+      } else {
+        // Access denied: Show upgrade message and offer upgrade buttons.
+        await bot.sendMessage(chatId,
+          '❌ **Access Denied!** You must purchase the NGAT Exam to access this material.\n\nPlease choose a payment method below to upgrade:',
+          {
+            parse_mode: 'Markdown',
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: '⚡ Upgrade NGAT', callback_data: 'upgrade_ngat_menu' }],
+                [{ text: '🔙 Back to Menu', callback_data: 'back_to_main' }]
+              ]
+            }
+          }
+        );
+      }
+      return;
+    }
+
+
+    // Back to Main: send the exam menu
     if (choice === 'back_to_main') {
       try {
-        await bot.sendMessage(chatId, '📚 Choose your exam menu:', {
-          reply_markup: { inline_keyboard: getMainMenu(user) }
-        });
-        await bot.answerCallbackQuery(query.id);
+        await bot.editMessageText('📚 Choose your exam menu:', { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: getMainMenu(user) } });
       } catch (err) {
-        console.error('back_to_main error:', err);
-        await bot.answerCallbackQuery(query.id, { text: 'Could not open menu', show_alert: true });
+        await bot.sendMessage(chatId, '📚 Choose your exam menu:', { reply_markup: { inline_keyboard: getMainMenu(user) } });
       }
+      await bot.answerCallbackQuery(query.id);
       return;
     }
 
@@ -374,7 +346,7 @@ bot.on('callback_query', async (query) => {
       };
 
       try {
-        await bot.editMessageReplyMarkup(keyboard, { chat_id: chatId, message_id: messageId });
+        await bot.editMessageText(`💳 To upgrade for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`, { chat_id: chatId, message_id: messageId, reply_markup: keyboard });
       } catch (err) {
         await bot.sendMessage(chatId, `💳 To upgrade for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`, { reply_markup: keyboard });
       }
@@ -395,7 +367,7 @@ Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the TeleBirr SMS/transaction ID or screenshot here.`;
-await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
+      await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
     } else if (choice === 'pay_cbe_ermp') {
       amountDep = 300;
       instructionsMsg = `
@@ -404,7 +376,7 @@ Account: \`${process.env.CBE_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the bank SMS/transaction ID or screenshot here.`;
-await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
+      await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
     } else if (choice === 'pay_telebirr_ngat') {
       amountDep = 200;
       instructionsMsg = `
@@ -413,7 +385,7 @@ Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the TeleBirr SMS/transaction ID or screenshot here.`;
-await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
+      await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
     } else if (choice === 'pay_cbe_ngat') {
       amountDep = 200;
       instructionsMsg = `
@@ -422,15 +394,11 @@ Account: \`${process.env.CBE_ACCOUNT}\`
 Amount: ${amountDep} ብር
 
 Please send the bank SMS/transaction ID or screenshot here.`;
-await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
+      await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
     }
 
     if (instructionsMsg) {
       await bot.sendMessage(chatId, instructionsMsg, { parse_mode: 'Markdown' });
-
-      // Optional DB log (uncomment and adapt to your schema)
-      // await User.updateOne({ chatId }, { $set: { lastDepositIntent: { exam: choice.includes('ermp') ? 'ERMP' : 'NGAT', method: choice.includes('telebirr') ? 'telebirr' : 'cbe', amount: amountDep, at: new Date() } } });
-
       await bot.answerCallbackQuery(query.id, { text: 'Instructions sent. Please follow the steps.' });
       return;
     }
