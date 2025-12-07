@@ -222,8 +222,96 @@ bot.onText(/\/exam_menu/, async (msg) => {
   });
 });
 
+// 💡 NEW: Side command: /my_results
+bot.onText(/\/my_results/, async (msg) => {
+    const chatId = msg.chat.id;
+    const user = await User.findOne({ chatId });
+
+    if (!user) {
+        return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+    }
+
+    await bot.sendMessage(chatId, '📊 Tap the button below to view your results on the web app:', {
+        reply_markup: {
+            inline_keyboard: [[
+                {
+                    text: '📊 View My Results',
+                    web_app: {
+                        url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
+                    }
+                }
+            ]]
+        }
+    });
+});
+
+// 💡 NEW: Side command: /upgrade_ermp
+bot.onText(/\/upgrade_ermp/, async (msg) => {
+    const chatId = msg.chat.id;
+    const user = await User.findOne({ chatId });
+
+    if (!user) {
+        return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+    }
+    
+    // Check if already upgraded (same logic as callback query)
+    if (user.isERMPValid) {
+        return bot.sendMessage(chatId, '✅ **ERMP Upgrade Complete!** You already have active access to the ERMP exam.', {
+            parse_mode: 'Markdown',
+            reply_markup: { inline_keyboard: [[{ text: '🩺 Start ERMP Exam', callback_data: 'check_ermp_access' }]] }
+        });
+    }
+
+    // Send payment options
+    const amountDep = 300;
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '📲 TELEBIRR', callback_data: 'pay_telebirr_ermp' },
+            { text: '🏦 CBE', callback_data: 'pay_cbe_ermp' }
+        ]]
+    };
+
+    await bot.sendMessage(chatId, `💳 To upgrade **ERMP** for 1 year, deposit **${amountDep}** birr.\nChoose your payment method below:`, { 
+        reply_markup: keyboard,
+        parse_mode: 'Markdown'
+    });
+});
+
+// 💡 NEW: Side command: /upgrade_ngat
+bot.onText(/\/upgrade_ngat/, async (msg) => {
+    const chatId = msg.chat.id;
+    const user = await User.findOne({ chatId });
+
+    if (!user) {
+        return bot.sendMessage(chatId, '⚠️ Please register first using /start');
+    }
+
+    // Check if already upgraded (same logic as callback query)
+    if (user.isNGATValid) {
+        return bot.sendMessage(chatId, '✅ **NGAT Upgrade Complete!** You already have active access to the NGAT exam.', {
+            parse_mode: 'Markdown',
+            reply_markup: { inline_keyboard: [[{ text: '🧠 Start NGAT Exam', callback_data: 'check_ngat_access' }]] }
+        });
+    }
+
+    // Send payment options
+    const amountDep = 200;
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '📲 TELEBIRR', callback_data: 'pay_telebirr_ngat' },
+            { text: '🏦 CBE', callback_data: 'pay_cbe_ngat' }
+        ]]
+    };
+
+    await bot.sendMessage(chatId, `💳 To upgrade **NGAT** for 1 year, deposit **${amountDep}** birr.\nChoose your payment method below:`, { 
+        reply_markup: keyboard,
+        parse_mode: 'Markdown'
+    });
+});
+
+
 // ----------------------------------------------------------------------
-// --- CALLBACK QUERY HANDLER (WITH ALL ACCESS CHECKS) ---
+// --- CALLBACK QUERY HANDLER (UNCHANGED BUT COMPLETE) ---
 // ----------------------------------------------------------------------
 
 // ✅ Merged callback_query handler
@@ -341,7 +429,7 @@ bot.on('callback_query', async (query) => {
       return;
     }
 
-    // --- 4. Upgrade Menu Check (Prevent Re-Purchase) ---
+    // --- 4. Upgrade Menu Check (Prevent Re-Purchase for inline buttons) ---
 
     // Check ERMP Upgrade Status
     if (choice === 'upgrade_ermp_menu') {
