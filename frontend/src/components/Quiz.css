@@ -3,7 +3,7 @@
 :root {
   --primary-color: #007bff; /* Blue for primary actions/accents */
   --secondary-color: #6c757d; /* Gray for secondary text/borders */
-  --background-light: #f8f9fa; /* Light background */
+  --background: linear-gradient(to right, #b51c4f, #f0f8ff);/* Light background */
   --text-dark: hsl(210, 73%, 39%); /* Dark text */
   --card-background: #a8be79bd; /* White for quiz card */
   --success-color: #28a745; /* Green for correct/success */
