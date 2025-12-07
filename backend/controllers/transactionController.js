@@ -75,35 +75,43 @@ function extractTransactionDetails(rawMessage) {
 
 // --- Controller Functions (The ones that will be exposed via export default) ---
 
+// controllers/transactionController.js
+
 export const parseTransaction = async (req, res) => {
     try {
         const { key: originalMessage } = req.body;
-        // ... (Your existing message cleanup and parsing logic using parseTelebirrMessage/parseCBEMessages) ...
         
-        // ... (Assume transactions array is populated with {type, amount, transactionNumber}) ...
+        // 💡 CRITICAL FIX: Use the helper function and assign the result.
+        // The helper 'extractTransactionDetails' returns the single transaction object or null.
+        const transactionToSave = extractTransactionDetails(originalMessage);
 
-        const transactionToSave = transactions[0];
-        
-        // 🚨 CRITICAL FIX: Check the PendingTransaction Model for duplicates
+        if (!transactionToSave) {
+            // Log that parsing failed, likely due to message format
+            console.warn("Parsing failed for incoming message:", originalMessage);
+            return res.status(400).json({ error: "Could not parse transaction details from the message." });
+        }
+
+        // --- Rest of the logic (This looks correct now) ---
+
+        // 1. Check both ledgers for duplicates
         const existingPendingTxn = await PendingTransaction.findOne({ 
             transactionNumber: transactionToSave.transactionNumber 
         });
         
-        // Also a good idea to check the FINAL Transaction ledger too
         const existingFinalTxn = await Transaction.findOne({ 
             transactionNumber: transactionToSave.transactionNumber 
         });
 
         if (existingPendingTxn || existingFinalTxn) {
-            console.log(`Transaction ${transactionToSave.transactionNumber} already exists (Pending or Final). Skipping.`);
+            console.log(`Transaction ${transactionToSave.transactionNumber} already exists. Skipping.`);
             return res.status(409).json({ error: "Transaction already exists." });
         }
 
-        // 🚨 CRITICAL FIX: Save the new record to the PendingTransaction Model
+        // 2. Save the new record to the PendingTransaction Model
         const newPendingTransaction = new PendingTransaction({
             amount: transactionToSave.amount,
             transactionNumber: transactionToSave.transactionNumber,
-            rawMessage: originalMessage, // Save the full message
+            rawMessage: originalMessage,
             // senderPhoneNumber is optional if you can't parse it reliably here
         });
         
@@ -117,8 +125,9 @@ export const parseTransaction = async (req, res) => {
         });
 
     } catch (err) {
-        // ... (Error handling) ...
-        return res.status(500).json({ error: "Server error" });
+        // Log the actual error for debugging
+        console.error("Critical Server Error in parseTransaction:", err.message, err.stack);
+        return res.status(500).json({ error: "Server error during parsing. Check server logs." });
     }
 };
 
