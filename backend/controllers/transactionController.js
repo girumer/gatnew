@@ -52,7 +52,22 @@ function parseCBEMessages(message) {
 
     return transactions;
 }
-
+function extractTransactionDetails(rawMessage) {
+    let transactions = [];
+    const cbebirrRegex = /(?:በደረሰኝ ቁ[ጠጥ]?ር|txn id|Txn ID)/i;
+    const telebirrRegex = /(telebirr|ኢትዮ ቴሌኮም)/i;
+    
+    // Clean message once
+    let message = rawMessage.replace(/[\u200B-\u200F\uFEFF\u2028\u2029\u00A0\t\r\n]+/g, ' ').trim();
+    
+    if (message.match(cbebirrRegex)) {
+        transactions = parseCBEMessages(message);
+    } else if (message.match(telebirrRegex)) {
+        transactions = parseTelebirrMessage(message);
+    }
+    
+    return transactions.length > 0 ? transactions[0] : null;
+}
 // NOTE: I am omitting extractTransactionDetails here since you seem to be using 
 // the bank-specific parse functions (parseCBEMessages, parseTelebirrMessage) 
 // inside parseTransaction. If extractTransactionDetails is actually used, keep it 
@@ -60,7 +75,7 @@ function parseCBEMessages(message) {
 
 // --- Controller Functions (The ones that will be exposed via export default) ---
 
-const parseTransaction = async (req, res) => {
+export const parseTransaction = async (req, res) => {
     try {
         const { key: originalMessage } = req.body;
         // ... (Your existing message cleanup and parsing logic using parseTelebirrMessage/parseCBEMessages) ...
@@ -107,7 +122,7 @@ const parseTransaction = async (req, res) => {
     }
 };
 
-const getPendingTransactions = async (req, res) => {
+export const getPendingTransactions = async (req, res) => {
     try {
         const transactions = await Transaction.find({});
         res.json({ success: true, transactions });
@@ -377,10 +392,3 @@ export const autoDepositConfirm = async (req, res) => {
 // 🌟 Don't forget to add this function to your default export in the controller file.
 
 // --- EXPOSE FUNCTIONS VIA DEFAULT EXPORT (Add the new function) ---
-export default {
-    parseTransaction,
-    getPendingTransactions,
-   // <--- NEWLY ADDED
-    depositAmount,
-   
-};

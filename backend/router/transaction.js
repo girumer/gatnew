@@ -1,17 +1,26 @@
-// routes/transaction.js
+// router/transaction.js
 
-import { Router } from "express"; // 1. Import Router from Express
-const router = Router();            // 2. Initialize the router object
+import { Router } from "express"; 
+const router = Router();            
 
-import transactionController from '../controllers/transactionController.js'; 
+// ❌ DELETE THIS LINE (It is trying to access a non-existent 'default' export)
+// import transactionController from '../controllers/transactionController.js';
+
+// ✅ KEEP ONLY THIS LINE (The Correct Named Import)
+import { 
+    parseTransaction, 
+    getPendingTransactions, 
+    autoDepositConfirm 
+} from '../controllers/transactionController.js'; 
 
 
-// parse SMS (existing)
-router.post("/parse-transaction", transactionController.parseTransaction);
-router.get("/pending-transactions", transactionController.getPendingTransactions);
-router.post("/deposit-confirm", transactionController.depositAmount);
-router.post("/auto-confirm", transactionController.autoDepositConfirm);
-// If you implemented the approve route:
-// router.post("/approve-transaction", transactionController.approveTransaction); 
+// 1. Route for SMS Forwarder (Saves to PendingTransaction)
+router.post("/parse-transaction", parseTransaction);
+
+// 2. Route for Admin/Listing (Retrieves pending transactions)
+router.get("/pending-transactions", getPendingTransactions);
+
+// 3. Route for Telegram Bot/Auto Confirmation (Deletes Pending, Creates Final)
+router.post("/auto-confirm", autoDepositConfirm);
 
 export default router;
