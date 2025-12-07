@@ -194,18 +194,34 @@ bot.on('message', async (msg) => {
                 }),
             });
 
-            const data = await response.json();
+        // bot.on('message', async (msg) => { ...
 
-            if (response.ok) {
-                await bot.sendMessage(
-                    chatId, 
-                    `✅ **SUCCESS!** Access to **${data.grantfor}** granted.\n\nTransaction ID: \`${data.transactionNumber}\`\nExpires: ${new Date(data.expires).toLocaleDateString('en-GB')}.\n\nGo to /exam_menu to start.`,
-                    { parse_mode: 'Markdown' }
-                );
-            } else {
-                // Handle errors from the backend (e.g., amount mismatch, duplicate)
-                await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
-            }
+// ... inside the if (text && text.length > 20 && !text.startsWith('/')) { ...
+// ... inside the try { ...
+
+    const data = await response.json();
+
+    if (response.ok) {
+        // 💡 CRITICAL FIX: Use the 'message' property sent by the backend
+        // This 'message' property should contain the fully formatted string (e.g., "**ERMP** granted")
+        await bot.sendMessage(
+            chatId, 
+            data.message, // Use the complete, pre-formatted message string
+            { parse_mode: 'Markdown' }
+        );
+        
+        // --- Optional: Send an additional confirmation if the message is too long ---
+        await bot.sendMessage(chatId, `Your new wallet balance is ${data.wallet} ETB.`);
+        
+        // 💡 VITAL: Reset the deposit intent AFTER successful confirmation
+        await User.updateOne({ chatId }, { $unset: { lastDepositIntent: 1 } }); 
+
+    } else {
+        // Handle errors from the backend (e.g., amount mismatch, duplicate)
+        await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
+    }
+
+// ... rest of the bot.on('message') handler ...
 
         } catch (error) {
             console.error('Backend communication error:', error);
