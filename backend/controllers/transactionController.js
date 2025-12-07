@@ -3,7 +3,7 @@
 import Transaction from "../models/Transaction.js";
 import User from '../models/User.js';
 // --- Helper Functions (Private to this file, no export needed) ---
-
+import PendingTransaction from '../models/PendingTransaction.js';
 function parseTelebirrMessage(message) {
     const transactions = [];
     
@@ -62,76 +62,47 @@ function parseCBEMessages(message) {
 
 const parseTransaction = async (req, res) => {
     try {
-        console.log('Received request body:', req.body);
         const { key: originalMessage } = req.body;
+        // ... (Your existing message cleanup and parsing logic using parseTelebirrMessage/parseCBEMessages) ...
         
-        if (!originalMessage) {
-            return res.status(400).json({ error: "Message is required" });
-        }
-        
-        let message = originalMessage
-            .replace(/[\u200B-\u200F\uFEFF\u2028\u2029\u00A0\t\r\n]+/g, ' ')
-            .trim();
-        
-        console.log('Cleaned message:', message);
-        
-        let transactions = [];
-        
-        const cbebirrRegex = /(?:በደረሰኝ ቁ[ጠጥ]?ር|txn id|Txn ID)/i;
-        const telebirrRegex = /(telebirr|ኢትዮ ቴሌኮም)/i;
-        
-        if (message.match(cbebirrRegex)) {
-            console.log('Detected CBE transaction');
-            transactions = parseCBEMessages(message);
-        } else if (message.match(telebirrRegex)) {
-            console.log('Detected Telebirr transaction');
-            transactions = parseTelebirrMessage(message);
-        } else {
-            console.log('No supported transaction type detected');
-            return res.status(400).json({ error: "Unsupported transaction type" });
-        }
+        // ... (Assume transactions array is populated with {type, amount, transactionNumber}) ...
 
-        console.log('Parsed transactions:', transactions);
-
-        if (transactions.length === 0) {
-            return res.status(400).json({ 
-                error: "No transaction found in message. Please check the format." 
-            });
-        }
-        
         const transactionToSave = transactions[0];
-
-        const existingTransaction = await Transaction.findOne({ 
+        
+        // 🚨 CRITICAL FIX: Check the PendingTransaction Model for duplicates
+        const existingPendingTxn = await PendingTransaction.findOne({ 
             transactionNumber: transactionToSave.transactionNumber 
         });
         
-        if (existingTransaction) {
-            console.log(`Transaction ${transactionToSave.transactionNumber} already exists. Skipping.`);
+        // Also a good idea to check the FINAL Transaction ledger too
+        const existingFinalTxn = await Transaction.findOne({ 
+            transactionNumber: transactionToSave.transactionNumber 
+        });
+
+        if (existingPendingTxn || existingFinalTxn) {
+            console.log(`Transaction ${transactionToSave.transactionNumber} already exists (Pending or Final). Skipping.`);
             return res.status(409).json({ error: "Transaction already exists." });
         }
 
-        const newTransaction = new Transaction({
+        // 🚨 CRITICAL FIX: Save the new record to the PendingTransaction Model
+        const newPendingTransaction = new PendingTransaction({
             amount: transactionToSave.amount,
             transactionNumber: transactionToSave.transactionNumber,
-            method: "depositpend",
-            type: transactionToSave.type
+            rawMessage: originalMessage, // Save the full message
+            // senderPhoneNumber is optional if you can't parse it reliably here
         });
         
-        await newTransaction.save();
+        await newPendingTransaction.save();
         
-        console.log("Transaction saved as pending:", newTransaction.transactionNumber);
+        console.log("Transaction saved as pending:", newPendingTransaction.transactionNumber);
         
         return res.status(200).json({
             message: "Transaction received and saved as pending. Please confirm your deposit.",
-            transactionNumber: newTransaction.transactionNumber,
+            transactionNumber: newPendingTransaction.transactionNumber,
         });
 
     } catch (err) {
-        if (err.code === 11000) {
-            console.log(`Duplicate transaction encountered: ${err.message}`);
-            return res.status(409).json({ error: "Transaction already exists." });
-        }
-        console.error("Server error:", err);
+        // ... (Error handling) ...
         return res.status(500).json({ error: "Server error" });
     }
 };
@@ -294,65 +265,65 @@ const depositAmount = async (req, res) => {
 };
 // controllers/transactionController.js (NEW FUNCTION)
 
-const autoDepositConfirm = async (req, res) => {
+// controllers/transactionController.js (The logic for the bot's call)
+
+export const autoDepositConfirm = async (req, res) => {
+    // 🚨 ASSUMPTION: The bot sends { rawMessage, phoneNumber } 
+    // And we determine the grantfor (ERMP/NGAT) from the User's lastDepositIntent
+    let { rawMessage, phoneNumber } = req.body; 
+
     try {
-        // We only expect the raw message and the user's identifier
-        const { rawMessage, phoneNumber } = req.body;
-        
-        if (!rawMessage || !phoneNumber) {
-            return res.status(400).json({ error: "Missing required fields: message and phone number." });
-        }
-
-        // 1. Find the User and Check Intent
-        const user = await  User.findOne({ phoneNumber });
-        if (!user) {
-            return res.status(404).json({ error: "User not found." });
-        }
-        
-        const finalGrant = user.lastDepositIntent;
-        if (!finalGrant) {
-            return res.status(400).json({ error: "Upgrade intention not set. Please select an upgrade option via the bot menu." });
-        }
-        
-        const expectedAmount = finalGrant === 'ERMP' ? 300 : 200;
-
-        // 2. Parse the Message (using the same logic as before)
+        // 1. Parse Transaction details from the raw SMS
         let transactions = [];
-        let finalType = ''; 
-        let cleanedMessage = rawMessage.replace(/[\u200B-\u200F\uFEFF\u2028\u2029\u00A0\t\r\n]+/g, ' ').trim();
-
         const cbebirrRegex = /(?:በደረሰኝ ቁ[ጠጥ]?ር|txn id|Txn ID)/i;
         const telebirrRegex = /(telebirr|ኢትዮ ቴሌኮም)/i;
         
-        if (cleanedMessage.match(cbebirrRegex)) {
-            transactions = parseCBEMessages(cleanedMessage);
-            finalType = 'cbebirr';
-        } else if (cleanedMessage.match(telebirrRegex)) {
-            transactions = parseTelebirrMessage(cleanedMessage);
-            finalType = 'telebirr';
+        if (rawMessage.match(cbebirrRegex)) {
+            transactions = parseCBEMessages(rawMessage);
+        } else if (rawMessage.match(telebirrRegex)) {
+            transactions = parseTelebirrMessage(rawMessage);
         }
 
         if (transactions.length === 0) {
-            return res.status(400).json({ error: "Could not extract transaction details." });
+            return res.status(400).json({ error: "Could not parse transaction details from message." });
         }
-
-        const parsedTxn = transactions[0];
         
-        // 3. Final Validation
-        if (parsedTxn.amount !== expectedAmount) {
-            // Clear the intent if it fails validation
-            user.lastDepositIntent = null;
-            await user.save(); 
-            return res.status(400).json({ error: `Amount mismatch: expected ${expectedAmount} ETB for ${finalGrant}, found ${parsedTxn.amount} ETB.` });
+        const txData = transactions[0];
+        const finalTxnNumber = txData.transactionNumber;
+        const finalAmount = txData.amount;
+        const finalType = txData.type;
+
+        // 2. Find the User & determine grantfor
+        const user = await User.findOne({ phoneNumber });
+        if (!user) {
+            return res.status(404).json({ error: "User not found. Please register." });
+        }
+        const finalGrant = user.lastDepositIntent; // Use the intent set by the user
+        if (!finalGrant || !['ERMP', 'NGAT'].includes(finalGrant)) {
+            return res.status(400).json({ error: "Deposit intent not set. Please select ERMP or NGAT in the bot first." });
+        }
+        
+        // 3. Price Validation
+        const expectedAmount = finalGrant === 'ERMP' ? 300 : 200;
+        if (finalAmount !== expectedAmount) {
+             return res.status(400).json({ error: `Amount ${finalAmount} ETB does not match the expected price of ${expectedAmount} ETB for ${finalGrant}.` });
         }
 
-        // 4. Check for Duplicates (Crucial Security Check)
-        const existingTxn = await Transaction.findOne({ transactionNumber: parsedTxn.transactionNumber });
-        if (existingTxn) {
-            return res.status(409).json({ error: "Transaction ID already processed." });
+        // 4. 🚨 CORE STEP: Find and DELETE the PENDING transaction
+        // Use the dedicated PendingTransaction model
+        const pendingTxn = await PendingTransaction.findOneAndDelete({
+            transactionNumber: finalTxnNumber,
+            amount: finalAmount 
+        });
+        
+        if (!pendingTxn) {
+            // This is the error you were seeing!
+            return res.status(409).json({ 
+                error: "Transaction ID not found in pending list, mismatching amount, or already claimed." 
+            });
         }
-
-        // 5. Grant Entitlement and Save
+        
+        // 5. Grant Entitlement
         const expirationDate = new Date();
         expirationDate.setFullYear(expirationDate.getFullYear() + 1); 
 
@@ -364,35 +335,39 @@ const autoDepositConfirm = async (req, res) => {
             user.ngatExpiresAt = expirationDate;
         }
 
-        user.Wallet += parsedTxn.amount;
-        user.lastDepositIntent = null; // Clear the intent after successful grant
-        await user.save();
-
-        // 6. Log Transaction
-        const newTransaction = new Transaction({
-            transactionNumber: parsedTxn.transactionNumber,
-            phoneNumber: user.phoneNumber,
-            amount: parsedTxn.amount,
-            type: finalType,
-            method: 'deposit',
-            status: 'completed',
-            rawMessage: rawMessage
-        });
-        await newTransaction.save();
+        // 6. Update User and Create FINAL Transaction Record
+        user.Wallet += finalAmount; 
         
-        // 7. Success Response
-        return res.status(200).json({
-            message: `Access granted for ${finalGrant}`,
-            grantfor: finalGrant,
-            transactionNumber: parsedTxn.transactionNumber,
-            expires: expirationDate
+        const newTransaction = new Transaction({
+            transactionNumber: finalTxnNumber,
+            phoneNumber,
+            amount: finalAmount,
+            type: finalType,
+            method: 'deposit', // Final deposit
+            status: 'completed',
+            rawMessage: rawMessage,
+        });
+        
+        await newTransaction.save();
+        await user.save(); 
+        
+        console.log(`User ${user.username} granted ${finalGrant}.`);
+        
+        res.json({
+            message: `Deposit confirmed! Access to ${finalGrant} granted until ${expirationDate.toLocaleDateString()}.`,
+            wallet: user.Wallet,
+            expires: expirationDate,
         });
 
     } catch (err) {
-        console.error("Auto-deposit confirmation error:", err);
-        return res.status(500).json({ error: "Internal server error during auto-confirmation." });
+        console.error("Deposit confirmation error:", err);
+        res.status(500).json({ error: "An unexpected error occurred." });
     }
 };
+
+// ... (remove the confusing depositAmount and approveTransaction functions) ...
+
+
 
 // Update the export:
 
@@ -405,7 +380,7 @@ const autoDepositConfirm = async (req, res) => {
 export default {
     parseTransaction,
     getPendingTransactions,
-    approveTransaction, // <--- NEWLY ADDED
+   // <--- NEWLY ADDED
     depositAmount,
-    autoDepositConfirm,
+   
 };
