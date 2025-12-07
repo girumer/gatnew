@@ -35,12 +35,12 @@ function getMainMenu(user) {
     [
       {
         text: '🧠 NGAT',
-        // 💡 NGAT: Use callback_data to check access first
+        // NGAT: Use callback_data to check access first
         callback_data: 'check_ngat_access' 
       },
       {
         text: '🩺 ERMP',
-        // 💡 ERMP: Use callback_data to check access first
+        // ERMP: Use callback_data to check access first
         callback_data: 'check_ermp_access' 
       }
     ],
@@ -223,7 +223,7 @@ bot.onText(/\/exam_menu/, async (msg) => {
 });
 
 // ----------------------------------------------------------------------
-// --- CALLBACK QUERY HANDLER (WITH NEW ACCESS CHECKS) ---
+// --- CALLBACK QUERY HANDLER (WITH ALL ACCESS CHECKS) ---
 // ----------------------------------------------------------------------
 
 // ✅ Merged callback_query handler
@@ -239,13 +239,13 @@ bot.on('callback_query', async (query) => {
       return;
     }
 
-    // 💡 NEW LOGIC: Check ERMP Access
+    // --- 1. ERMP Access Check (From Main Menu) ---
     if (choice === 'check_ermp_access') {
-      await bot.answerCallbackQuery(query.id); // Dismiss the loading state immediately
+      await bot.answerCallbackQuery(query.id);
 
       if (user.isERMPValid) {
-        // Access granted: Send a temporary message with the Web App button.
-        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your ERMP Exam:', {
+        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your **ERMP Exam**:', {
+          parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
               [{
@@ -258,9 +258,8 @@ bot.on('callback_query', async (query) => {
           }
         });
       } else {
-        // Access denied: Show upgrade message and offer upgrade buttons.
         await bot.sendMessage(chatId,
-          '❌ **Access Denied!** You must purchase the ERMP Exam to access this material.\n\nPlease choose a payment method below to upgrade:',
+          '❌ **Access Denied!** You must purchase the ERMP Exam.\n\nPlease choose a payment method below to upgrade:',
           {
             parse_mode: 'Markdown',
             reply_markup: {
@@ -275,13 +274,13 @@ bot.on('callback_query', async (query) => {
       return;
     }
     
-    // 💡 NEW LOGIC: Check NGAT Access (Implemented for completeness)
+    // --- 2. NGAT Access Check (From Main Menu) ---
     if (choice === 'check_ngat_access') {
       await bot.answerCallbackQuery(query.id); 
 
       if (user.isNGATValid) {
-        // Access granted: Send a temporary message with the Web App button.
-        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your NGAT Exam:', {
+        await bot.sendMessage(chatId, '✅ Access granted! Tap to start your **NGAT Exam**:', {
+          parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
               [{
@@ -294,9 +293,8 @@ bot.on('callback_query', async (query) => {
           }
         });
       } else {
-        // Access denied: Show upgrade message and offer upgrade buttons.
         await bot.sendMessage(chatId,
-          '❌ **Access Denied!** You must purchase the NGAT Exam to access this material.\n\nPlease choose a payment method below to upgrade:',
+          '❌ **Access Denied!** You must purchase the NGAT Exam.\n\nPlease choose a payment method below to upgrade:',
           {
             parse_mode: 'Markdown',
             reply_markup: {
@@ -312,12 +310,20 @@ bot.on('callback_query', async (query) => {
     }
 
 
-    // Back to Main: send the exam menu
+    // --- 3. Navigation and General Actions ---
+
+    // Back to Main: send the main keyboard
     if (choice === 'back_to_main') {
       try {
-        await bot.editMessageText('📚 Choose your exam menu:', { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: getMainMenu(user) } });
+        // Edit the current message to show the main keyboard
+        await bot.editMessageText('👋 Main menu:', { 
+            chat_id: chatId, 
+            message_id: messageId, 
+            reply_markup: buildMainKeyboard(user) 
+        });
       } catch (err) {
-        await bot.sendMessage(chatId, '📚 Choose your exam menu:', { reply_markup: { inline_keyboard: getMainMenu(user) } });
+        // Fallback: send a new message if editing fails (e.g., message too old)
+        await bot.sendMessage(chatId, '👋 Main menu:', { reply_markup: buildMainKeyboard(user) });
       }
       await bot.answerCallbackQuery(query.id);
       return;
@@ -327,7 +333,7 @@ bot.on('callback_query', async (query) => {
     if (choice === 'open_exams') {
       const examKeyboard = getMainMenu(user);
       try {
-        await bot.editMessageReplyMarkup({ inline_keyboard: examKeyboard }, { chat_id: chatId, message_id: messageId });
+        await bot.editMessageText('📚 Choose your exam menu:', { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: examKeyboard } });
       } catch (err) {
         await bot.sendMessage(chatId, '📚 Exams:', { reply_markup: { inline_keyboard: examKeyboard } });
       }
@@ -335,66 +341,94 @@ bot.on('callback_query', async (query) => {
       return;
     }
 
-    // Upgrade menu buttons (edit in place with fallback)
+    // --- 4. Upgrade Menu Check (Prevent Re-Purchase) ---
+
+    // Check ERMP Upgrade Status
+    if (choice === 'upgrade_ermp_menu') {
+      if (user.isERMPValid) {
+        await bot.answerCallbackQuery(query.id, { text: 'You already own the ERMP exam!', show_alert: true }); // Show alert
+        await bot.sendMessage(chatId, '✅ **ERMP Upgrade Complete!** You already have active access to the ERMP exam.', {
+          parse_mode: 'Markdown',
+          reply_markup: { inline_keyboard: [[{ text: '🩺 Start ERMP Exam', callback_data: 'check_ermp_access' }]] }
+        });
+        return;
+      }
+      // If not valid, execution continues to the payment choice below
+    }
+
+    // Check NGAT Upgrade Status
+    if (choice === 'upgrade_ngat_menu') {
+      if (user.isNGATValid) {
+        await bot.answerCallbackQuery(query.id, { text: 'You already own the NGAT exam!', show_alert: true }); // Show alert
+        await bot.sendMessage(chatId, '✅ **NGAT Upgrade Complete!** You already have active access to the NGAT exam.', {
+          parse_mode: 'Markdown',
+          reply_markup: { inline_keyboard: [[{ text: '🧠 Start NGAT Exam', callback_data: 'check_ngat_access' }]] }
+        });
+        return;
+      }
+      // If not valid, execution continues to the payment choice below
+    }
+
+    // Upgrade menu buttons (Show payment options if not already upgraded)
     if (choice === 'upgrade_ermp_menu' || choice === 'upgrade_ngat_menu') {
-      const amountDep = choice === 'upgrade_ermp_menu' ? 300 : 200;
+      const examName = choice.includes('ermp') ? 'ERMP' : 'NGAT';
+      const amountDep = examName === 'ERMP' ? 300 : 200;
+      
       const keyboard = {
         inline_keyboard: [[
-          { text: '📲 TELEBIRR', callback_data: choice === 'upgrade_ermp_menu' ? 'pay_telebirr_ermp' : 'pay_telebirr_ngat' },
-          { text: '🏦 CBE', callback_data: choice === 'upgrade_ermp_menu' ? 'pay_cbe_ermp' : 'pay_cbe_ngat' }
+          { text: '📲 TELEBIRR', callback_data: `pay_telebirr_${examName.toLowerCase()}` },
+          { text: '🏦 CBE', callback_data: `pay_cbe_${examName.toLowerCase()}` }
         ]]
       };
 
       try {
-        await bot.editMessageText(`💳 To upgrade for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`, { chat_id: chatId, message_id: messageId, reply_markup: keyboard });
+        await bot.editMessageText(`💳 To upgrade **${examName}** for 1 year, deposit **${amountDep}** birr.\nChoose your payment method below:`, { 
+            chat_id: chatId, 
+            message_id: messageId, 
+            reply_markup: keyboard,
+            parse_mode: 'Markdown'
+        });
       } catch (err) {
-        await bot.sendMessage(chatId, `💳 To upgrade for 1 year, deposit ${amountDep} birr.\nChoose your payment method below:`, { reply_markup: keyboard });
+        await bot.sendMessage(chatId, `💳 To upgrade **${examName}** for 1 year, deposit **${amountDep}** birr.\nChoose your payment method below:`, { 
+            reply_markup: keyboard,
+            parse_mode: 'Markdown'
+        });
       }
 
       await bot.answerCallbackQuery(query.id);
       return;
     }
 
-    // Payment instruction branches
+    // --- 5. Payment Instruction Branches ---
     let instructionsMsg = '';
     let amountDep = 0;
+    let examType = '';
 
-    if (choice === 'pay_telebirr_ermp') {
-      amountDep = 300;
+    if (choice.includes('_ermp')) {
+        examType = 'ERMP';
+        amountDep = 300;
+        await user.updateOne({ $set: { lastDepositIntent: examType } });
+    } else if (choice.includes('_ngat')) {
+        examType = 'NGAT';
+        amountDep = 200;
+        await user.updateOne({ $set: { lastDepositIntent: examType } });
+    }
+
+
+    if (choice.includes('pay_telebirr')) {
       instructionsMsg = `
-📲 TELEBIRR
+📲 **TELEBIRR** Payment for ${examType}
 Account: \`${process.env.TELEBIRR_ACCOUNT}\`
-Amount: ${amountDep} ብር
+Amount: **${amountDep} ብር**
 
-Please send the TeleBirr SMS/transaction ID or screenshot here.`;
-      await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
-    } else if (choice === 'pay_cbe_ermp') {
-      amountDep = 300;
+Please send the TeleBirr SMS/transaction ID or screenshot here to confirm your upgrade.`;
+    } else if (choice.includes('pay_cbe')) {
       instructionsMsg = `
-🏦 CBE
+🏦 **CBE** Payment for ${examType}
 Account: \`${process.env.CBE_ACCOUNT}\`
-Amount: ${amountDep} ብር
+Amount: **${amountDep} ብር**
 
-Please send the bank SMS/transaction ID or screenshot here.`;
-      await user.updateOne({ $set: { lastDepositIntent: 'ERMP' } });
-    } else if (choice === 'pay_telebirr_ngat') {
-      amountDep = 200;
-      instructionsMsg = `
-📲 TELEBIRR
-Account: \`${process.env.TELEBIRR_ACCOUNT}\`
-Amount: ${amountDep} ብር
-
-Please send the TeleBirr SMS/transaction ID or screenshot here.`;
-      await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
-    } else if (choice === 'pay_cbe_ngat') {
-      amountDep = 200;
-      instructionsMsg = `
-🏦 CBE
-Account: \`${process.env.CBE_ACCOUNT}\`
-Amount: ${amountDep} ብር
-
-Please send the bank SMS/transaction ID or screenshot here.`;
-      await user.updateOne({ $set: { lastDepositIntent: 'NGAT' } });
+Please send the bank SMS/transaction ID or screenshot here to confirm your upgrade.`;
     }
 
     if (instructionsMsg) {
