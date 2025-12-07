@@ -144,25 +144,26 @@ body {
   align-items: flex-start; /* Align content to the top */
 }
 
+
 .container {
- width: 95%;
- max-width: 750px; /* Max width for mobile-first approach */
+width: 95%;
+ max-width: 750px; 
  
- /* 🟢 KEEP THESE for TRANSPARENCY: */
- background-color: transparent;
- box-shadow: none; 
- 
+ /* --- FINAL CORRECT SETTINGS FOR TRANSPARENCY --- */
+ background-color: transparent; /* Makes the background transparent */
+ box-shadow: none;             /* Removes the shadow */
+ /* ----------------------------------------------- */
+
  margin: 30px auto;
  padding: 20px;
  
- /* ❌ REMOVE THESE CONFLICTING LINES: */
+ /* REMOVE/COMMENT OUT THESE CONFLICTING LINES IF THEY ARE STILL PRESENT: */
  /* background-color: var(--card-background); */ 
  border-radius: var(--border-radius-base);
  /* box-shadow: var(--shadow-base); */ 
  
  animation: fadeIn 0.5s ease-out;
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
