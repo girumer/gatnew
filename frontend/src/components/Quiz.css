@@ -3,7 +3,7 @@
 :root {
   --primary-color: #007bff; /* Blue for primary actions/accents */
   --secondary-color: #6c757d; /* Gray for secondary text/borders */
-  --background: linear-gradient(to right, #b51c4f, #f0f8ff);/* Light background */
+  --background: #a8be79bd;/* Light background */
   --text-dark: hsl(210, 73%, 39%); /* Dark text */
   --card-background: #a8be79bd; /* White for quiz card */
   --success-color: #28a745; /* Green for correct/success */
@@ -25,9 +25,7 @@
 }
 
 /* with sticky, you usually don’t need to add margin-top to .container */
-.container {
-  margin-top: 20px;   /* just a little spacing if desired */
-}
+
 
 .pagination-buttons {
   margin-top: 10px;
@@ -147,15 +145,22 @@ body {
 }
 
 .container {
-  width: 95%;
-  max-width: 750px; /* Max width for mobile-first approach */
-  
-  margin: 30px auto;
-  padding: 20px;
-  background-color: var(--card-background);
-  border-radius: var(--border-radius-base);
-  box-shadow: var(--shadow-base);
-  animation: fadeIn 0.5s ease-out;
+ width: 95%;
+ max-width: 750px; /* Max width for mobile-first approach */
+ 
+ /* 🟢 KEEP THESE for TRANSPARENCY: */
+ background-color: transparent;
+ box-shadow: none; 
+ 
+ margin: 30px auto;
+ padding: 20px;
+ 
+ /* ❌ REMOVE THESE CONFLICTING LINES: */
+ /* background-color: var(--card-background); */ 
+ border-radius: var(--border-radius-base);
+ /* box-shadow: var(--shadow-base); */ 
+ 
+ animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
