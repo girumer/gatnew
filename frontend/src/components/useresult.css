@@ -202,7 +202,7 @@
  .user-results {
   margin-top: 40px;
   padding: 20px;
-  background: #d0c5c5;
+  background: #faf9f9;
   backdrop-filter: blur(8px);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -242,7 +242,7 @@
 .results-table td {
   padding: 12px;
   font-size: 14px;
-  color: #e6e6e6;
+  color: #0d0d0d;
   border-bottom: 1px solid #333;
 }
 
