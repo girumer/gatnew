@@ -40,23 +40,24 @@ function UserResults({ phone }) {
               </tr>
             </thead>
 
-            <tbody>
-              {paginatedResults.map((r, i) => (
-                <tr key={i}>
-                  <td>{r.exam}</td>
-                  <td>{r.year}</td>
-                  <td>{r.part}</td>
-                  <td>{r.points}</td>
-                  <td
-                    className={`status ${
-                      r.achived === "passed" ? "status-passed" : "status-failed"
-                    }`}
-                  >
-                    {r.achived}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+        <tbody>
+              {paginatedResults.map((r, i) => (
+                <tr key={i}>
+                  <td data-label="Exam">{r.exam}</td> {/* ADD data-label */}
+                  <td data-label="Year">{r.year}</td> {/* ADD data-label */}
+                  <td data-label="Part">{r.part}</td> {/* ADD data-label */}
+                  <td data-label="Points">{r.points}</td> {/* ADD data-label */}
+                  <td
+                    className={`status ${
+                      r.achived === "passed" ? "status-passed" : "status-failed"
+                    }`}
+                    data-label="Status" // ADD data-label
+                  >
+                    {r.achived}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
 
           {/* Pagination controls */}

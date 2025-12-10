@@ -1,328 +1,182 @@
-/* .user-results {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-.user-results h2 {
-  text-align: center;
-  color: white;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  background: linear-gradient(45deg, #FFD700, #FFA500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.user-results p {
-  text-align: center;
-  color: rgba(255,255,255,0.9);
-  font-size: 1.2rem;
-  padding: 3rem;
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.results-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: rgba(255,255,255,0.95);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-  backdrop-filter: blur(20px);
-}
-
-.results-table thead {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.results-table th {
-  padding: 1.5rem 1rem;
-  text-align: left;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.results-table tbody tr {
-  transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.results-table tbody tr:hover {
-  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  color: white;
-}
-
-.results-table tbody tr:hover td {
-  color: white;
-}
-
-.results-table td {
-  padding: 1.2rem 1rem;
-  font-size: 1rem;
-  color: #333;
-  transition: color 0.3s ease;
-}
-
-.results-table tbody tr:nth-child(even) {
-  background: rgba(255,255,255,0.7);
-}
-
-.results-table tbody tr:nth-child(odd) {
-  background: rgba(255,255,255,0.9);
-}
-
-.results-table td:nth-child(6) {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.results-table td:nth-child(6):where([style*="green"]) {
-  color: #10b981 !important;
-  background: rgba(16, 185, 129, 0.1);
-  padding: 0.8rem 1rem !important;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-.results-table td:nth-child(6):where([style*="red"]) {
-  color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.1);
-  padding: 0.8rem 1rem !important;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-
-.results-table td:nth-child(5) {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #8b5cf6;
-}
-
-
-.results-table td:last-child {
-  font-size: 0.95rem;
-  color: #6b7280;
-  font-style: italic;
-}
-
-@media (max-width: 768px) {
-  .user-results {
-    padding: 1rem;
-    margin: 1rem;
-  }
-  
-  .user-results h2 {
-    font-size: 2rem;
-  }
-  
-  .results-table {
-    font-size: 0.9rem;
-  }
-  
-  .results-table th,
-  .results-table td {
-    padding: 0.8rem 0.5rem;
-  }
-  
-  .results-table thead {
-    display: none;
-  }
-  
-  .results-table tbody tr {
-    display: block;
-    margin-bottom: 1rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  }
-  
-  .results-table tbody tr:hover {
-    transform: none;
-  }
-  
-  .results-table td {
-    display: block;
-    text-align: right;
-    position: relative;
-    padding-left: 50%;
-    padding-right: 1rem;
-    border-bottom: 1px dotted rgba(0,0,0,0.1);
-  }
-  
-  .results-table td:before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0.5rem;
-    width: 45%;
-    font-weight: 700;
-    color: #4facfe;
-    text-align: left;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .results-table td:nth-child(1):before { content: "Exam"; }
-  .results-table td:nth-child(2):before { content: "Year"; }
-  .results-table td:nth-child(3):before { content: "Part"; }
-  .results-table td:nth-child(4):before { content: "Attempts"; }
-  .results-table td:nth-child(5):before { content: "Points"; }
-  .results-table td:nth-child(6):before { content: "Status"; }
-  .results-table td:nth-child(7):before { content: "Date"; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.user-results:where(:has(.results-table tbody tr.skeleton)) tbody tr {
-  animation: pulse 1.5s infinite;
-}
- */
- .user-results {
-  margin-top: 40px;
-  padding: 20px;
-  background: #d26e6e;
-  backdrop-filter: blur(8px);
+/* --- Global Container Style --- */
+.user-results {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  /* A subtle, clean background */
+  background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  color: #141313;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   animation: fadeIn 0.6s ease-in-out;
 }
 
+/* --- Heading Style --- */
 .user-results h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 26px;
+  margin-bottom: 30px;
+  font-size: 28px;
   font-weight: 700;
-  color: #070707;
-  letter-spacing: 1px;
+  color: #333333; /* Darker text for good contrast */
+  border-bottom: 2px solid #eeeeee;
+  padding-bottom: 10px;
 }
 
+/* --- No Results Message --- */
+.user-results p {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+/* --- Table Style --- */
 .results-table {
   width: 100%;
-  border-collapse: collapse;
-  overflow: hidden;
+  border-collapse: separate; /* Use separate for rounded corners */
+  border-spacing: 0;
+  overflow: hidden; /* Ensures borders/shadows look correct */
   border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* Table Header (Thead) */
 .results-table thead {
-  background: #f8f2f2;
+  /* A clear, professional header color */
+  background-color: #007bff; 
 }
 
 .results-table th {
-  padding: 14px;
+  padding: 15px 12px;
   text-align: left;
   font-size: 15px;
   font-weight: 600;
-  color: #0f0f0f;
-  border-bottom: 2px solid #101312;
+  color: white; /* White text on blue for high contrast */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Table Body (Tbody) - Rows */
+.results-table tbody tr {
+  transition: background 0.3s ease;
+}
+
+.results-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa; /* Light stripe for readability */
+}
+
+.results-table tbody tr:hover {
+  background-color: #e9ecef; /* Subtle hover effect */
 }
 
 .results-table td {
   padding: 12px;
   font-size: 14px;
-  color: #e6e6e6;
-  border-bottom: 1px solid #333;
+  color: #495057; /* Dark gray for body text */
+  border-bottom: 1px solid #dee2e6;
 }
 
-.results-table tr {
-  transition: background 0.25s ease;
+/* Points column emphasis */
+.results-table td:nth-child(4) {
+  font-weight: 700;
+  color: #28a745; /* Green color for point value */
 }
 
-.results-table tr:hover {
-  background: #2aff9520;
-}
-
-/* ✅ Passed / Failed badge styles */
+/* --- Status Badge Styles --- */
 .results-table td.status {
   font-weight: bold;
-  text-transform: capitalize;
-}
-.summary-boxes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.box {
-  flex: 1 1 200px;
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
   text-align: center;
-  font-weight: bold;
-}
-
-.box.passed {
-  background: #d4edda;
-  color: #155724;
-}
-.pagination-buttons {
-  margin-top: 20px;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.pagination-btn {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  cursor: pointer;
-}
-
-.pagination-btn.active {
-  background: #007bff;
-  color: white;
-}
-
-.result-box {
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.box.failed {
-  background: #f8d7da;
-  color: #721c24;
 }
 
 .status-passed {
-  color: #2aff95;
-  font-weight: 700;
+  color: #28a745; /* Green */
+  background-color: #d4edda;
+  padding: 4px 8px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 13px;
 }
 
 .status-failed {
-  color: #045273;
-  font-weight: 700;
+  color: #dc3545; /* Red */
+  background-color: #f8d7da;
+  padding: 4px 8px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 13px;
 }
 
-/* ✅ Fade-in animation */
+/* --- Pagination Styles --- */
+.pagination-buttons {
+  margin-top: 25px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end; /* Align right or center */
+}
+
+.pagination-btn {
+  padding: 8px 15px;
+  border: 1px solid #ced4da;
+  background-color: #f1f1f1;
+  color: #495057;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.pagination-btn:hover:not(.active) {
+  background-color: #e9ecef;
+}
+
+.pagination-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+/* --- Animation --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsiveness (Mobile View) --- */
+@media (max-width: 768px) {
+  .user-results {
+    padding: 15px;
+    margin: 15px;
+  }
+  
+  .results-table {
+    display: block;
+    overflow-x: auto; /* Allows table to scroll horizontally if needed */
+    white-space: nowrap;
+  }
+
+  /* Optional: You can implement the card-based structure from your commented-out CSS for mobile */
+  /*
+  .results-table thead { display: none; }
+  .results-table tbody, .results-table tr, .results-table td { display: block; width: 100%; }
+  .results-table tr { margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; }
+  .results-table td { text-align: right; padding-left: 50%; position: relative; border-bottom: none; }
+  .results-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 45%;
+    font-weight: 600;
+    color: #007bff;
+    text-align: left;
+  }
+  .results-table tr:hover { background-color: #ffffff; }
+  */
+  
+  .pagination-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }

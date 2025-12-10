@@ -31,7 +31,7 @@ const sampleMode = params.get("sample") === "true";
   return (
     <div className="vindimate-wrapper">
       <h1>
-        welcome {username ? `User: ${username}` : 'No username passed'}
+        welcome {username ? `${username}` : 'No username passed'}
       </h1>
       
       <h1 className="vindimate-title">
