@@ -3,7 +3,6 @@
   max-width: 1000px;
   margin: 40px auto;
   padding: 30px;
-  /* A subtle, clean background */
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -17,8 +16,8 @@
   margin-bottom: 30px;
   font-size: 28px;
   font-weight: 700;
-  color: #333333; /* Darker text for good contrast */
-  border-bottom: 2px solid #eeeeee;
+  color: #333333;
+  border-bottom: 2px solid #e9ecef; /* Lighter border for harmony */
   padding-bottom: 10px;
 }
 
@@ -33,20 +32,20 @@
   border: 1px solid #dee2e6;
 }
 
-/* --- Table Style --- */
+/* --- Table Style (Desktop Focus) --- */
 .results-table {
   width: 100%;
-  border-collapse: separate; /* Use separate for rounded corners */
+  border-collapse: separate;
   border-spacing: 0;
-  overflow: hidden; /* Ensures borders/shadows look correct */
+  overflow: hidden;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Table Header (Thead) */
+/* Table Header (Thead) - Better Match with Body */
 .results-table thead {
-  /* A clear, professional header color */
-  background-color: #007bff; 
+  /* Use a slightly darker blue or keep primary blue, but make it cohesive */
+  background-color: #0069d9; /* Slightly darker than 007bff for a professional look */
 }
 
 .results-table th {
@@ -54,7 +53,7 @@
   text-align: left;
   font-size: 15px;
   font-weight: 600;
-  color: white; /* White text on blue for high contrast */
+  color: white;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -65,24 +64,24 @@
 }
 
 .results-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa; /* Light stripe for readability */
+  background-color: #f8f9fa;
 }
 
 .results-table tbody tr:hover {
-  background-color: #e9ecef; /* Subtle hover effect */
+  background-color: #e2f0ff; /* Light blue tint on hover for clear focus */
 }
 
 .results-table td {
   padding: 12px;
   font-size: 14px;
-  color: #495057; /* Dark gray for body text */
+  color: #495057;
   border-bottom: 1px solid #dee2e6;
 }
 
 /* Points column emphasis */
 .results-table td:nth-child(4) {
   font-weight: 700;
-  color: #28a745; /* Green color for point value */
+  color: #007bff; /* Change points color to match primary theme */
 }
 
 /* --- Status Badge Styles --- */
@@ -92,7 +91,7 @@
 }
 
 .status-passed {
-  color: #28a745; /* Green */
+  color: #155724; /* Darker green text */
   background-color: #d4edda;
   padding: 4px 8px;
   border-radius: 5px;
@@ -101,7 +100,7 @@
 }
 
 .status-failed {
-  color: #dc3545; /* Red */
+  color: #721c24; /* Darker red text */
   background-color: #f8d7da;
   padding: 4px 8px;
   border-radius: 5px;
@@ -114,7 +113,7 @@
   margin-top: 25px;
   display: flex;
   gap: 8px;
-  justify-content: flex-end; /* Align right or center */
+  justify-content: center; /* Center pagination buttons */
 }
 
 .pagination-btn {
@@ -144,39 +143,69 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Responsiveness (Mobile View) --- */
+/* 📱 --- RESPONSIVENESS: CARD-BASED MOBILE VIEW FIX --- 📱 */
 @media (max-width: 768px) {
   .user-results {
     padding: 15px;
     margin: 15px;
   }
   
-  .results-table {
-    display: block;
-    overflow-x: auto; /* Allows table to scroll horizontally if needed */
-    white-space: nowrap;
+  /* 1. Hide the table header on mobile */
+  .results-table thead { 
+    display: none; 
   }
-
-  /* Optional: You can implement the card-based structure from your commented-out CSS for mobile */
-  /*
-  .results-table thead { display: none; }
-  .results-table tbody, .results-table tr, .results-table td { display: block; width: 100%; }
-  .results-table tr { margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; }
-  .results-table td { text-align: right; padding-left: 50%; position: relative; border-bottom: none; }
+  
+  /* 2. Force table elements to display as blocks */
+  .results-table tbody, 
+  .results-table tr, 
+  .results-table td { 
+    display: block; 
+    width: 100%; 
+  }
+  
+  /* 3. Style rows as cards */
+  .results-table tr { 
+    margin-bottom: 15px; 
+    border: 1px solid #dee2e6; 
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff; /* Ensure background is white on mobile */
+  }
+  
+  .results-table tbody tr:nth-child(even) {
+    background-color: #ffffff; /* Remove striping on cards */
+  }
+  
+  .results-table tr:hover { 
+    background-color: #f8f9fa; /* Light hover effect */
+  }
+  
+  /* 4. Style cells to show the label and value */
+  .results-table td { 
+    text-align: right; 
+    padding: 10px 15px; /* Adjust padding for mobile */
+    position: relative; 
+    border-bottom: 1px solid #f1f1f1; /* Add separator between fields */
+  }
+  
+  .results-table tr:last-child td {
+    border-bottom: none; /* Remove border from the last cell in the row */
+  }
+  
+  /* 5. Inject the header label using the data-label attribute */
   .results-table td:before {
-    content: attr(data-label);
+    content: attr(data-label) ":"; /* Pulls label from React component */
     position: absolute;
-    left: 10px;
+    left: 15px;
     width: 45%;
     font-weight: 600;
-    color: #007bff;
+    color: #495057; /* Darker text for the label */
     text-align: left;
+    white-space: normal;
   }
-  .results-table tr:hover { background-color: #ffffff; }
-  */
   
-  .pagination-buttons {
-    justify-content: center;
-    flex-wrap: wrap;
+  /* Adjust status badge placement on mobile */
+  .results-table td.status {
+    text-align: right;
   }
 }
