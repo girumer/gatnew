@@ -46,7 +46,7 @@ export default [
     },
      {
         id: 5,
-        question : "A 9-month-old girl is brought to the emergency department by her parents, who report that she has been having episodes of colicky abdominal pain and bloody stools for the past three days. The pain is intermittent and lasts for a few minutes. The stools are mixed with mucus and have a "currant jelly" appearance. On physical examination, the girl is lethargic and pale. The doctor feels a sausage-shaped mass in the right lower quadrant of the abdomen. What is the most likely diagnosis?",
+        question : "A 9-month-old girl is brought to the emergency department by her parents, who report that she has been having episodes of colicky abdominal pain and bloody stools for the past three days. The pain is intermittent and lasts for a few minutes. The stools are mixed with mucus and have a 'currant jelly' appearance. On physical examination, the girl is lethargic and pale. The doctor feels a sausage-shaped mass in the right lower quadrant of the abdomen. What is the most likely diagnosis?",
         options : [
             'Intussusception',
             'Intestinal atresia',
