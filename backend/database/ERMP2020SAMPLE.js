@@ -120,7 +120,7 @@ export default [
             'Tympanic membrane perforation',
         ],
          explanation: "Based on the examination findings this patient has conductive hearing loss. All except Presbycusis are causes of conductive hearing loss, Presbycusis is a true sensorineural loss, in which both cochlear hair cells and, to a lesser extent, the spiral ganglion cells in the vestibulocochlear nerve can be affected. - UpToDate",
-         image:'/images/ERMP2020PARTONEIMG11E.png',
+         explanationImage:'/images/ERMP2020PARTONEIMG11E.png',
     },
     {
         id: 12,

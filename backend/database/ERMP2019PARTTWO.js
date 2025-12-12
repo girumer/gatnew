@@ -615,7 +615,7 @@ export default [
             'Toxocariasis',
         ],
          explanation: " Congenital cataract: An infant does not seem to be visually aware of the world around them (if cataracts are in both eyes), Gray or white cloudiness of the pupil and the \"red eye\" glow of the pupil is missing or is different between the 2 eyes in flash photos. - Retinoblastoma: The initial sign in the majority of patients is a white pupillary reflex (leukocoria) instead of red eye glow in flash photos. - Nelson 21st p4785-4786, Harrison's 21st p4784",
-        image:'/images/ERMP2019PARTTWOIMG56.png',
+    explanationImage:'/images/ERMP2019PARTTWOIMG56.png',
     },
     {
         id: 57,

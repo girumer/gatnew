@@ -76,7 +76,7 @@ export default [
             'Treponemal hemagglutination assay',
         ],
          explanation: "Genital ulcer syndrome consists of syphilis, chancroid, HSV, and LGV. Chancroid: painful with dirty base, no induration and inguinal fluctuant adenopathy. HSV: painful erythematous vesicles. LGV: painless ulcer with painful unilateral inguinal lymphadenopathy. Syphilis: painless ulcer with clean base and indurated edges. Lymph nodes are tender in HSV, chancroid and LGV, but rubbery, non-tender in late primary syphilis. A reactive VDRL/RPR screening test must be confirmed by a treponemal (FTA-ABS, TPPA or TPHA) test. But a negative VDRL/RPR does not exclude syphilis, and should be repeated at 4 and 12wks in patient with possible exposure to syphilis, or DFM should be done if available. - Harrison's 21st p5311-5312 & p4105, UpToDate",
-         image:'/images/ERMP2021PARTTWOIMG7.png',
+         explanationImage:'/images/ERMP2021PARTTWOIMG7.png',
     },
     {
         id: 8,
@@ -759,7 +759,7 @@ export default [
             'Femoral hernia',
         ],
          explanation: "Inguinal hernias are generally classified as direct, indirect, or femoral based upon the site of herniation relative to surrounding structures. Indirect hernias protrude lateral to the inferior epigastric vessels, through the deep inguinal ring. Direct hernias protrude medial to the inferior epigastric vessels, within Hesselbach's triangle. Femoral hernias present as a swelling in the groin below and lateral to the pubic tubercle (Inguinal hernia is above and medial to the pubic tubercle). - Bailey 25th p968 Figure 57.1, Schwartz's 11th p1627",
-        image:'/images/ERMP2021PARTTWOIMG69.png',
+        explanationImage:'/images/ERMP2021PARTTWOIMG69.png',
     },
     {
         id: 70,
@@ -942,7 +942,7 @@ export default [
     {
         id: 86,
         question : "A 85 year old male patient presented with right side groin pain of 5 months duration. He is taking nonsteroidal anti-inflammatory drug and usually ambulatory using cane. He has no history of trauma. His physical examination was non-revealing. Pelvic X-ray was taken and is shown below. What is the next appropriate step? (Original image unavailable, the following image is provided by us)",
-         image:'/images/ERMP2022PARTTWOIMG86.png',
+         image:'/images/ERMP2021PARTTWOIMG86.png',
         options : [
             'Bed rest',
             'Steroid injection',
@@ -950,7 +950,7 @@ export default [
             'Calcium supplementation',
         ],
          explanation: "Radiography feature of joint space narrowing, osteophyte formation and subchondral bone sclerosis are pathognomonic of Osteoarthritis. Most consistent symptom is pain in the groin followed by limitation of movement. Groin pain occurs secondary to irritation of the obturator nerve, which crosses the hip joint. Lifestyle modification with exercise and weight reduction is a core component in the management of osteoarthritis. Nonoperative measures to treat arthritis include weight loss, activity modification, rest, physical therapy, NSAIDs, bracing, and assistive devices such a cane or walker. Intra-articular injection with corticosteroid or sodium hyaluronate provides pain relief and anti-inflammatory effect, thus can be considered as an adjunct to other treatment. - Apley's 10th p101, Schwartz's 11th p1932, Bailey 25th p517",
-       image:'/images/ERMP2021PARTTWOIMGE86.png',
+       explanationImage:'/images/ERMP2021PARTTWOIMGE86.png',
     },
     {
         id: 87,
@@ -1006,7 +1006,7 @@ export default [
             'Basal cell carcinoma',
         ],
          explanation: "Malignant melanoma - originates from pigment producing cells (melanocytes) in the skin. Often presents as a pigmented lesion with color change, irregular border, itching and bleeding, develops from existing mole or appear as new growth. The presence of small black spots is a potential indicator of cancerous activity. Extramammary Paget disease (EMPD) is a rare dermatologic condition that frequently presents in areas where apocrine sweat glands are abundant. Commonly the vulva, perineal, scrotal, perianal, and penile skin. BCC: The common form first appears as a small round or oval area of skin thickening. Usually there is no itching, pain or change in skin color. - Rook's Dermatology 9th p3981, UpToDate",
-        image:'/images/ERMP2021PARTTWOIMG91.png',
+        explanationImage:'/images/ERMP2021PARTTWOIMG91.png',
     },
     {
         id: 92,
@@ -1029,7 +1029,7 @@ export default [
             'Lateral cutaneous nerve injury',
         ],
          explanation: "Symptoms include painful paresthesia in a distribution that includes the median nerve territory (the 1st three digits and the radial half of the 4th digit). -UpToDate",
-         image:'/images/ERMP2021PARTTWOIMG93.png',
+         explanationImage:'/images/ERMP2021PARTTWOIMG93.png',
     },
     {
         id: 94,

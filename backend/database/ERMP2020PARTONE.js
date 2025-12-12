@@ -120,7 +120,7 @@ export default [
             'Tympanic membrane perforation',
         ],
          explanation: "Based on the examination findings this patient has conductive hearing loss. All except Presbycusis are causes of conductive hearing loss, Presbycusis is a true sensorineural loss, in which both cochlear hair cells and, to a lesser extent, the spiral ganglion cells in the vestibulocochlear nerve can be affected. - UpToDate",
-         image:'/images/ERMP2020PARTONEIMG11E.png',
+         explanationImage:'/images/ERMP2020PARTONEIMG11E.png',
     },
     {
         id: 12,
@@ -682,7 +682,7 @@ export default [
             'A dermatome supplied by 2nd trigeminal division',
         ],
          explanation: "The main sensory innervation of the face is derived from cranial nerve V (trigeminal nerve) and the upper cervical nerves. The trigeminal nerve is named for its three major sensory branches. The 2nd branch (maxillary nerve) is purely sensory and innervates the maxillary area.",
-         image:'/images/ERMP2020PARTONEIMG62E.png',
+         explanationImage:'/images/ERMP2020PARTONEIMG62E.png',
     },
     {
         id: 63,
@@ -948,7 +948,7 @@ export default [
             'Laparoscopic cholecystectomy',
         ],
          explanation: "CT findings: gallbladder wall thickening with intramural air (white arrows) Emphysematous Cholecystitis: CT demonstrate emphysematous changes (air bubble) in the gallbladder wall. Indications for an emergency cholecystectomy include: gallbladder necrosis, emphysematous cholecystitis and gallbladder perforation. Laparoscopic cholecystectomy is a safe, cost-effective treatment for this condition. - Schwartz's 11th p1432, Bailey 25th p1113, UpToDate",
-         image:'/images/ERMP2020PARTONEIMG86E.png',
+         explanationImage:'/images/ERMP2020PARTONEIMG86E.png',
     },
     {
         id: 87,
@@ -1016,7 +1016,7 @@ export default [
             'Tenosynovitis',
         ],
          explanation: "Felon: is a subcutaneous abscess (digital pulp space) of the fingertip and is most commonly caused by penetrating trauma. S aureus is the most common pathogen. It's characterized by severe pain, swelling, and erythema in the pad of the fingertip that is more dramatic than the onset of paronychia. Paronychia is an infection beneath the nail fold. Herpetic whitlow: Acute onset is associated with vesicles, vesicopustules, severe edema, erythema, or pain. -Schwartz's 11th p1978, UpToDate",
-          image:'/images/ERMP2020PARTONEIMG92E.png',
+          explanationImage:'/images/ERMP2020PARTONEIMG92E.png',
     },
     {
         id: 93,
@@ -1096,7 +1096,7 @@ export default [
             'Diagnostic peritoneal lavage',
         ],
          explanation: "Ultrasound (US) can be invaluable in the initial evaluation of the unstable trauma patient because it can rapidly determine the presence or absence of blood in the pericardial and peritoneal spaces. FAST is a rapid, reproducible, portable and non-invasive bedside test, accurate for the detection of > 100 ml of free blood. The role of diagnostic peritoneal lavage in the assessment of abdominal GSWs is extremely limited. Multidetector computed tomography (MDCT) has made DPL largely obsolete save for a few special circumstances. - UpToDate, Bailey 25th p346-347",
-         image:'/images/ERMP2020PARTONEIMG99E.png',
+         explanationImage:'/images/ERMP2020PARTONEIMG99E.png',
     },
     {
         id: 100,

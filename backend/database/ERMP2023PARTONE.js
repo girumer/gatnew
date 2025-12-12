@@ -35,7 +35,7 @@ export default [
             'Musculocutaneous nerve',
         ],
         explanation: "The ulnar nerve innervates the little finger and the medial half of the ring finger, both for sensation and motor functions. It is also responsible for the abduction and adduction of the fingers through the interossei muscles. A cut on the ulnar side of the wrist causing decreased sensation in these areas and difficulty with finger abduction and adduction strongly suggests ulnar nerve damage. The radial nerve is primarily responsible for the extension of the wrist and fingers and sensation over the dorsum of the hand, particularly the thumb, index finger, and middle finger. Injury to the radial nerve typically results in wrist drop and loss of sensation in these areas. The median nerve is responsible for the sensation of the thumb, index finger, middle finger, and the lateral half of the ring finger. It also controls the muscles involved in thumb opposition and flexion of the lateral fingers.The musculocutaneous nerve primarily innervates the muscles of the anterior compartment of the arm (biceps, brachialis) and provides sensation to the lateral forearm. Injury to this nerve would not affect the sensation of the fingers or the wrist.- UpToDate, Tintinalli's 9th p1786",         image:'/explanation part one/question 3 explanation.png',
-        image:'/images/img3p1.png',
+        explanationImage:'/images/img3p1.png',
     },
    {
         id: 4,
@@ -91,7 +91,7 @@ export default [
             'Anterior hip Dislocation',
         ],
         explanation: "Posterior hip dislocation is often caused by high-energy trauma such as falls from heights or motor vehicle accidents. In an isolated posterior hip dislocation the leg is shortened and lies in an adducted, internally rotated and slightly flexed position. The severe pain, inability to bear weight, and physical examination findings in this patient are highly suggestive of a posterior hip dislocation. The dislocation must be reduced as soon as possible; rates of osteonecrosis and subsequent osteoarthritis are increased if the hip is dislocated for more than 6 hours. This requires sedation or general anaesthesia and is performed closed in the majority of cases. Closed reduction should not be attempted if there is an associated femoral neck fracture. Anterior hip dislocations, while less common than posterior, usually present with a leg that is externally rotated and abducted. The clinical presentation of a shortened, internally rotated leg in this patient does not fit with an anterior hip dislocation. Femoral shaft fracture typically results in significant pain, swelling, and deformity of the thigh. Often presents with gross deformity and angulation.Femoral neck fractures typically present with pain in the hip or groin and an inability to bear weight. The leg may appear shortened and externally rotated, not internally rotated as described in the scenario. Thus, the presentation of internal rotation and the mechanism of injury suggest a different diagnosis.- Apley 10th p881-884",
-         image:'/images/img8p1.png',
+        explanationImage:'/images/img8p1.png',
     },
     {
         id: 9,
@@ -103,7 +103,7 @@ export default [
             'Peroneal artery',
         ],
         explanation: "Popliteal artery injury can occur from fractures about the knee, especially femoral condyle fractures or displaced tibial plateau fractures, and from ligamentous injuries such as isolated posterior cruciate ligament injuries, multiple ligamentous injuries, or knee dislocation. Popliteal artery circulation must be restored within 8 hours to avoid amputation, because collateral circulation is insufficient to maintain blood flow to the leg. A diminished pulse raises concern for vascular injury and should not be interpreted as vascular spasm. The popliteal artery runs behind the knee and is at risk of injury with knee dislocations or severe trauma to the knee. An absence of distal pulses and coolness of the foot strongly suggest injury to the popliteal artery, as it is the major vessel supplying blood to the lower. leg and foot. - Schwartz's 11th p232, Tintinalli's 9th p1851",
-        image:'/images/img9p1.png',
+        explanationImage:'/images/img9p1.png',
     },
     {
         id: 10,
@@ -500,7 +500,7 @@ export default [
             'Nasolacrimal sac',
         ],
         explanation:"",
-        image:'/images/img45p1.png', 
+        explanationImage:'/images/img45p1.png', 
     },
      {
         id: 46,
@@ -633,7 +633,7 @@ export default [
             'The girl will be a carrier',
         ],
         explanation: "Hemophilia A is an X-linked recessive disorder that occurs almost exclusively in males. Females are usually asymptomatic carriers of the disease, although mild bleeding is possible in carriers. A female may acquire hemophilia in the rare situation in which her father has hemophilia and her mother is a carrier who transmits the abnormal allele to her. This patient's birth mother has no family history of bleeding, including in male relatives; therefore, it is highly unlikely that the birth mother is a carrier. A father who has hemophilia will transmit the abnormal allele to all his daughters and, consequently, they will be carriers of the disease. Sons will be unaffected, as they receive only a single, normal allele on the X chromosome inherited from their mother. If the mother is a carrier, her daughters have a 50% chance of being carriers, and her sons have a 50% chance of having hemophilia.",
-        image:'/images/img57p1.png',
+        explanationImage:'/images/img57p1.png',
     },
      {
         id: 58,
@@ -843,7 +843,7 @@ export default [
             'Metronidazole',
         ],
          explanation: "Individuals infected with V. cholerae 01 or 0139 exhibit a range of clinical manifestations. Some individuals are asymptomatic or have only mild diarrhea; others present with the sudden onset of explosive and life-threatening diarrhea. The stool has a characteristic appearance: a nonbilious, gray, slightly cloudy fluid with flecks of mucus, no blood, and a somewhat fishy, inoffensive odor. It has been called 'rice-water' stool because of its resemblance to the water in which rice has been washed. Doxycycline is the first choice of antibiotic for treating cholera, which is caused by Vibrio cholerae. It has been shown to effectively reduce the duration and volume of diarrhea and is recommended for adults. Single-dose doxycycline is often sufficient in treating cholera in adults. First line antibiotic is Doxycycline 300mg PO stat, alternatives are Tetracycline 500mg QID for 3 days or Cotri: 800mg/160mg PO BID for 3 days or Ciprofloxacin, 1g PO stat or 500mg P.O, BID, for 3 days.- Harrison's 21st p4909-4916, stg p590",
-          image:'/images/img76p1.png',
+          explanationImage:'/images/img76p1.png',
     },
      {
         id: 77,
@@ -855,7 +855,7 @@ export default [
             'Perform angiography',
         ],
          explanation: "Along with assessing hemodynamic stability, the first step in evaluating a gastrointestinal (GI) bleed is determining whether the source is in the upper or lower Gl tract, with the ligament of Treitz separating the 2 sites. Bright red blood from the rectum (BRBPR) is nearly always due to a lower GI bleed (LGIB). Hematemesis and melena are more common in upper GI bleed (UGIB), although an UGIB can sometimes present with BRBPR if bleeding is particularly brisk. Hemodynamic compromise, orthostasis, and a blood urea nitrogen to creatinine (BUN/Cr) ratio >20:1 are suggestive of UGIB. A nasogastric lavage with aspiration of bile and absence of blood increases the likelihood of LGIB if the bleeding source is unclear, however, it can miss a distal UGIB. This patient with BRBPR is hemodynamically stable and has a normal BUN/Cr ratio as well as bilious fluid on nasogastric aspirate, consistent with LGIB. She received appropriate initial management (fluids, blood type and cross-match). Colonoscopy has diagnostic and potentially therapeutic abilities in LGIB and would be the next best step in management. If no bleeding source is found, esophagogastroduodenoscopy (EGD) is performed. In patients who are hemodynamically unstable or in whom UGIB is suspected, EGD should be considered first to exclude a brisk UGIB. Diverticulosis is a common cause of brisk, painless hematochezia in an elderly patient and can readily be diagnosed by colonoscopy. Unlike diverticulosis, diverticulitis (which typically presents with left lower quadrant abdominal pain and low-grade fever, not BRBPR) would be a a contraindication to colonoscopy due to the risk of perforation. A non-contrast CT scan of the abdomen can be helpful to evaluate for bleeding into the peritoneal cavity or retroperitoneum, but is not routinely used for evaluation of a Gl hemorrhage. An arterial-phase contrast-enhanced CT with negative oral contrast can help to localize the source of bleeding, but this method is rarely utilized.Angiography can be considered in patients with BRBPR in whom EGD did not reveal a bleeding source and who continue to have persistent bleeding but are too hemodynamically unstable for a colonoscopy. If angiography is unsuccessful, other techniques (eg, colonoscopy if the patient is stable, tagged red blood cell scan, enteroscopy, surgery) are considered. - UpToDate",
-         image:'/images/img77p1.png',
+         explanationImage:'/images/img77p1.png',
     },
      {
         id: 78,

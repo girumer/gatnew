@@ -1,4 +1,3 @@
-export const  examTitle= "ERMP2022PARTONE";
 export default [
     {
         id: 1,
@@ -288,7 +287,7 @@ export default [
     },
     {
         id: 27,
-        question : "A 60-year-old woman with a history of has been taking low-dose aspirin daily for cardiovascular risk reduction. She complains of epigastric pain and heartburn that worsen after meals. She has no history of peptic ulcer disease or H. pylori infection. She takes no other medications. What is the best management strategy for her condition?",
+        question : "A 60-year-old woman with a history of hypertension and dyslipidemia has been taking low-dose aspirin daily for cardiovascular risk reduction. She complains of epigastric pain and heartburn that worsen after meals. She has no history of peptic ulcer disease or H. pylori infection. She takes no other medications. What is the best management strategy for her condition?",
         options : [
             'Stop aspirin and start omeprazole',
             'Continue aspirin and start omeprazole',
@@ -408,7 +407,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of sigmoid volvulus, which is a twisting of the sigmoid colon around its mesentery, causing bowel obstruction. The abdominal x-ray shows a characteristic 'coffee bean' sign, which is a dilated loop of colon with its apex pointing to the right upper quadrant. The initial management of sigmoid volvulus is resuscitation followed by endoscopic or rectal tube detorsion, which can decompress the bowel and untwist the volvulus in up to 80% of cases. Nasogastric tube insertion is not helpful, as it does not reach the site of obstruction. Colonoscopy can be used as a second-line option if rectal tube insertion fails, or as a diagnostic tool if the diagnosis is uncertain. Barium enema is contraindicated, as it can worsen the obstruction and increase the risk of perforation. Laparotomy is reserved for cases with signs of ischemia, necrosis, or perforation, or for recurrent or refractory volvulus. - Bailey 25th p1200, Schwartz's 11th p1334"
     },
-     {
+    {
         id: 38,
         question : "A 40-year-old woman presents with chronic right lower quadrant pain, diarrhea, and weight loss. She has a history of Crohn disease and has been taking mesalamine for maintenance therapy. On physical examination, she has a palpable mass in the right iliac fossa. An abdominal CT scan shows a thickened terminal ileurn with adjacent fat stranding and enlarged lymph nodes. Which of the following is the most likely diagnosis?",
         options : [
@@ -419,9 +418,9 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of a flare-up of Crohn disease, which is a chronic inflammatory bowel disease that can affect any part of the gastrointestinal tract, but most commonly involves the terminal ileum. The palpable mass in the right iliac fossa and the CT findings of a thickened terminal ileum with fat stranding and enlarged lymph nodes suggest an inflammatory process, which is characteristic of Crohn's disease. Appendiceal abscess is an accumulation of pus due to an infection, typically following acute appendicitis. Patients with an appendiceal abscess often present with acute abdominal pain that begins around the navel and then shifts to the lower right abdomen. Fever, loss of appetite, and gastrointestinal symptoms like nausea may accompany the pain. Ileocecal tuberculosis is a form of extrapulmonary tuberculosis that affects the digestive system. It can mimic Crohn's disease but usually occurs in areas where tuberculosis is endemic or in immunocompromised patients. Symptoms may include abdominal pain, weight loss, and fever. A definitive diagnosis would require evidence of M.tuberculosis from biopsy or culture. Psoas abscess is a collection of pus in the psoas muscle compartment, which can be primary (from a blood-borne infection) or secondary (from a nearby infectious source). It presents with back pain, hip pain, fever, and sometimes abdominal pain. -Harrison's 21st p9043, UpToDate"
     },
-     {
+    {
         id: 39,
-        question : "A 60-year-old man presents with occult blood in his stool, detected on a routine screening test. He has no other symptoms and no significant medical history. story. A colonoscopy is performed and reveals a polypoid mass in the the right hepatic flexure, which is biopsied and confirmed to be adenocarcinoma. Which of the following is the most appropriate surgical management for this patient?",
+        question : "A 60-year-old man presents with occult blood in his stool, detected on a routine screening test. He has no other symptoms and no significant medical history. A colonoscopy is performed and reveals a polypoid mass in the the right hepatic flexure, which is biopsied and confirmed to be adenocarcinoma. Which of the following is the most appropriate surgical management for this patient?",
         options : [
             'Right hemicolectomy',
             'Right colectomy',
@@ -430,7 +429,7 @@ export default [
         ],
          explanation: "This patient has right-sided colon cancer, which is a malignant tumor arising from the glandular cells of the colon. The standard surgical treatment for right-sided colon cancer is right hemicolectomy, which involves the removal of the cecum, ascending colon, hepatic flexure, and proximal transverse colon, along with the associated lymph nodes and blood vessels. This provides adequate margins and lymphadenectomy, and reduces the risk of recurrence and metastasis. Right colectomy, segmental resection of the hepatic flexure, and transverse colectomy are less preferred options for this patient. These procedures may not provide adequate lymphadenectomy or may leave residual disease, increasing the risk of local recurrence. Segmental resection of the hepatic flexure would involve removing only the section of the colon containing the tumor. However, it may not provide an adequate margin or lymph node sampling, which is crucial for staging and treatment of colon cancer. Transverse colectomy procedure involves removing only the transverse colon. Since the tumor is located at the hepatic flexure, which is part of the right colon, a transverse colectomy would not be adequate for this case. It may not provide adequate lymphadenectomy or may leave residual disease, increasing the risk of local recurrence. - Bailey 25th p1183, Schwartz's 11th p1297-1298, UpToDate"
     },
-     {
+    {
         id: 40,
         question : "A 50-year-old woman presents with fatigue, pallor, and glossitis. She has a history of pernicious anemia and has been taking oral vitamin B12 supplements for the past year. Laboratory tests show a macrocytic anemia with a mean corpuscular volume (MCV) of 110 fL, a low serum vitamin B12 level, and a high serum homocysteine level. A peripheral blood smear shows oval macrocytes and hyper segmented neutrophils. Which of the following is the most likely diagnosis?",
         options : [
@@ -441,7 +440,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of vitamin B12 deficiency, which causes a megaloblastic anemia and neurological dysfunction. The most common cause of vitamin B12 deficiency is pernicious anemia, which is an autoimmune disorder that impairs the absorption of vitamin B12 by destroying the gastric parietal cells that produce intrinsic factor (causing severe lack of IF as a result of gastric atrophy). Oral vitamin B12 supplements are not effective in pernicious anemia, as they require intrinsic factor for absorption. The treatment of choice is intramuscular vitamin B12 injections. Tropical sprue is a malabsorptive disorder that affects the small intestine, leading to nutrient absorption issues. It primarily occurs in tropical and subtropical regions and is believed to be related to bacterial or parasitic infections2. However, it typically presents with symptoms such as chronic diarrhea and weight loss.- Harrison's 21st p2962 Celiac disease is an autoimmune disorder triggered by the ingestion of gluten, a protein found in wheat, barley, and rye. It can lead to malabsorption of nutrients, including iron and folate3. However, it does not typically cause vitamin B12 deficiency, as vitamin B12 is absorbed in the upper part of the small intestine, which is less commonly affected in celiac disease. Folate deficiency can cause macrocytic anemia similar to vitamin B12 deficiency. However, folate deficiency does not cause the neurological symptoms seen in vitamin B12 deficiency and would not explain the patient's low serum vitamin B12 level. - Harrison's 21st p2958 & p2970-2971, UpToDate"
     },
-     {
+    {
         id: 41,
         question : "A 25-year-old man presents with fatigue, fever, and bleeding gums. He has a history of recurrent infections and easy bruising. A complete blood count shows leukocytosis with 80% blasts. A peripheral blood smear shows auer bodies (image below). Which of the following is the most likely diagnosis?",
         image:'/images/ERMP2022PARTONEIMG41.png',
@@ -453,7 +452,7 @@ export default [
         ],
          explanation: "The presence nce of Auer rods in the peripheral blood smear is a characteristic feature of AML, which is a malignant proliferation of immature hematopoietic cells. Auer rods are needle-shaped inclusions in the cytoplasm of myeloid cells, and their presence is pathognomonic for AML.. AML. Additionally, the patient's symptoms of fatigue, fever, bleeding gums, recurrent infections, and easy bruising are consistent with the clinical presentation of AML. The complete blood count showing leukocytosis with 80% blasts also supports this diagnosis. Chronic myeloid leukemia (CML) is a clonal bone marrow stem cell disorder characterized by a proliferation of mature granulocytes (neutrophils, eosinophils, and basophils) and their precursors. It's associated with the Philadelphia chromo chromosome (t(9;22)(q34;q11)), which results in the BCR-ABL fusion gene. Patients may present with fatigue, weight loss, and splenomegaly, but they typically do not have a high percentage of blasts in the peripheral blood unless in blast crisis. Chronic lymphocytic leukemia (CLL) is the most common leukemia in adults in Western countries and is characterized by a clonal proliferation of small, mature-appearing lymphocytes. It's often an incidental finding on a blood test showing lymphocytosis. Symptoms, if present, might include fatigue, lymphadenopathy, and splenomegaly.CLL does not present with Auer rods or a high percentage of blasts. Acute lymphoblastic leukemia (ALL) is a malignancy of lymphoid lineage cells, often presenting in childhood. It's characterized by the presence of lymphoblasts in the bone marrow and peripheral blood. Symptoms can include bone pain, lymphadenopathy, and CNS involvement. Like AML, ALL presents with a high percentage of blasts, but these blasts are of lymphoid origin, and Auer bodies are not seen. - Harrison's 21st p3107 & p3119 (Fig 104-1), UpToDate"
     },
-     {
+    {
         id: 42,
         question : "A 65-year-old man presents with urinary hesitancy, frequency, and nocturia. He has a history of benign prostatic hyperplasia and takes tamsulosin. On digital rectal examination, he has an enlarged prostate with obliteration of the median sulcus. Which of the following is the best initial investigation for this patient?",
         options : [
@@ -464,7 +463,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of bladder outlet obstruction due to prostatic enlargement, which can be caused by benign or malignant processes. The best initial investigation for this patient is serum prostate-specific antigen (PSA), which helps to evaluate the possibility of prostate cancer. A high or rising PSA level may indicate the need for further evaluation with prostate biopsy or imaging. Prostate biopsy is an invasive procedure and is not typically the first-line investigation without prior indication from PSA levels or other findings. Transrectal ultrasound can provide information about the prostate's size and structure and may be used after initial PSA testing.Cystoscopy is used to visualize the urethra and bladder and is generally not the first test ordered unless there is suspicion of other urinary tract abnormalities.- Schwartz's 11th p1348 & p1356, Bailey 25th p1356, Harrison's 21st p2628"
     },
-     {
+    {
         id: 43,
         question : "A 5-year-old boy presents with heavy bleeding after circumcision. He has a history of prolonged bleeding after minor injuries and dental procedures. His maternal uncle and grandfather also had similar bleeding problems. Laboratory tests show normal platelet count, bleeding time, prothrombin time, and activated partial thromboplastin time. Which of of the following is the best management for this patient?",
         options : [
@@ -475,7 +474,7 @@ export default [
         ],
          explanation: "Hemophilia typically refers to an inherited bleeding disorder caused by deficiency of coagulation factor VIII (hemophilia A), factor IX (hemophilia B), or factor XI (hemophilia C). Screening tests of hemostasis, including the PT, aPTT, thrombin time (TT), and platelet count, are appropriate for all patients with suspected hemophilia. In hemophilia the platelet count, bleeding time, PT and aPTT are normal. Treatment of hemophilia bleeds requires: (1) prompt initiation of factor replacement (factor VIII and factor IX) as symptoms often precede objective evidence of bleeding, especially for classic symptoms of bleeding into the joint in a reliable patient, headaches, or major trauma; and (2) avoidance of antiplatelet drugs. Von Willebrand disease (VWD) is the most common inherited bleeding disorder. Individuals with VWD can have a normal CBC, aPTT, PT. Plasma von Willebrand factor antigen (VWF:Ag) measures the quantity of VWF protein in the plasma. Due to platelete aggregation defect bleeding time is usually prolonged in vWD. The mainstay of treatment for type 1 VWD is DDAVP (desmopressin), which results in release of VWF and FVIII from endothelial stores. - Harrison's 21st p3465 &p3455, UpToDate"
     },
-     {
+    {
         id: 44,
         question : "A 32-year-old woman who is 28 weeks pregnant presents with swelling and pain in her left leg. She has no history of trauma or surgery. On physical examination, she has a positive Homan sign and a palpable cord in the left popliteal fossa. A Doppler ultrasound confirms the diagnosis of deep venous thrombosis. Which of the following is the best management for this patient?",
         options : [
@@ -486,7 +485,7 @@ export default [
         ],
          explanation: "Pregnancy is a risk factor for DVT, due to increased venous stasis, hypercoagulability, and compression of the inferior vena cava by the gravid uterus. With suspected DVT, the initial diagnostic test recommended is compression U/S of the proximal leg veins (ACOG, 2020b). The diagnosis is based on the non-compressibility and typical echo architecture of a thrombosed vein. The best management for DVT in pregnancy is anticoagulation with low-molecular-weight heparin (LMWH), which is safe and effective for both the mother and the fetus. Unfractionated heparin can also be used, but it requires more frequent monitoring and has more side effects than LMWH. UFHs are the initial treatment of thromboembolism and in situations in which delivery, surgery, or thrombolysis may be necessary. Warfarin a Vit K antagonists are generally contraindicated because they readily cross the placenta and cause fetal death and malformations from hemorrhages.Direct-acting Oral Anticoagulants (Rivaroxaban) are drugs of choice for non-pregnant. Rivaroxaban is a direct oral anticoagulant that has not been adequately studied in pregnancy and is not recommended. - William's Gynecology 3rd p2529, p2532-2538, Gabbe's Obstetrics 7th p974, ACOG 2020b"
     },
-     {
+    {
         id: 45,
         question : "A 40-year-old man presents with a painless lump in his neck that he noticed a few weeks ago. He has no history of fever, night sweats, weight loss, or infection. He smokes half a pack of cigarettes per day and drinks occasionally. On physical examination, he has a 3-cm firm, non-tender, and mobile lymph node in the left cervical region. There are no other palpable lymph nodes or organomegaly. Which of the following is the best initial investigation for this patient?",
         options : [
@@ -497,7 +496,7 @@ export default [
         ],
          explanation: "This patient has isolated cervical lymphadenopathy, which can be caused by various benign or malignant conditions. The best initial investigation for this patient is fine-needle aspiration cytology (FNAC), which is a simple, quick, inexpensive and minimally invasive procedure that can obtain cellular samples from the lymph node and provide a rapid diagnosis. FNAC can differentiate between reactive, inflammatory, infectious, or neoplastic causes of lymphadenopathy, and guide further management. Excisional biopsy is a more invasive procedure that can provide more tissue for histologic and immunohistochemical analysis, but it is usually reserved for cases where FNAC is inconclusive or unavailable. Chest x-ray and serologic tests are not specific for the cause of lymphadenopathy, and would not be the best initial tests for this patient. Excisional Biopsy is a more invasive procedure where the entire lymph node would be removed. While it can provide a lot of tissue for examination, it's generally reserved for when less invasive tests (like FNAC) don't provide a clear answer, or when the suspicion for cancer is high. - UpToDate"
     },
-     {
+    {
         id: 46,
         question : "A 30-year-old man presents to the clinic with fatigue, pallor, and fever. He has a history of recent travel to sub-Saharan Africa, where he did not take any prophylaxis. On physical examination, he has tachycardia, hypotension, and splenomegaly. A blood smear shows ring forms and schizonts of Plasmodium falciparum, with a parasitemia of 2%. He also has signs of cerebral malaria, such as confusion, seizures, and coma. Which of the following is the most appropriate treatment for this patient?",
         options : [
@@ -506,9 +505,9 @@ export default [
             'Artesunate',
             'Mefloquine',
         ],
-         explanation: "This patient has severe malaria caused by P. falciparum, which is a life-threatening infection that requires immediate treatment with intravenous or intramuscular artesunate. Delayed Delayed presentati presentation, delay in diagnosis or inappropriate treatment of uncomplicated malaria can lead to the rapid development of severe or complicated malaria. Severity symptoms are: Impaired consciousness: GCS < 11 in adults or a Blantyre coma score <3 in children, Acidosis: A base deficit of > 8 mEq/L or plasma bicarbonate level of < 15 mmol/L, Hypoglycemia, Severe Anemia, Renal impairment, Jaundice, Pulmonary edema, Significant bleeding, seizure, Prostration, Shock and Hyperparasite. First line drug for severe malaria is Artesunate: - Artesunate, 2.4mg/Kg IV or IM given on admission (time = 0, 12hrs, and 24hrs, then once a day for up to 5 days. OR - If artesunate is unavailable: Artemether, IM 3.2mg/kg loading dose on the first day followed by 1.6mg/kg daily for five daily for five days. OR - If artesunate and artemether are unavailable: Quinine dihydrochloride: Coartem (a combination of artemether and lumefantrine) is typically used for uncomplicated P. falciparum malaria and not for severe cases. Chloroquine is no longer recommended for P. falciparum due to widespread resistance. Mefloquine is also used for uncomplicated malaria and as prophylaxis but not for severe malaria. - National malaria 2022 p116, STG 2021 p505"
+         explanation: "This patient has severe malaria caused by P. falciparum, which is a life-threatening infection that requires immediate treatment with intravenous or intramuscular artesunate. Delayed presentation, delay in diagnosis or inappropriate treatment of uncomplicated malaria can lead to the rapid development of severe or complicated malaria. Severity symptoms are: Impaired consciousness: GCS < 11 in adults or a Blantyre coma score <3 in children, Acidosis: A base deficit of > 8 mEq/L or plasma bicarbonate level of < 15 mmol/L, Hypoglycemia, Severe Anemia, Renal impairment, Jaundice, Pulmonary edema, Significant bleeding, seizure, Prostration, Shock and Hyperparasite. First line drug for severe malaria is Artesunate: - Artesunate, 2.4mg/Kg IV or IM given on admission (time = 0, 12hrs, and 24hrs, then once a day for up to 5 days. OR - If artesunate is unavailable: Artemether, IM 3.2mg/kg loading dose on the first day followed by 1.6mg/kg daily for five days. OR - If artesunate and artemether are unavailable: Quinine dihydrochloride: Coartem (a combination of artemether and lumefantrine) is typically used for uncomplicated P. falciparum malaria and not for severe cases. Chloroquine is no longer recommended for P. falciparum due to widespread resistance. Mefloquine is also used for uncomplicated malaria and as prophylaxis but not for severe malaria. - National malaria 2022 p116, STG 2021 p505"
     },
-     {
+    {
         id: 47,
         question : "A 45-year-old man with HIV infection presents to the emergency department with headache, fever, and neck stiffness. He has a history of poor adherence to antiretroviral therapy, and his last CD4+ cell count was 50/mm3. A lumbar puncture is performed, and the cerebrospinal fluid (CSF) analysis shows increased opening pressure, Increased protein, decreased glucose, and increased lymphocytes. India ink stain of the CSF shows encapsulated yeast. Which of the following is the most likely diagnosis?",
         options : [
@@ -519,7 +518,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of meningitis, which is an inflammation of the meninges that can be caused by various infectious agents. Fungal meningitis is the leading infectious cause of meningitis in patients with AIDS. The vast majority of these are due to C. neoformans an encapsulated yeast that is commonly seen in immunocompromised patients, especially those with HIV infection. Cryptococcal meningitis is the initial AIDS-defining illness in~2% of patients and generally occurs in patients with CD4+ T-cell counts <100/µL. The CSF profile may be normal or may show only modest elevations in WBC or protein levels and decreases in glucose. The opening pressure in the CSF is usually elevated. The diagnosis of cryptococcal meningitis is made by identification of organisms in spinal fluid with india ink examination or by the detection of cryptococcal antigen. Cryptococcal meningitis is treated with amphotericin B and flucytosine, followed by fluconazole. Bacterial meningitis: elevated opening pressure, WBC >1000 (neutrophile predominance), glucose <40, protein >200. Viral meningitis: normal opening pressure, WBC <300 (Lymphocyte predominance), normal glucose level, protein <200. Tuberculous meningitis is another possible cause of meningitis in HIV-infected patients, but it would show acid-fast bacilli on Ziehl-Neelsen stain of the CSF. - Harrison's 21st p5921, Tintinalli's Emergency Medicine 9th1173"
     },
-     {
+    {
         id: 48,
         question : "A 60-year-old woman presents to the clinic with a sore throat, fever, and malaise. She has a history of rheumatic heart disease and takes warfarin for anticoagulation. On physical examination, she has pharyngeal erythema and exudates, cervical lymphadenopathy, and a new systolic murmur. A throat swab is obtained and sent for Gram stain and culture. The Gram stain shows lancet-shaped, gram-positive diplococci. Which of the following is the most likely organism causing this infection?",
         options : [
@@ -530,7 +529,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of pharyngitis, which is an inflammation of the pharynx that can be caused by various bacterial or viral agents. The Gram stain of the throat swab shows lancet-shaped, gram-positive diplococci, which are characteristic of S. pneumoniae, a common cause of community-acquired pneumonia, meningitis, and otitis media. S. pneumoniae can also cause pharyngitis, especially in patients with underlying cardiac conditions, such as rheumatic heart disease, that predispose them to endocarditis. S. pyogenes is another common cause of pharyngitis, but it appears as gram-positive cocci in chains on Gram stain. S. aureus is a gram-positive coccus in clusters that can cause skin and soft tissue infections, as well as toxic shock syndrome. N. gonorrhoeae is a gram-negative diplococcus that can cause sexually transmitted infections, such as urethritis, cervicitis, and pelvic inflammatory disease. - Harrison's 21st p4381"
     },
-     {
+    {
         id: 49,
         question : "A 25-year-old man presents to the emergency department with headache, fever, and altered mental status. He has a history of Intravenous drug use and endocarditis. On physical examination, he has focal neurological deficits and signs of increased intracranial pressure. A head CT scan shows a ring-enhancing lesion in the right frontal lobe. A lumbar puncture is contraindicated due to the risk of herniation. Which of the following is the most appropriate empirical antibiotic regimen for this patient?",
         options : [
@@ -541,7 +540,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of a brain abscess, which is a focal collection of pus in the brain parenchyma that can be caused by various infectious agents. The most common sources of brain abscess are infection of contiguous structures, such as the sinuses, ears, or teeth, or hematogenous spread from distant sites, such as the lungs, heart, or skin. In this patient, the most likely source is endocarditis due to intravenous drug use, which can seed the brain with bacteria, such as Staphylococcus aureus, Streptococcus species, or anaerobes. The most appropriate empirical antibiotic regimen for a brain abscess is a combination of a third-generation cephalosporin, such as ceftriaxone, to cover gram-positive and gram-negative organisms, vancomycin to cover methicillin-resistant S. aureus, and metronidazole to cover anaerobes. - Harrison's 21st p4204 & p4206-4207, UpToDate"
     },
-     {
+    {
         id: 50,
         question : "A 2-year-old boy presents to the clinic with diarrhea, vomiting, and dehydration. He has a history of rotavirus infection, which he contracted from his daycare. On physical examination, he has sunken eyes, dry mucous membranes, and poor skin turgor. His weight is 10 kg and his pulse is 120/min. A stool sample is positive for rotavirus antigen. Which of the following is the most appropriate management for this patient?",
         options : [
@@ -552,7 +551,7 @@ export default [
         ],
          explanation: "This patient has signs and symptoms of acute gastroenteritis, which is an inflammation of the gastrointestinal tract that can be caused by various infectious agents, such as rotavirus. Acute gastroenteritis can cause dehydration, which is a loss of water and electrolytes from the body. The best management for dehydration is oral rehydration therapy, which is the administration of a solution containing water, glucose, and salts to replace the fluid and electrolyte losses. The recommended amount of oral rehydration solution for mild to moderate dehydration is 75 mL/kg over 4 hours. The other options are either excessive, insufficient, or inappropriate, and would not provide adequate rehydration for this patient. After 4 hours: Reassess the child and classify the child for dehydration. Select the appropriate plan to continue treatment. Begin feeding the child. - Nelson Textbook of Pediatrics 21st p3444-3446, STG 2021 p1095-1096"
     },
-     {
+    {
         id: 51,
         question : "A 20-year-old man was found on the ground next to his car after his vehicle struck a tree. Bystanders state that the man got out of his car after the collision, but collapsed within a few minutes. Paramedics subsequently found the man unconscious on the side of the road. In the ED, his BP is 175/90 mm Hg, HR is 65 beats/minute, RR is 12 breaths/minute, temperature is 99.2°F, and oxygen saturation is 97% on room air. His right pupil is fixed and dilated. His noncontrast head CT is shown in the figure. Which of the following is the most likely diagnosis?",
        image:'/images/ERMP2022PARTONEIMG151.png',
@@ -563,9 +562,9 @@ export default [
             'Intracerebral hematoma',
         ],
          explanation: "Epidural hematomas are the result of blood collecting in the potential space between the skull and the dura mater. Most epidural hematomas result from blunt trauma to the temporal or temporoparietal area with an associated skull fracture and middle meningeal artery disruption. The classic history of an epidural hematoma is a lucid period following immediate loss of consciousness in the setting of significant blunt head trauma. However, this clinical pattem occurs in a minority of cases. Most patients either never lose consciousness or never regain consciousness after the injury. On CT scan, epidural hematomas appear lenticular or biconvex (football shaped), typically in the temporal region. The high-pressure arterial bleeding of an epidural hematoma can lead to herniation within hours after injury. Therefore, early recognition and evacuation are important to increase survival. Bilateral ED trephination (burr holes) is rarely, if ever, performed and should only be considered if definitive neurosurgical care is not available. Subdural hematomas appear as hyperdense, crescent-shaped lesions that cross suture lines. They result from a collection of blood below the dura and over the brain. To differentiate the CT finding from an epidural hematoma, think about the high pressure created by the arterial tear of an epidural that causes the hematoma to expand inward. In contrast, the low-pressure venous bleed of a subdural hematoma layers along the calvarium. Traumatic SAH is probably the most common CT abnormality in patients with moderate to severe traumatic brain injury. Intracerebral hematornas (d) and contusions occur secondary to traumatic tearing of intracerebral blood vessels. Contusions most commonly occur in the frontal, temporal, and occipital lobes. They may occur either at the site of the blunt trauma or on the opposite site of the brain, known as a contrecoup injury. - Examples of each are shown in the figure (subdural, traumatic SAH, and cerebral hematoma/contusion, respectively - Schwartz's 11th p223-224, Tintinalli's Emergency Medicine 9th p1685-1686, utd",
-         image:'/images/ERMP2022PARTONEIMG51.png',
+          explanationImage:'/images/ERMP2022PARTONEIMG51.png',
     },
-     {
+    {
         id: 52,
         question : "A 23-year-old woman is brought to the emergency department after a motor vehicle collision. She was the driver and was wearing a seat belt. She has a cervical spine fracture at C5 and is unable to move her arms or legs. She is conscious and alert, but complains of difficulty breathing. Her vital signs are temperature 36.5°C, heart rate 50 beats/min, blood pressure 70/40 mm Hg, and respiratory rate 22 breaths/min. On physical examination, she has a flaccid paralysis of all four limbs and absent deep tendon reflexes. Her chest wall movement is decreased and her breath sounds are diminished bilaterally. Her pupils are equal and reactive to light. Which of the following is the most likely type of shock in this patient?",
         options : [
@@ -576,7 +575,7 @@ export default [
         ],
          explanation: ""
     },
-     {
+    {
         id: 53,
         question : "A 75-year-old woman presents to the emergency department with hypotension, tachycardia, and confusion. She has a history of osteoporosis and fell at home, sustaining a left hip fracture. She was taken to the operating room for hip replacement surgery, but developed severe bleeding intraoperatively and required multiple blood transfusions. Her vital signs are temperature 36.5°C, heart rate 120 beats/min, blood pressure 70/40 mm Hg, and respiratory rate 24 breaths/min. On physical examination, she has pale and cold skin, delayed capillary refill, and decreased urine output. Her laboratory tests show a hemoglobin level of 7 g/dL, a platelet count of 150,000/mm3, a prothrombin time of 15 seconds, and an activated partial thromboplastin time of 35 seconds. Which of the following is the most likely type of shock in this patient?",
         options : [
@@ -587,7 +586,7 @@ export default [
         ],
          explanation: "Hemorrhage is the most common cause of shock after injury, and virtually all patients with multiple injuries have some degree of hypovolemia. Therefore, if signs of shock are present, treatment typically is instituted as if the patient were hypovolemic. However, while instituting treatment, it is important to identify the small number of patients whose shock has a different cause (e.g., a secondary condition, such as cardiac tamponade, tension pneumothorax, spinal cord injury, or blunt cardiac injury), which complicates the presentation of hemorrhagic shock. Causes of shock following injury in order of prevalence: 1) Hemorrhage, 2) Hemorrhage, 3) Hemorrhage, 4) Cardiogenic, 5) Neurogenic, -ATLS 10th p99-101 & p149, UpToDate"
     },
-     {
+    {
         id: 54,
         question : "A 25-year-old man presents to the emergency department with dyspnea, chest pain, and hypoxia. He has a history of left hip fracture and was placed in a cast two days ago. On physical examination, he has tachypnea, tachycardia, and cyanosis. His oxygen saturation is 85% on room air. A chest x-ray shows bilateral diffuse infiltrates. An arterial blood gas shows a pH of 7.35, a PaCO2 of 35 mm Hg, a PaO2 of 60 mm Hg, and a bicarbonate of 22 mEq/L. Which of the following is the most likely diagnosis?",
         options : [
@@ -598,7 +597,7 @@ export default [
         ],
          explanation: "Fat embolism syndrome is a rare complication of long bone fractures, orthopedic surgery, or liposuction, that occurs when fat globules enter the circulation and cause mechanical obstruction and inflammatory reaction in the pulmonary and systemic capillaries. It is characterized by a triad of respiratory distress, neurologic dysfunction, and petechial rash, which manifests as early as 12hrs or as late as 2wks usually within 24 to 72 hours after the injury or procedure. The diagnosis is based on clinical suspicion and supportive findings, such as hypoxemia, diffuse infiltrates on chest x-ray, fat droplets in urine or sputum, and thrombocytopenia. The treatment is supportive, with oxygen, mechanical ventilation, and corticosteroids. Pulmonary embolism is another possible complication of long bone fractures, but it would show a wedge-shaped infarct or pleural effusion on chest x-ray, and a positive D-dimer test. Acute respiratory distress syndrome is a non-cardiogenic pulmonary edema that can be caused by various insults, such as sepsis, trauma, or aspiration, but it is unlikely in this patient without a clear trigger. - Bailey 25th p912, Harrison's 21st p7718, UpToDate"
     },
-     {
+    {
         id: 55,
         question : "A 35-year-old woman presents to the clinic with a rash, joint pain, and fever. She has a history of syphilis and was treated with intramuscular penicillin G two days ago. On physical examination, she has a diffuse maculopapular rash, tender swollen joints, and enlarged lymph nodes. Her vital signs are temperature 38.5°C, heart rate 100 beats/min, blood pressure 110/70 mm Hg, and respiratory rate 18 breaths/min. A rapid plasma reagin test is positive. Which of the following is the most likely explanation for this patient's condition?",
         options : [
@@ -609,7 +608,7 @@ export default [
         ],
          explanation: "Jarisch-Herxheimer reaction is an acute transient self-limited febrile reaction that occurs within the first 24 hours of antibiotic treatment for syphilis or other spirochetal infections, such as Lyme disease or leptospirosis. It is caused by the release of endotoxins from the dying bacteria, which trigger an inflammatory response. It is characterized by fever, chills, headache, myalgia, arthralgia, rash, and lymphadenopathy. The diagnosis is based on clinical presentation and history of antibiotic therapy. The treatment is supportive, with antipyretics, analgesics, and fluids. Anaphylactic shock is a type of distributive shock that results from a severe allergic reaction mediated by IgE antibodies. It is characterized by urticaria, angioedema, bronchospasm, laryngeal edema, and hypotension. Septic shock is a type of distributive shock that results from a systemic inflammatory response to an infection. It is characterized by fever, tachycardia, hypotension, organ dysfunction, and positive blood cultures. Serum sickness is a type of hypersensitivity reaction that occurs after exposure to foreign proteins, such as animal antiserum or certain drugs. It is characterized by fever, rash, arthralgia, lymphadenopathy, and nephritis, and it usually manifests 7 to 14 days after exposure. - Harrison's 21st p 5319 & p5902, UpToDate"
     },
-    {
+    {  
         id: 56,
         question : "A physician colleague of yours arrives to work and smells of alcohol. Her speech is slurred and she is making repeated errors in ordering medications and diagnostic studies for patients. You are concerned about the safety of patients. Who of the following should be notified first about this physician's behavior?",
         options : [
@@ -618,11 +617,11 @@ export default [
             'The patients',
             'The physician',
         ],
-         explanation: "Health care providers have a duty to protect patients from impaired physicians when the impaired are unable or unwilling to seek help for themselves. Impairment is is the inability of a provider to safely and effectively c effectively care outpatient care duties. Signs of impairment include failure to meet job responsibilities (eg, arriving late to work), forgetfulness during tasks, or evidence of substance use. The American College of Emergency Physicians (ACEP) Code of Ethics states, \"Emergency physicians shall deal fairly and honestly with colleagues and take appropriate action to protect patients from health care providers who are impaired or incompetent.\" Handling an impaired colleague should begin in a stepwise fashion. When a colleague notices impairment of skill or judgment, he or she should approach the physician about their concerns first. If the physician fails to respond to this direct approach or patient safety or wellbeing is at risk, reporting to the other answer options (a), (b), (c), and (e) may need to be utilized."
-    },
+         explanation: "Health care providers have a duty to protect patients from impaired physicians when the impaired are unable or unwilling to seek help for themselves. Impairment is is the inability of a provider to safely and effectively care outpatient care duties. Signs of impairment include failure to meet job responsibilities (eg, arriving late to work), forgetfulness during tasks, or evidence of substance use. The American College of Emergency Physicians (ACEP) Code of Ethics states, \"Emergency physicians shall deal fairly and honestly with colleagues and take appropriate action to protect patients from health care providers who are impaired or incompetent.\" Handling an impaired colleague should begin in a stepwise fashion. When a colleague notices impairment of skill or judgment, he or she should approach the physician about their concerns first. If the physician fails to respond to this direct approach or patient safety or wellbeing is at risk, reporting to the other answer options (a), (b), (c), and (e) may need to be utilized."
+   },
     {
         id: 57,
-        question : "A 55-year-old man with a history of hypertension and diabetes mellitus kidney Injury. He has oliguria, is admitted to the hospital with acute kidney in edema, and uremic symptoms. His laboratory tests show a blood urea nitrogen level of 80 mg/dL, a creatinine level of 4.0 mg/dL, a pH of 7.15, a bicarbonate level of 12 mEq/L, and a potassium level of 6.5 mEq/L. Which of the following is the most immediate cause of death in patients with acute kidney injury?",
+        question : "A 55-year-old man with a history of hypertension and diabetes mellitus is admitted to the hospital with acute kidney Injury. He has oliguria, is admitted to the hospital with acute kidney in edema, and uremic symptoms. His laboratory tests show a blood urea nitrogen level of 80 mg/dL, a creatinine level of 4.0 mg/dL, a pH of 7.15, a bicarbonate level of 12 mEq/L, and a potassium level of 6.5 mEq/L. Which of the following is the most immediate cause of death in patients with acute kidney injury?",
         options : [
             'Encephalopathy',
             'Metabolic acidosis',
@@ -696,7 +695,7 @@ export default [
             'Salter-Harris type IV',
         ],
          explanation: "Salter-Harris fractures are fractures involving the growth plate (physis) of long bones in children. They are classified into five types based on the location and extent of the fracture. Type I fractures are transverse fractures through the physis. Type II fractures are fractures through the physis and the metaphysis. Type III fractures are fractures through the physis and the epiphysis. Type IV fractures are fractures through the metaphysis, physis, and epiphysis. Type V fractures are compression fractures of the physis. The mnemonic SALTR can be used to remember the types: S = Slip (type 1), A = Above (type II), L = Lower (type III), T = Through (type IV), R = Ram (type V). - Apley Orthopedics 10th p749-750 & p910, Schwartz's 11th p1943",
-        image:'/images/ERMP2022PARTONEIMG63.png',
+          explanationImage:'/images/ERMP2022PARTONEIMG63.png',
     },
     {
         id: 64,
@@ -796,7 +795,7 @@ export default [
             'Neurocysticercosis',
         ],
          explanation: "Toxoplasmosis is the most common CNS infection caused by an obligate intracellular parasite Toxoplasma gondii infection in patients with AIDS who are not receiving appropriate prophylaxis. More than 50% of patients with clinical manifestations have intracerebral involvement. Clinical findings at presentation range from non-focal to focal dysfunction. CNS findings include encephalopathy, meningoencephalitis, and mass lesions. Patients may present with altered mental status (75%), fever (10-72%), seizures (33%), headaches (56%), and focal neurologic findings (60%), including motor deficits, cranial nerve palsies, movement disorders, dysmetria, visual-field loss, and aphasia It typically presents, single and frequently multiple contrast-enhancing (<2 cm) lesions on MRI and is especially likely when the CD4 count falls below 100 cells/microL. By this test, may be identified. Primary CNS lymphoma is a rare type of non-Hodgkin lymphoma that originates in the brain, spinal cord, or meninges. It is more common in immunocompromised patients, such as those with HIV/AIDS, organ transplant recipients, or patients receiving immunosuppressive drugs. It typically presents with headache, confusion, seizures, or focal neurological deficits. Brain MRI usually shows a single or multiple ring-enhancing lesions, often with perive penver periventricular involvement. The diagnosis can be confirmed by brain biopsy, which shows malignant lymphoid cells that are positive for CD20 and EBV. The treatment is a combination of high-dose methotrexate, rituximab, and whole-brain radiation therapy. Neurocysticercosis is an infection caused by the pork tapeworm Taenia solium and can cause cysts in the brain. It is less common in HIV patients and would typica would typically present with multiple lesions. -Harrison's 21st p6547-6555, UpToDate",
-        image:'/images/ERMP2022PARTONEIMG72.png',
+          explanationImage:'/images/ERMP2022PARTONEIMG72.png',
     },
     {
         id: 73,
@@ -808,7 +807,7 @@ export default [
             'Retinal hemorrhage',
         ],
          explanation: "Retinal hemorrhage is a condition in which blood leaks from the retinal vessels into the retina or the vitreous humor. It can be caused by various conditions, such as hypertension, diabetes mellitus, trauma, coagulopathy, or retinal vein occlusion. Retinal hemorrhage can cause blurred vision, floaters, or scotomas. A slit-lamp examination is a technique that uses a microscope and a high-intensity light source to examine the anterior and posterior segments of the eye. A slit-lamp examination can detect retinal hemorrhage as red patches or spots on the retina. Other findings that can be seen with a slit-lamp examination include anterior uveitis, cataract and retinal detachment. But these conditions are less common than retinal hemorrhage (rots spot or cotton wool). - Will's eye manual 6th p310-313, Kaneski Opthalmology 8th p520-524",
-          image:'/images/ERMP2022PARTONEIMG73.png',
+         explanationImage:'/images/ERMP2022PARTONEIMG73.png',
     },
     {
         id: 74,
@@ -1029,7 +1028,7 @@ export default [
             'Passive rewarming',
         ],
          explanation: "The most important initial step in managing a near drowning victim is to establish an airway and provide adequate ventilation. Mouth to mouth is the simplest and most effective method of providing rescue breaths in the field. Chest compressions are only indicated if there is no pulse. Intubation and mechanical ventilation may be required later, but are not feasible in the field. Rewarming is also important, but secondary to ventilation. - ACLS 2020-2025 p52, Tintinalli's Emergency Medicine 9th143-146",
-       image:'/images/ERMP2022PARTONEIMG93.png',
+         explanationImage:'/images/ERMP2022PARTONEIMG93.png',
     },
     {
         id: 94,

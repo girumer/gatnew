@@ -32,7 +32,7 @@ export default [
             'Snowman sig',
         ],
          explanation: "The child's presentation with a barking cough, inspiratory stridor, and subglottic narrowing on an X-ray is most consistent with croup, and the radiographic sign associated with this condition is the steeple sign. The steeple sign is seen on an AP neck X-ray and is characteristic of croup. It results from subglottic narrowing of the trachea, which appears as a tapering or 'steeple' shape. Croup typically presents with a barking cough, inspiratory stridor, hoarseness, and respiratory distress, matching the symptoms in this case. Thumb sign thumb sign is seen on a lateral neck X-ray and is characteristic of epiglottitis, which is caused by inflammation and swelling of the epiglottis. Epiglottitis presents with high fever, severe sore throat, dysphagia, drooling, and the patient often appears toxic and prefers to sit leaning forward. This presentation does not match the symptoms described in the case. The bat wing sign is typically seen on a chest X-ray and is associated with pulmonary edema. It shows bilateral perihilar infiltrates that resemble a bat's wings. Snowman sign is associated with total anomalous pulmonary venous return (TAPVR), a congenital heart defect. It appears as an enlarged cardiac silhouette resembling a snowman on a chest X-ray. - Nelson 21st p3787, p4209, UpToDate",
-         image:'/images/img3p2.png',
+         explanationImage:'/images/img3p2.png',
     },
     {
         id: 4,

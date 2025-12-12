@@ -76,7 +76,7 @@ export default [
             'Treponemal hemagglutination assay',
         ],
          explanation: "Genital ulcer syndrome consists of syphilis, chancroid, HSV, and LGV. Chancroid: painful with dirty base, no induration and inguinal fluctuant adenopathy. HSV: painful erythematous vesicles. LGV: painless ulcer with painful unilateral inguinal lymphadenopathy. Syphilis: painless ulcer with clean base and indurated edges. Lymph nodes are tender in HSV, chancroid and LGV, but rubbery, non-tender in late primary syphilis. A reactive VDRL/RPR screening test must be confirmed by a treponemal (FTA-ABS, TPPA or TPHA) test. But a negative VDRL/RPR does not exclude syphilis, and should be repeated at 4 and 12wks in patient with possible exposure to syphilis, or DFM should be done if available. - Harrison's 21st p5311-5312 & p4105, UpToDate",
-         image:'/images/ERMP2021PARTTWOIMG7.png',
+        explanationImage:'/images/ERMP2021PARTTWOIMG7.png',
     },
     {
         id: 8,

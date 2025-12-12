@@ -783,7 +783,7 @@ export default [
     }, {
         id: 61,
         direction:"Direction: Each of the questions consists of two quantities, one in Column A and one in Column B. You are to compare the two quantities and choose.",
-        question : "The area of a square is 64 cm²."+
+        question : "Direction: Each of the questions consists of two quantities, one in Column A and one in Column B. You are to compare the two quantities and choose. The area of a square is 64 cm²."+
                     "64 perimeter  ________________ 8cm",
         options : [
             'The quantity in column A is greater than B.',
@@ -792,7 +792,7 @@ export default [
             'The relationships cannot be determined from the information given.',
         ],
         explanation: "explanation",
-         image: '/images/GAT2020IMGE61.jpg'
+         explanationImage: '/images/GAT2020IMGE61.jpg'
     }, {
         id: 62,
         direction:"Direction: Select the best answer.",
@@ -804,7 +804,7 @@ export default [
             '1',
         ],
          explanation: "explanation",
-        image:'/images/GAT2020IMGE62.jpg'
+        explanationImage:'/images/GAT2020IMGE62.jpg'
     }, {
         id: 63,
         question : "Among a group of students, 70% of them like geography, 20% like history & 5% like both. What is the probability that a student randomly selected from the group likes neither geography nor history?",
@@ -814,7 +814,8 @@ export default [
             '25',
             '1',
         ],
-         explanation: '/images/GAT2020IMGE63.jpg'
+         explanation: 'explanation'
+         explanationImage:'/images/GAT2020IMGE63.jpg'
     }, {
         id: 64,
         question : "Using the letters of the words, marking and calling any arrangement words. How many 7-letter words can be formed?",
@@ -825,7 +826,7 @@ export default [
             '40',
         ],
        explanation: "explanation",
-        image:'/images/GAT2020IMGE64.jpg'
+        explanationImage:'/images/GAT2020IMGE64.jpg'
     },{
         id: 65,
         question : "Based on the previous question, how many 3-letter words can be formed from marking?",
@@ -836,7 +837,7 @@ export default [
             '10',
         ],
       explanation: "explanation",
-        image: '/images/GAT2020IMGE65.jpg'
+        explanationImage: '/images/GAT2020IMGE65.jpg'
     },{
         id: 66,
         question : "If three coins are tossed, what is the probability that at least one tail turns up?",
@@ -847,7 +848,7 @@ export default [
             '1/4',
         ],
         explanation: "explanation",
-        image: '/images/GAT2020IMGE66.jpg'
+        explanationImage: '/images/GAT2020IMGE66.jpg'
     },{
         id: 67,
         question : "A rectangular pool 2 m wide and 6 m long is surrounded by a walkway of uniform widths. If the total area of the walkway is 48 sq m, how wide is the walkway?",
@@ -858,8 +859,8 @@ export default [
             '1',
         ],
         explanation: "explantion",
-           image:'/images/GAT2020IMGE67.jpg',
-           image:'/images/GAT2020IMGE267.jpg',
+           explanationImage:'/images/GAT2020IMGE67.jpg',
+           explanationImage:'/images/GAT2020IMGE267.jpg',
         
     },{
         id: 68,
@@ -871,7 +872,7 @@ export default [
             '4π',
         ],
           explanation: "explantion",
-           image:'/images/GAT2020IMGE68.jpg'
+           explanationImage:'/images/GAT2020IMGE68.jpg'
     },{
         id: 69,
         direction:"Quetions 69 to 72 refer to the following data: 7, 8, 9, 10, 8, 8, 9. ",
@@ -883,7 +884,7 @@ export default [
             '1.5',
         ],
           explanation: "explantion",
-           image:'/images/GAT2020IMGE69.jpg'
+           explanationImage:'/images/GAT2020IMGE69.jpg'
     },{
         id: 70,
         question : "What is the median of the data?",
@@ -894,7 +895,7 @@ export default [
             '2',
         ],
            explanation: "explantion",
-           image:'/images/GAT2020IMGE70.jpg'
+           explanationImage:'/images/GAT2020IMGE70.jpg'
     },{
         id: 71,
         question : "What is the variance of the data?",
@@ -905,7 +906,7 @@ export default [
             '0.81',
         ],  
          explanation: "explantion",
-           image:'/images/GAT2020IMGE71.jpg'
+           explanationImage:'/images/GAT2020IMGE71.jpg'
     },{
         id: 72,
         question : "what is the standard deviation of the data",
@@ -916,7 +917,7 @@ export default [
             '0.81',
         ],   
         explanation: "explantion",
-           image:'/images/GAT2020IMGE72.jpg'
+           explanationImage:'/images/GAT2020IMGE72.jpg'
     },{
         id: 73,
         question : "Protractor: Angle"+
