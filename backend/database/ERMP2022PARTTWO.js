@@ -854,7 +854,7 @@ export default [
     },
     {
         id: 78,
-        question : "A 35-year-old woman is admitted to the hospital for an emergency appendectomy. She is unconscious and has no identification or contact information. The surgeon notices that she has a tattoo of "DNR" on her chest. The surgeon should:",
+        question : "A 35-year-old woman is admitted to the hospital for an emergency appendectomy. She is unconscious and has no identification or contact information. The surgeon notices that she has a tattoo of 'DNR' on her chest. The surgeon should:",
         options : [
             'Proceed with the appendectomy, as the tattoo is not a valid advance directive',
             'Abstain from performing the appendectomy, as the tattoo indicates the \patient\'s wishes',
