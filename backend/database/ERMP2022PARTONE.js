@@ -1,3 +1,4 @@
+export const  examTitle= "ERMP2022PARTONE";
 export default [
     {
         id: 1,
