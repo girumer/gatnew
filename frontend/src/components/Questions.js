@@ -122,28 +122,30 @@ useEffect(() => {
   )}
 </ul>
 {mode === 'study' && cheaked !== undefined && (question.explanation || question.explanationImage) && (
-                <div className="explanation-box">
-                    <h3 className="text-light">Explanation</h3>
-                    
-                    {/* 1. Render the text explanation */}
-                    {question.explanation && (
-                         <p className="text-light">{question.explanation}</p>
-                    )}
+    <div className="explanation-box">
+        <h3 className="text-light">Explanation</h3>
+        
+        {/* 1. Render the text explanation */}
+        {question.explanation && (
+                <p className="text-light">{question.explanation}</p>
+        )}
 
-                    {/* 2. Render the explanation image */}
-                    {question.explanationImage && (
-                        <div style={{ marginTop: '1rem' }}>
-                            <img
-                                // Assuming explanationImage path is relative or an absolute URL
-                                // Adjust the 'src' path if you need to prepend a base URL (e.g., '/images')
-                                src={question.explanationImage.replace("http://", "https://")}
-                                alt="Explanation Diagram"
-                                style={{ maxWidth: '100%', border: '1px solid #333' }}
-                                onLoad={() => console.log('Explanation image loaded successfully:', question.explanationImage)}
-                                onError={(e) => console.error('Explanation image failed to load with source:', e.target.src)}
-                            />
-                        </div>
-                    )}
+        {/* 2. Render the explanation image */}
+        {question.explanationImage && (
+            <div style={{ marginTop: '1rem' }}>
+                <img
+                    // Your logic to handle image source
+                    src={question.explanationImage.replace("http://", "https://")}
+                    alt="Explanation Diagram"
+                    style={{ maxWidth: '100%', border: '1px solid #333' }}
+                    onLoad={() => console.log('Explanation image loaded successfully:', question.explanationImage)}
+                    onError={(e) => console.error('Explanation image failed to load with source:', e.target.src)}
+                />
+            </div>
+        )}
+
+    </div>
+)}
 
     </div>
   );
