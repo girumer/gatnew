@@ -814,7 +814,7 @@ export default [
             '25',
             '1',
         ],
-         explanation: 'explanation'
+         explanation: 'explanation',
          explanationImage:'/images/GAT2020IMGE63.jpg'
     }, {
         id: 64,
