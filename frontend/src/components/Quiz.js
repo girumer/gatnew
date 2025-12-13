@@ -10,7 +10,7 @@ import { pushResultAction } from '../redux/result_reducer';
 function Quiz() {
   const { title } = useParams();
   const dispatch = useDispatch();
-const [isExamCompleted, setIsExamCompleted] = useState(false);
+
   // Redux State
   const { queue, trace } = useSelector(state => state.questions);
   const result = useSelector(state => state.result.result);
@@ -140,11 +140,6 @@ const [isExamCompleted, setIsExamCompleted] = useState(false);
       if (result.length <= trace) {
         dispatch(pushResultAction(cheak));
       }
-      else if (trace === queue.length - 1) {
-            // This is the last question. If 'Next' is clicked, finish the exam.
-            setIsExamCompleted(true);
-            // Optionally clear trace/mode from local storage here
-        }
     }
     setCheack(undefined);
   }
@@ -152,15 +147,7 @@ const [isExamCompleted, setIsExamCompleted] = useState(false);
   if (result.length && result.length >= queue.length) {
     return <Navigate to={'/result'} replace={true} />;
   }
-if (isExamCompleted || (result.length >= queue.length && queue.length > 0)) {
-        // When the exam is complete, set the mode to 'review' and reset trace to 0
-        if (mode !== 'review') {
-            setMode('review');
-            dispatch(moveToQuestionAction(0)); // Start review from the first question
-            // We DO NOT navigate away to /result immediately.
-            // We stay on the quiz page in 'review' mode.
-        }
-    }
+
   // ---------------------------------------------------------
   // Render Logic
   // ---------------------------------------------------------
@@ -230,21 +217,7 @@ if (isExamCompleted || (result.length >= queue.length && queue.length > 0)) {
 
       <div className="grid">
         {trace > 0 ? <button className="btn prev" onClick={onPrev}>Prev</button> : <div></div>}
-        {mode === 'review' ? (
-                    <button 
-                        className="btn next" 
-                        onClick={onNext}
-                        // Only allow 'Next' if not on the last question in review mode
-                        disabled={trace === queue.length - 1} 
-                    >
-                        Next Review
-                    </button>
-                ) : (
-                    <button className="btn next" onClick={onNext}>
-                        {trace === queue.length - 1 ? 'Finish Exam' : 'Next'}
-                    </button>
-                )}
-      
+        <button className="btn next" onClick={onNext}>Next</button>
       </div>
     </div>
   );
