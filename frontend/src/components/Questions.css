@@ -12,10 +12,56 @@
 }
 
 /* --- Styles for the 'Questions' Container and Content --- */
+/* Quiz.css or Questions.css */
 
+.correct {
+    color: #4CAF50 !important; /* Green */
+    font-weight: bold;
+}
+
+.wrong {
+    color: #F44336 !important; /* Red */
+    font-weight: bold;
+}
+
+/* Optional: style the radio button/check for reviewed items */
+
+
+/* Optional: disable cursor for options in review mode */
+.questions input[type="radio"]:disabled + .check + label {
+    cursor: default;
+}
 .questions {
     margin-bottom: 0px;
     
+}
+/* --- Visual Enhancement for Correct/Wrong Options (Review Mode) --- */
+
+/* Highlight the whole label background for the correct answer */
+.questions ul li label.correct {
+    background-color: var(--success-color); /* Green Background */
+    border-color: var(--success-color);
+    color: white !important; /* White text for contrast on green */
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+}
+
+/* Highlight the whole label background for the user's wrong answer */
+.questions ul li label.wrong {
+    background-color: var(--danger-color); /* Red Background */
+    border-color: var(--danger-color);
+    color: white !important; /* White text for contrast on red */
+    box-shadow: 0 4px 8px rgba(243, 8, 8, 0.4);
+}
+
+/* Prevent hover effect on disabled labels (important for Review Mode) */
+.questions ul li input[type="radio"]:disabled + .check + label {
+    cursor: default;
+}
+
+/* Ensure disabled labels don't show hover effects */
+.questions ul li input[type="radio"]:disabled + .check + label:hover {
+    border-color: var(--secondary-color); /* Revert border color */
+    box-shadow: none;
 }
 .questions {
   user-select: none;   /* Prevents highlighting/copying */
