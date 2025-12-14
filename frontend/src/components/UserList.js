@@ -7,7 +7,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKENDURL;
 // Construct full API URLs using the environment variable
 const USERS_URL = `${BACKEND_URL}/api/users`; 
 const TRANSACTION_URL = `${BACKEND_URL}/api/pending-transactions`;
-
+const ALL_TRANSACTION_URL = `${BACKEND_URL}/api/all-transactions`;
 function UserList() {
  
   // --- State for Users ---
@@ -17,7 +17,23 @@ function UserList() {
   // --- State for Transactions ---
   const [transactions, setTransactions] = useState([]);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
+const [completedTransactions, setCompletedTransactions] = useState([]);
+  const [loadingCompletedTransactions, setLoadingCompletedTransactions] = useState(true);
+useEffect(() => {
+    const fetchCompletedTransactions = () => {
+        // This endpoint should only return completed, confirmed transactions from the main Transaction model
+        fetch(ALL_TRANSACTION_URL) 
+            .then((res) => res.json())
+            .then((data) => setCompletedTransactions(data?.transactions || []))
+            .catch((err) => console.error("Error fetching completed transactions:", err))
+            .finally(() => setLoadingCompletedTransactions(false));
+    };
 
+    fetchCompletedTransactions();
+    // We can poll this less frequently, or keep it the same
+    const intervalId = setInterval(fetchCompletedTransactions, 10000); 
+    return () => clearInterval(intervalId); 
+}, []);
   // 1. Fetch Users
   useEffect(() => {
     // Using the constructed USERS_URL
@@ -139,6 +155,37 @@ useEffect(() => {
                 <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.transactionNumber}</td>
                 <td style={{ border: "1px solid #ddd", padding: "8px", textTransform: 'capitalize' }}>{tx.type}</td>
                 <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.method}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+<hr style={{ margin: "30px 0" }}/>
+
+      {/* ========================================
+        SECTION 3: COMPLETED DEPOSIT HISTORY (NEW)
+        ========================================
+      */}
+      <h2>✅ Confirmed Deposit History</h2>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#17a2b8", color: 'white' }}>
+            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Amount (ETB)</th>
+            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Transaction Number</th>
+            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Type</th>
+            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Date Confirmed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {completedTransactions.length === 0 ? (
+            <tr><td colSpan="4" style={{ textAlign: "center", padding: "10px", backgroundColor: '#e6f7ff' }}>No confirmed transactions in history.</td></tr>
+          ) : (
+            completedTransactions.map((tx) => (
+              <tr key={tx._id} style={{ backgroundColor: '#f0faff' }}>
+                <td style={{ border: "1px solid #ddd", padding: "8px", fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.transactionNumber}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textTransform: 'capitalize' }}>{tx.type}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
               </tr>
             ))
           )}

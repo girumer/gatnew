@@ -5,7 +5,7 @@ function UserResults({ phone }) {
   const [results, setResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const rowsPerPage = 5;
-
+const [deposits, setDeposits] = useState([]);
   useEffect(() => {
     if (!phone) return;
 

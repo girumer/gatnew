@@ -5,12 +5,16 @@ const router = Router();            
 
 // ❌ DELETE THIS LINE (It is trying to access a non-existent 'default' export)
 // import transactionController from '../controllers/transactionController.js';
+ 
+// ... other routes ...
 
+router.get('/all-transactions', getAllTransactions);
 // ✅ KEEP ONLY THIS LINE (The Correct Named Import)
 import { 
     parseTransaction, 
     getPendingTransactions, 
-    autoDepositConfirm 
+    autoDepositConfirm,
+    getAllTransactions  
 } from '../controllers/transactionController.js'; 
 
 
@@ -22,5 +26,5 @@ router.get("/pending-transactions", getPendingTransactions);
 
 // 3. Route for Telegram Bot/Auto Confirmation (Deletes Pending, Creates Final)
 router.post("/auto-confirm", autoDepositConfirm);
-
+router.get('/all-transactions', getAllTransactions);
 export default router;

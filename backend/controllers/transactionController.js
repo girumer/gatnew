@@ -133,6 +133,21 @@ export const parseTransaction = async (req, res) => {
         return res.status(500).json({ error: "Server error during parsing. Check server logs." });
     }
 };
+export const getAllTransactions = async (req, res) => {
+    try {
+        // Query the main Transaction model for ALL completed deposits
+        // Filter by method: 'deposit' and status: 'completed'
+        const completedTransactions = await Transaction.find({ 
+            method: 'deposit',
+            status: 'completed'
+        }).sort({ createdAt: -1 }); // Sort by newest first
+
+        res.json({ success: true, transactions: completedTransactions });
+    } catch (err) {
+        console.error("Error fetching all completed transactions:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+};
 export const getPendingTransactions = async (req, res) => {
     try {
         // 1. Query the main Transaction model for items marked 'pending'
