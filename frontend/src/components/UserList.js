@@ -8,7 +8,7 @@ const USERS_URL = `${BACKEND_URL}/api/users`;
 const TRANSACTION_URL = `${BACKEND_URL}/api/pending-transactions`;
 const ALL_TRANSACTION_URL = `${BACKEND_URL}/api/all-transactions`;
 
-// 💡 NEW CONSTANT: Define view constants for clarity
+// Define view constants for clarity
 const VIEWS = {
     USERS: 'users',
     PENDING: 'pending',
@@ -16,23 +16,24 @@ const VIEWS = {
 };
 
 function UserList() {
-    // --- State for Users ---
+    // --- State for Data ---
     const [users, setUsers] = useState([]);
-    const [loadingUsers, setLoadingUsers] = useState(true);
-    
-    // --- State for Pending Transactions ---
     const [transactions, setTransactions] = useState([]);
-    const [loadingTransactions, setLoadingTransactions] = useState(true);
-
-    // --- State for Completed Transactions ---
     const [completedTransactions, setCompletedTransactions] = useState([]);
+    
+    // --- State for Loading ---
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    const [loadingTransactions, setLoadingTransactions] = useState(true);
     const [loadingCompletedTransactions, setLoadingCompletedTransactions] = useState(true);
 
-    // 💡 NEW STATE: Controls which table is displayed. Default to 'USERS'.
+    // 💡 NEW STATE: For calculated total deposit sum
+    const [totalDepositSum, setTotalDepositSum] = useState(0); 
+
+    // Controls which table is displayed.
     const [activeView, setActiveView] = useState(VIEWS.USERS); 
 
     // ========================================
-    // DATA FETCHING (All original logic is preserved)
+    // DATA FETCHING & CALCULATION
     // ========================================
 
     // 3. Fetch Completed Transactions (Polling)
@@ -43,9 +44,11 @@ function UserList() {
                     if (!res.ok) throw new Error("Failed to fetch completed transactions.");
                     return res.json();
                 })
-                .then((data) => setCompletedTransactions(data?.transactions || []))
-                .catch((err) => console.error("Error fetching completed transactions:", err))
-                .finally(() => setLoadingCompletedTransactions(false));
+                .then((data) => {
+                    setCompletedTransactions(data?.transactions || []);
+                    setLoadingCompletedTransactions(false);
+                })
+                .catch((err) => console.error("Error fetching completed transactions:", err));
         };
 
         fetchCompletedTransactions();
@@ -53,39 +56,34 @@ function UserList() {
         return () => clearInterval(intervalId); 
     }, []);
 
+    // 💡 NEW EFFECT: Calculate the total sum whenever completedTransactions changes
+    useEffect(() => {
+        if (completedTransactions.length > 0) {
+            const sum = completedTransactions.reduce((acc, tx) => acc + tx.amount, 0);
+            setTotalDepositSum(sum);
+        } else if (loadingCompletedTransactions === false) {
+            setTotalDepositSum(0);
+        }
+    }, [completedTransactions, loadingCompletedTransactions]);
+
+
     // 1. Fetch Users
     useEffect(() => {
         fetch(USERS_URL) 
-            .then((res) => {
-                if (!res.ok) throw new Error("Failed to fetch users.");
-                return res.json();
-            })
-            .then((data) => {
-                setUsers(data);
-                setLoadingUsers(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching users:", err);
-                setLoadingUsers(false);
-            });
+            .then((res) => res.json())
+            .then((data) => { setUsers(data); })
+            .catch((err) => console.error("Error fetching users:", err))
+            .finally(() => setLoadingUsers(false));
     }, []);
 
     // 2. Fetch Pending Transactions (Polling)
     useEffect(() => {
         const fetchTransactions = () => {
             fetch(TRANSACTION_URL) 
-                .then((res) => {
-                    if (!res.ok) throw new Error("Failed to fetch transactions.");
-                    return res.json();
-                })
-                .then((data) => {
-                    setTransactions(data?.transactions || []); 
-                    setLoadingTransactions(false);
-                })
-                .catch((err) => {
-                    console.error("Error fetching transactions:", err);
-                    setLoadingTransactions(false);
-                });
+                .then((res) => res.json())
+                .then((data) => { setTransactions(data?.transactions || []); })
+                .catch((err) => console.error("Error fetching transactions:", err))
+                .finally(() => setLoadingTransactions(false));
         };
 
         fetchTransactions();
@@ -99,30 +97,35 @@ function UserList() {
     }
 
 
-    // 💡 NEW FUNCTION: Renders the active table based on 'activeView' state
+    // ========================================
+    // RENDERING LOGIC
+    // ========================================
+    
+    // Renders the active table based on 'activeView' state
     const renderActiveTable = () => {
         switch (activeView) {
             case VIEWS.USERS:
                 return (
+                    // --- USERS TABLE ---
                     <>
                         <h2>👥 Registered Users ({users.length})</h2>
-                        <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "40px" }}>
+                        <table style={tableStyle}>
                             <thead>
                                 <tr style={{ backgroundColor: "#f2f2f2" }}>
-                                    <th style={{ border: "1px solid #ddd", padding: "8px" }}>Username</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "8px" }}>Phone Number</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "8px" }}>Chat ID</th>
+                                    <th style={thStyle}>Username</th>
+                                    <th style={thStyle}>Phone Number</th>
+                                    <th style={thStyle}>Chat ID</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {users.length === 0 ? (
-                                    <tr><td colSpan="3" style={{ textAlign: "center", padding: "8px" }}>No users found</td></tr>
+                                    <tr><td colSpan="3" style={tdCenterStyle}>No users found</td></tr>
                                 ) : (
                                     users.map((user) => (
                                         <tr key={user._id}>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{user.username}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{user.phoneNumber}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{user.chatId}</td>
+                                            <td style={tdStyle}>{user.username}</td>
+                                            <td style={tdStyle}>{user.phoneNumber}</td>
+                                            <td style={tdStyle}>{user.chatId}</td>
                                         </tr>
                                     ))
                                 )}
@@ -132,27 +135,28 @@ function UserList() {
                 );
             case VIEWS.PENDING:
                 return (
+                    // --- PENDING TRANSACTIONS TABLE ---
                     <>
                         <h2>💰 Pending Transactions ({transactions.length})</h2>
-                        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+                        <table style={tableStyle}>
                             <thead>
                                 <tr style={{ backgroundColor: "#007bff", color: 'white' }}>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Amount (ETB)</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Transaction Number</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Type</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Method</th>
+                                    <th style={thStyle}>Amount (ETB)</th>
+                                    <th style={thStyle}>Transaction Number</th>
+                                    <th style={thStyle}>Type</th>
+                                    <th style={thStyle}>Method</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {transactions.length === 0 ? (
-                                    <tr><td colSpan="4" style={{ textAlign: "center", padding: "10px", backgroundColor: '#fffbe6' }}>No pending transactions found.</td></tr>
+                                    <tr><td colSpan="4" style={tdNoDataStyle}>No pending transactions found.</td></tr>
                                 ) : (
                                     transactions.map((tx) => (
                                         <tr key={tx._id} style={{ backgroundColor: '#f9f9f9' }}>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px", fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.transactionNumber}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px", textTransform: 'capitalize' }}>{tx.type}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.method}</td>
+                                            <td style={{ ...tdStyle, fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
+                                            <td style={tdStyle}>{tx.transactionNumber}</td>
+                                            <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{tx.type}</td>
+                                            <td style={tdStyle}>{tx.method}</td>
                                         </tr>
                                     ))
                                 )}
@@ -162,27 +166,28 @@ function UserList() {
                 );
             case VIEWS.COMPLETED:
                 return (
+                    // --- COMPLETED DEPOSIT HISTORY TABLE ---
                     <>
                         <h2>✅ Confirmed Deposit History ({completedTransactions.length})</h2>
-                        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+                        <table style={tableStyle}>
                             <thead>
                                 <tr style={{ backgroundColor: "#17a2b8", color: 'white' }}>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Amount (ETB)</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Transaction Number</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Type</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "10px" }}>Date Confirmed</th>
+                                    <th style={thStyle}>Amount (ETB)</th>
+                                    <th style={thStyle}>Transaction Number</th>
+                                    <th style={thStyle}>Type</th>
+                                    <th style={thStyle}>Date Confirmed</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {completedTransactions.length === 0 ? (
-                                    <tr><td colSpan="4" style={{ textAlign: "center", padding: "10px", backgroundColor: '#e6f7ff' }}>No confirmed transactions in history.</td></tr>
+                                    <tr><td colSpan="4" style={tdNoDataStyleBlue}>No confirmed transactions in history.</td></tr>
                                 ) : (
                                     completedTransactions.map((tx) => (
                                         <tr key={tx._id} style={{ backgroundColor: '#f0faff' }}>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px", fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{tx.transactionNumber}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px", textTransform: 'capitalize' }}>{tx.type}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
+                                            <td style={{ ...tdStyle, fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
+                                            <td style={tdStyle}>{tx.transactionNumber}</td>
+                                            <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{tx.type}</td>
+                                            <td style={tdStyle}>{new Date(tx.createdAt).toLocaleDateString()}</td>
                                         </tr>
                                     ))
                                 )}
@@ -197,21 +202,22 @@ function UserList() {
 
 
     return (
-        // 💡 NEW LAYOUT STRUCTURE: Flex container for sidebar and content
         <div style={{ display: 'flex', minHeight: '100vh', padding: '0px' }}>
             
-            {/* ----------------------------------------
-            | LEFT: SIDEBAR NAVIGATION
-            ---------------------------------------- */}
-            <div style={{ 
-                width: '250px', 
-                backgroundColor: '#343a40', 
-                color: 'white', 
-                padding: '20px', 
-                flexShrink: 0 
-            }}>
+            {/* LEFT: SIDEBAR NAVIGATION */}
+            <div style={sidebarStyle}>
                 <h3 style={{ marginBottom: '30px', color: '#ffc107' }}>Admin Panel</h3>
                 
+                {/* 💡 NEW: Total Deposit Card */}
+                <div style={getTotalDepositCardStyle()}>
+                    <h4>💸 Total Deposit</h4>
+                    {/* Display the calculated sum, formatted to two decimal places */}
+                    <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '5px 0' }}>
+                        {totalDepositSum.toFixed(2)} ETB
+                    </p>
+                </div>
+                
+                {/* Navigation Buttons */}
                 <button 
                     onClick={() => setActiveView(VIEWS.USERS)}
                     style={getButtonStyle(activeView === VIEWS.USERS)}
@@ -235,10 +241,8 @@ function UserList() {
                 
             </div>
 
-            {/* ----------------------------------------
-            | RIGHT: MAIN CONTENT AREA (Only renders one table)
-            ---------------------------------------- */}
-            <div style={{ flexGrow: 1, padding: "20px", overflowY: 'auto', backgroundColor: '#f8f9fa' }}>
+            {/* RIGHT: MAIN CONTENT AREA */}
+            <div style={mainContentStyle}>
                 {renderActiveTable()}
             </div>
         </div>
@@ -248,7 +252,38 @@ function UserList() {
 export default UserList;
 
 
-// 💡 HELPER FUNCTION for button styling
+// ========================================
+// STYLES (Extracted for cleaner code)
+// ========================================
+
+const sidebarStyle = { 
+    width: '250px', 
+    backgroundColor: '#343a40', 
+    color: 'white', 
+    padding: '20px', 
+    flexShrink: 0 
+};
+
+const mainContentStyle = { 
+    flexGrow: 1, 
+    padding: "20px", 
+    overflowY: 'auto', 
+    backgroundColor: '#f8f9fa' 
+};
+
+const tableStyle = { 
+    borderCollapse: "collapse", 
+    width: "100%", 
+    marginBottom: "40px" 
+};
+const thStyle = { border: "1px solid #ddd", padding: "10px" };
+const tdStyle = { border: "1px solid #ddd", padding: "8px" };
+const tdCenterStyle = { textAlign: "center", padding: "8px" };
+const tdNoDataStyle = { textAlign: "center", padding: "10px", backgroundColor: '#fffbe6' };
+const tdNoDataStyleBlue = { textAlign: "center", padding: "10px", backgroundColor: '#e6f7ff' };
+
+
+// Helper function for navigation button styling
 const getButtonStyle = (isActive) => ({
     width: '100%',
     padding: '12px 15px',
@@ -263,4 +298,15 @@ const getButtonStyle = (isActive) => ({
     fontWeight: 'bold',
     transition: 'background-color 0.2s',
     boxShadow: isActive ? '0 0 10px rgba(0, 123, 255, 0.5)' : 'none',
+});
+
+// Helper function for the new Total Deposit card styling
+const getTotalDepositCardStyle = () => ({
+    backgroundColor: '#28a745', // Green color
+    color: 'white',
+    padding: '15px',
+    borderRadius: '8px',
+    textAlign: 'center',
+    marginBottom: '20px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
 });
