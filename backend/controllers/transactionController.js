@@ -22,6 +22,7 @@ function parseTelebirrMessage(message) {
             amount, 
             transactionNumber, 
             phoneNumber: undefined,
+             
         });
     }
 
@@ -47,7 +48,7 @@ function parseCBEMessages(message) {
             amount, 
             transactionNumber, 
             phoneNumber: undefined, 
-            method: 'depositpend',
+           
         });
     }
 
@@ -112,6 +113,7 @@ export const parseTransaction = async (req, res) => {
         const newPendingTransaction = new PendingTransaction({
             amount: transactionToSave.amount,
             transactionNumber: transactionToSave.transactionNumber,
+            type: transactionToSave.type,
             rawMessage: originalMessage,
             // senderPhoneNumber is optional if you can't parse it reliably here
         });
