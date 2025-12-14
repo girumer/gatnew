@@ -47,6 +47,7 @@ function parseCBEMessages(message) {
             amount, 
             transactionNumber, 
             phoneNumber: undefined, 
+            method: 'depositpend',
         });
     }
 
