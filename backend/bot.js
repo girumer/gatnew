@@ -12,10 +12,7 @@ const token = process.env.BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
 // ✅ Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/examdb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+
 
 // ✅ Register side menu commands (persistent) — includes exam_menu and my_results
 bot.setMyCommands([
