@@ -10,7 +10,7 @@ const transactionSchema = new mongoose.Schema({
     
     // Note: Removed "referral_bonus" as it wasn't in your original, 
     // but ensured "deposit" and "depositpend" are there.
-    method: { type: String, enum: ["deposit", "depositpend", "referral_bonus"], required: true },
+    method: { type: String, enum: ["deposit", "depositpend"], required: true },
     amount: { type: Number, required: true },
     
     // Note: Added "bonus" to the enum list as suggested in your comment
