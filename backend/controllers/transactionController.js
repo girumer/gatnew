@@ -131,11 +131,15 @@ export const parseTransaction = async (req, res) => {
     }
 };
 
+// In your transaction.js controller file:
 export const getPendingTransactions = async (req, res) => {
     try {
-        const transactions = await Transaction.find({});
+        // --- THIS IS THE FIX ---
+        const transactions = await Transaction.find({ status: 'pending' }); 
+        
+        // This is the correct response format for your frontend: { transactions: [...] }
         res.json({ success: true, transactions });
-        console.log("transaction append sucessfuly");
+        console.log("Found transactions:", transactions.length);
     } catch (err) {
         console.error("Error fetching pending transactions:", err);
         res.status(500).json({ error: "Server error" });
