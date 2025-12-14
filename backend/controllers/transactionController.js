@@ -81,7 +81,7 @@ function extractTransactionDetails(rawMessage) {
 export const broadcastToAllCustomers = async (req, res) => {
     try {
         // Assume BingoBord is a Mongoose model
-        const allUsers = await User.find({}, 'telegramId');
+        const allUsers = await User.find({}, 'chatId');
        
         // The text message to broadcast (using Markdown V2 format for bold/links)
         // Ensure that process.env.SUPPORT_GROUP and process.env.SUPPORT_USERNAME are defined.
