@@ -532,3 +532,4 @@ Please send the bank SMS/transaction ID or screenshot here to confirm your upgra
     await bot.answerCallbackQuery(query.id, { text: 'Something went wrong', show_alert: true });
   }
 });
+export default bot;

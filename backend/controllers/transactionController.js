@@ -4,6 +4,7 @@ import Transaction from "../models/Transaction.js";
 import User from '../models/User.js';
 // --- Helper Functions (Private to this file, no export needed) ---
 import PendingTransaction from '../models/PendingTransaction.js';
+import bot from "../bot.js";
 function parseTelebirrMessage(message) {
     const transactions = [];
     
