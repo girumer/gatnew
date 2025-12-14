@@ -37,23 +37,37 @@ function UserList() {
   }, []);
 
   // 2. Fetch Transactions
-  useEffect(() => {
-    // Using the constructed TRANSACTION_URL
-    fetch(TRANSACTION_URL) 
-      .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch transactions.");
-          return res.json();
-      })
-      .then((data) => {
-        // Ensure to handle the possibility that data or data.transactions is undefined
-        setTransactions(data?.transactions || []); 
-        setLoadingTransactions(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching transactions:", err);
-        setLoadingTransactions(false);
-      });
-  }, []);
+// In UserList.js
+
+// 2. Fetch Transactions (Modified with Polling)
+useEffect(() => {
+    const fetchTransactions = () => {
+        fetch(TRANSACTION_URL) 
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch transactions.");
+                return res.json();
+            })
+            .then((data) => {
+                // Ensure to handle the possibility that data or data.transactions is undefined
+                setTransactions(data?.transactions || []); 
+                setLoadingTransactions(false);
+            })
+            .catch((err) => {
+                console.error("Error fetching transactions:", err);
+                setLoadingTransactions(false);
+            });
+    };
+
+    // Initial fetch
+    fetchTransactions();
+
+    // Set up polling (e.g., every 5 seconds)
+    const intervalId = setInterval(fetchTransactions, 5000); 
+
+    // Cleanup function: IMPORTANT to stop polling when the component unmounts
+    return () => clearInterval(intervalId); 
+
+}, []); // Keep dependency array empty
 
   // Combined loading states for initial render blocking
   if (loadingUsers || loadingTransactions) {
