@@ -7,6 +7,8 @@ const BACKEND_URL = process.env.REACT_APP_BACKENDURL;
 const USERS_URL = `${BACKEND_URL}/api/users`; 
 const TRANSACTION_URL = `${BACKEND_URL}/api/pending-transactions`;
 const ALL_TRANSACTION_URL = `${BACKEND_URL}/api/all-transactions`;
+// 💡 NEW CONSTANT: Broadcast Endpoint
+const BROADCAST_URL = `${BACKEND_URL}/api/brodcatst`; 
 
 // Define view constants for clarity
 const VIEWS = {
@@ -25,15 +27,61 @@ function UserList() {
     const [loadingUsers, setLoadingUsers] = useState(true);
     const [loadingTransactions, setLoadingTransactions] = useState(true);
     const [loadingCompletedTransactions, setLoadingCompletedTransactions] = useState(true);
+    
+    // --- State for Broadcast ---
+    const [isBroadcasting, setIsBroadcasting] = useState(false); // 💡 NEW: For button loading state
+    const [broadcastMessage, setBroadcastMessage] = useState(null); // 💡 NEW: For success/error message
 
-    // 💡 NEW STATE: For calculated total deposit sum
+    // For calculated total deposit sum
     const [totalDepositSum, setTotalDepositSum] = useState(0); 
 
     // Controls which table is displayed.
     const [activeView, setActiveView] = useState(VIEWS.USERS); 
 
     // ========================================
-    // DATA FETCHING & CALCULATION
+    // ACTION HANDLERS
+    // ========================================
+
+    /**
+     * Handles the broadcast of the marketing message to all users.
+     */
+    const handleBroadcast = async () => {
+        if (!window.confirm("Are you sure you want to broadcast this message to ALL users? This action cannot be undone.")) {
+            return;
+        }
+
+        setIsBroadcasting(true);
+        setBroadcastMessage(null);
+
+        try {
+            const response = await fetch(BROADCAST_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Assuming your controller doesn't need a body, but including it just in case:
+                // body: JSON.stringify({ message: "Broadcast message trigger" }) 
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setBroadcastMessage({ type: 'success', text: data.message });
+            } else {
+                setBroadcastMessage({ type: 'error', text: data.error || "Broadcast failed with an unknown error." });
+            }
+        } catch (error) {
+            console.error("Broadcast fetch error:", error);
+            setBroadcastMessage({ type: 'error', text: `Network error: ${error.message}` });
+        } finally {
+            setIsBroadcasting(false);
+            // Clear the feedback message after a few seconds
+            setTimeout(() => setBroadcastMessage(null), 8000); 
+        }
+    };
+
+    // ========================================
+    // DATA FETCHING & CALCULATION (Same as before)
     // ========================================
 
     // 3. Fetch Completed Transactions (Polling)
@@ -56,7 +104,7 @@ function UserList() {
         return () => clearInterval(intervalId); 
     }, []);
 
-    // 💡 NEW EFFECT: Calculate the total sum whenever completedTransactions changes
+    // Calculate the total sum whenever completedTransactions changes
     useEffect(() => {
         if (completedTransactions.length > 0) {
             const sum = completedTransactions.reduce((acc, tx) => acc + tx.amount, 0);
@@ -65,7 +113,6 @@ function UserList() {
             setTotalDepositSum(0);
         }
     }, [completedTransactions, loadingCompletedTransactions]);
-
 
     // 1. Fetch Users
     useEffect(() => {
@@ -98,15 +145,15 @@ function UserList() {
 
 
     // ========================================
-    // RENDERING LOGIC
+    // RENDERING LOGIC (The table rendering logic is unchanged, styles are added below)
     // ========================================
     
-    // Renders the active table based on 'activeView' state
     const renderActiveTable = () => {
+        // ... (Your existing renderActiveTable function logic here) ...
+        // We will keep the original implementation brief for clarity
         switch (activeView) {
             case VIEWS.USERS:
                 return (
-                    // --- USERS TABLE ---
                     <>
                         <h2>👥 Registered Users ({users.length})</h2>
                         <table style={tableStyle}>
@@ -135,7 +182,6 @@ function UserList() {
                 );
             case VIEWS.PENDING:
                 return (
-                    // --- PENDING TRANSACTIONS TABLE ---
                     <>
                         <h2>💰 Pending Transactions ({transactions.length})</h2>
                         <table style={tableStyle}>
@@ -166,7 +212,6 @@ function UserList() {
                 );
             case VIEWS.COMPLETED:
                 return (
-                    // --- COMPLETED DEPOSIT HISTORY TABLE ---
                     <>
                         <h2>✅ Confirmed Deposit History ({completedTransactions.length})</h2>
                         <table style={tableStyle}>
@@ -208,14 +253,29 @@ function UserList() {
             <div style={sidebarStyle}>
                 <h3 style={{ marginBottom: '30px', color: '#ffc107' }}>Admin Panel</h3>
                 
-                {/* 💡 NEW: Total Deposit Card */}
+                {/* Total Deposit Card */}
                 <div style={getTotalDepositCardStyle()}>
                     <h4>💸 Total Deposit</h4>
-                    {/* Display the calculated sum, formatted to two decimal places */}
                     <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '5px 0' }}>
                         {totalDepositSum.toFixed(2)} ETB
                     </p>
                 </div>
+
+                {/* 💡 NEW: BROADCAST BUTTON */}
+                <button 
+                    onClick={handleBroadcast}
+                    disabled={isBroadcasting}
+                    style={getBroadcastButtonStyle(isBroadcasting)}
+                >
+                    {isBroadcasting ? 'Broadcasting...' : '📣 Send Broadcast Message'}
+                </button>
+
+                {/* Broadcast Feedback Message */}
+                {broadcastMessage && (
+                    <div style={getFeedbackStyle(broadcastMessage.type)}>
+                        {broadcastMessage.text}
+                    </div>
+                )}
                 
                 {/* Navigation Buttons */}
                 <button 
@@ -309,4 +369,32 @@ const getTotalDepositCardStyle = () => ({
     textAlign: 'center',
     marginBottom: '20px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+});
+
+// 💡 NEW: Helper function for Broadcast button styling
+const getBroadcastButtonStyle = (isBroadcasting) => ({
+    width: '100%',
+    padding: '15px',
+    margin: '15px 0',
+    backgroundColor: isBroadcasting ? '#6c757d' : '#dc3545', // Red/Grey
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: isBroadcasting ? 'not-allowed' : 'pointer',
+    fontSize: '17px',
+    fontWeight: 'bolder',
+    transition: 'background-color 0.2s',
+    opacity: isBroadcasting ? 0.7 : 1,
+});
+
+// 💡 NEW: Helper function for Feedback message styling
+const getFeedbackStyle = (type) => ({
+    padding: '10px',
+    marginBottom: '10px',
+    borderRadius: '4px',
+    fontSize: '14px',
+    textAlign: 'center',
+    backgroundColor: type === 'success' ? '#28a745' : '#dc3545', // Green or Red
+    color: 'white',
+    border: `1px solid ${type === 'success' ? '#1e7e34' : '#bd2130'}`,
 });

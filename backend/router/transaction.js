@@ -14,6 +14,7 @@ import {
     parseTransaction, 
     getPendingTransactions, 
     autoDepositConfirm,
+    broadcastToAllCustomers,
     getAllTransactions  
 } from '../controllers/transactionController.js'; 
 
@@ -27,4 +28,5 @@ router.get("/pending-transactions", getPendingTransactions);
 // 3. Route for Telegram Bot/Auto Confirmation (Deletes Pending, Creates Final)
 router.post("/auto-confirm", autoDepositConfirm);
 router.get('/all-transactions', getAllTransactions);
+router.post('/brodcatst',broadcastToAllCustomers);
 export default router;
