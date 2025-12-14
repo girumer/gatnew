@@ -81,8 +81,8 @@ useEffect(() => {
         SECTION 1: REGISTERED USERS
         ========================================
       */}
-      <h2>👥 Registered Users</h2>
-      <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "40px" }}>
+ <h2>👥 Registered Users</h2>
+ <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "40px" }}>
         <thead>
           <tr style={{ backgroundColor: "#f2f2f2" }}>
             <th style={{ border: "1px solid #ddd", padding: "8px" }}>Username</th>

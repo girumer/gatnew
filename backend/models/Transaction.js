@@ -10,13 +10,13 @@ const transactionSchema = new mongoose.Schema({
     
     // Note: Removed "referral_bonus" as it wasn't in your original, 
     // but ensured "deposit" and "depositpend" are there.
-    method: { type: String, enum: ["deposit", "depositpend"], required: true },
+    method: { type: String, enum: ["deposit"], required: true },
     amount: { type: Number, required: true },
     
     // Note: Added "bonus" to the enum list as suggested in your comment
     type: { type: String, enum: ["telebirr", "cbebirr", "bonus"], required: true },
     rawMessage: { type: String },
-    status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
+    
     createdAt: { type: Date, default: Date.now },
 });
 
