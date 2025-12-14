@@ -78,15 +78,17 @@ function extractTransactionDetails(rawMessage) {
 // --- Controller Functions (The ones that will be exposed via export default) ---
 
 // controllers/transactionController.js
+// transactionController.js (Fixed)
+
+// Make sure your bot instance is imported here!
+// import bot from '../path/to/your/botInstance.js'; 
+
 export const broadcastToAllCustomers = async (req, res) => {
     try {
-        // Assume BingoBord is a Mongoose model
+        // Fetch only the 'chatId' field from all users
         const allUsers = await User.find({}, 'chatId');
-       
-        // The text message to broadcast (using Markdown V2 format for bold/links)
-        // Ensure that process.env.SUPPORT_GROUP and process.env.SUPPORT_USERNAME are defined.
-        // NOTE: Telegram requires specific link formatting for Markdown V2 or HTML.
-        // If 'Markdown' fails, try 'HTML' or 'MarkdownV2'
+        
+        // The text message to broadcast (your original message is fine)
         const message = `📢 ERMP & GAT Exam Prep Bot
 
 ✅ ERMP Exam Access – 300 ETB
@@ -106,15 +108,16 @@ export const broadcastToAllCustomers = async (req, res) => {
         let failCount = 0;
 
         for (const user of allUsers) {
-            if (user.telegramId) {
+            // 🛑 FIX 1: Check and use the correct field: user.chatId
+            if (user.chatId) { 
                 try {
-                    // CRITICAL FIX: Add parse_mode: 'Markdown' so links render correctly.
-                    await bot.sendMessage(user.telegramId, message, {
+                    await bot.sendMessage(user.chatId, message, { // 🛑 FIX 1: Use user.chatId
                         parse_mode: 'Markdown' 
                     });
                     successCount++;
                 } catch (error) {
-                    console.error(`Failed to send message to user ${user.telegramId}:`, error.message);
+                    // Log the correct ID for error tracking
+                    console.error(`Failed to send message to user ${user.chatId}:`, error.message);
                     failCount++;
                 }
                 
@@ -133,7 +136,7 @@ export const broadcastToAllCustomers = async (req, res) => {
         console.error("Broadcast failed:", err);
         return res.status(500).json({ error: "Failed to broadcast message." });
     }
-}; 
+};
 export const parseTransaction = async (req, res) => {
     try {
         const { key: originalMessage } = req.body;
