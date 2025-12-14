@@ -81,8 +81,8 @@ function extractTransactionDetails(rawMessage) {
 export const broadcastToAllCustomers = async (req, res) => {
     try {
         // Assume BingoBord is a Mongoose model
-        const allUsers = await BingoBord.find({}, 'telegramId');
-          const imageUrl= process.env.BROADCAST_IMAGE_URL;
+        const allUsers = await User.find({}, 'telegramId');
+       
         // The text message to broadcast (using Markdown V2 format for bold/links)
         // Ensure that process.env.SUPPORT_GROUP and process.env.SUPPORT_USERNAME are defined.
         // NOTE: Telegram requires specific link formatting for Markdown V2 or HTML.
