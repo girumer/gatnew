@@ -130,14 +130,26 @@ export const parseTransaction = async (req, res) => {
         return res.status(500).json({ error: "Server error during parsing. Check server logs." });
     }
 };
-
 export const getPendingTransactions = async (req, res) => {
     try {
-        const transactions = await Transaction.find({});
-        res.json({ success: true, transactions });
-        console.log("transaction append sucessfuly");
+        // 1. Query the main Transaction model for items marked 'pending'
+        //    (This assumes old transactions used this method)
+        const mainTransactions = await Transaction.find({ status: 'pending' });
+        
+        // 2. Query the NEW PendingTransaction model for all items 
+        //    (This is where your bot saves new data)
+        const separatePendingTransactions = await PendingTransaction.find({}); 
+        
+        // 3. Combine the results into one array
+        //    Use the spread operator to merge the arrays
+        const combinedTransactions = [...mainTransactions, ...separatePendingTransactions];
+        
+        // 4. Send the combined list back to the frontend
+        res.json({ success: true, transactions: combinedTransactions });
+        console.log(`Found ${mainTransactions.length} in main and ${separatePendingTransactions.length} in pending model. Total: ${combinedTransactions.length}`);
+        
     } catch (err) {
-        console.error("Error fetching pending transactions:", err);
+        console.error("Error fetching and combining transactions:", err);
         res.status(500).json({ error: "Server error" });
     }
 };
