@@ -3,7 +3,7 @@ import './NgatPage.css';
 import { Link, useLocation } from 'react-router-dom';
 
 // Define the NGAT exam years/identifiers
-const ngatExams = ['GAT1', 'GAT2', 'GAT3', 'GAT4'];
+const ngatExams = ['GAT1', 'GAT2', 'GAT3','GAT1SAMPLE','GAT2SAMPLE','GAT3SAMPLE'];
 
 const NgatPage = () => {
     // State to manage which exam identifier the user has clicked
