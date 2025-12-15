@@ -49,7 +49,7 @@ function getMainMenu(user) {
         }
       },
        {
-        text: '🧠 NGAT Sample',
+        text: '📝 NGAT Sample',
         web_app: {
           url: `${process.env.FRONTEND_URL}/NGAT?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
@@ -61,7 +61,14 @@ function getMainMenu(user) {
         web_app: {
           url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
-      }]
+      }],
+      [
+            {
+                text: '📣 Join Channel',
+                url: process.env.telegram_chanel // Uses the URL directly from .env
+            }
+        ]
+
   ];
 }
 
