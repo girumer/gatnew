@@ -53,14 +53,15 @@ function getMainMenu(user) {
         web_app: {
           url: `${process.env.FRONTEND_URL}/NGAT?sample=true&phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
-      },
+      }
+    ],
+    [
       {
         text: '📊 View My Results',
         web_app: {
           url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
         }
-      }
-    ]
+      }]
   ];
 }
 

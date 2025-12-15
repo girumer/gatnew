@@ -36,7 +36,7 @@ const NgatPage = () => {
     return (
         <div className="ngat-wrapper">
             <h1>
-                Welcome {displayUsername ? `User: ${displayUsername}` : 'No username passed'}
+                Welcome {displayUsername ? ` ${displayUsername}` : 'No username passed'}
             </h1>
             
             <h1 className="ngat-title">
