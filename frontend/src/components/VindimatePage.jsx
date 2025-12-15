@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './VindimatePage.css';
 import { Link, useLocation } from 'react-router-dom';
 
-const years = ['2018','2019','2020','2021','2022','2023'];
+const years = ['2019','2020','2021','2022','2023'];
 const sampleExams = [
   'ERMP2018SAMPLE',
   'ERMP2019SAMPLE',

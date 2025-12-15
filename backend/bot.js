@@ -520,14 +520,14 @@ bot.on('callback_query', async (query) => {
 Account: \`${process.env.TELEBIRR_ACCOUNT}\`
 Amount: **${amountDep} ብር**
 
-Please send the TeleBirr SMS/transaction ID or screenshot here to confirm your upgrade.`;
+Please copy paste the TeleBirr SMS you recived after you pay to confirm your upgrade.`;
     } else if (choice.includes('pay_cbe')) {
       instructionsMsg = `
 🏦 **CBE** Payment for ${examType}
 Account: \`${process.env.CBE_ACCOUNT}\`
 Amount: **${amountDep} ብር**
 
-Please send the bank SMS/transaction ID or screenshot here to confirm your upgrade.`;
+Please copy paste the cbeBirr SMS you recived after you pay to confirm your upgrade.`;
     }
 
     if (instructionsMsg) {
