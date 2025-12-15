@@ -2,18 +2,24 @@ import React, { useState, useEffect } from 'react';
 import './NgatPage.css';
 import { Link, useLocation } from 'react-router-dom';
 
-// Define the NGAT exam years/identifiers
-const ngatExams = ['GAT1', 'GAT2', 'GAT3','GAT1SAMPLE','GAT2SAMPLE','GAT3SAMPLE'];
+// Define all NGAT exam years/identifiers
+const ngatAllExams = ['GAT1', 'GAT2', 'GAT3', 'GAT1SAMPLE', 'GAT2SAMPLE', 'GAT3SAMPLE'];
+const ngatSampleExams = ['GAT1SAMPLE', 'GAT2SAMPLE', 'GAT3SAMPLE'];
 
 const NgatPage = () => {
-    // State to manage which exam identifier the user has clicked
-    const [selectedExam, setSelectedExam] = useState(null);
-
     // Get URL parameters
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const phone = params.get("phone"); 
     const username = params.get("username");
+    // Check for the 'sample' query parameter
+    const isSampleMode = params.get("sample") === 'true'; 
+
+    // Determine the list of exams to show based on the 'sample' parameter
+    const examsToShow = isSampleMode ? ngatSampleExams : ngatAllExams;
+
+    // State to manage which exam identifier the user has clicked
+    const [selectedExam, setSelectedExam] = useState(null);
 
     // Fix: Use phone1/username1 for consistency with your ERMP/Vindimate page
     useEffect(() => {
@@ -30,17 +36,19 @@ const NgatPage = () => {
     return (
         <div className="ngat-wrapper">
             <h1>
-                welcome {displayUsername ? `User: ${displayUsername}` : 'No username passed'}
+                Welcome {displayUsername ? `User: ${displayUsername}` : 'No username passed'}
             </h1>
             
             <h1 className="ngat-title">
-                {selectedExam ? `${selectedExam}` : 'NGAT EXAM LIST'}
+                {selectedExam ? `${selectedExam}` : 
+                 isSampleMode ? 'NGAT SAMPLE EXAM LIST' : 'NGAT EXAM LIST'} 
             </h1>
 
             {!selectedExam ? (
-                // --- STAGE 1: Show Exam List (GAT1, GAT2, etc.) ---
+                // --- STAGE 1: Show Exam List (GAT1, GAT2, etc. or just Samples) ---
                 <div className="ngat-container">
-                    {ngatExams.map((exam, index) => (
+                    {/* Use the dynamically selected examsToShow array */}
+                    {examsToShow.map((exam, index) => (
                         <div
                             key={index}
                             className="ngat-box"
@@ -66,7 +74,9 @@ const NgatPage = () => {
                             localStorage.removeItem("timeLeft");
                             localStorage.removeItem("examTitle");
                             localStorage.removeItem("showPopup");
-                            localStorage.removeItem("mode");
+                            // Determine mode and set it
+                            const mode = selectedExam.includes("SAMPLE") ? "sample" : "full";
+                            localStorage.setItem("mode", mode); // Added logic for 'mode'
                             // Set the specific exam path/identifier
                             localStorage.setItem("examPath", selectedExam);
                         }}
