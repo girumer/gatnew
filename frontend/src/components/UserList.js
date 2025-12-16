@@ -17,20 +17,28 @@ const VIEWS = {
     COMPLETED: 'completed'
 };
 
+// --- NEW CONSTANT FOR PAGINATION ---
+const ROWS_PER_PAGE = 5;
+
 function UserList() {
     // --- State for Data ---
     const [users, setUsers] = useState([]);
     const [transactions, setTransactions] = useState([]);
     const [completedTransactions, setCompletedTransactions] = useState([]);
     
+    // --- NEW STATE FOR PAGINATION ---
+    const [userCurrentPage, setUserCurrentPage] = useState(1);
+    const [pendingCurrentPage, setPendingCurrentPage] = useState(1);
+    const [completedCurrentPage, setCompletedCurrentPage] = useState(1);
+
     // --- State for Loading ---
     const [loadingUsers, setLoadingUsers] = useState(true);
     const [loadingTransactions, setLoadingTransactions] = useState(true);
     const [loadingCompletedTransactions, setLoadingCompletedTransactions] = useState(true);
     
     // --- State for Broadcast ---
-    const [isBroadcasting, setIsBroadcasting] = useState(false); // 💡 NEW: For button loading state
-    const [broadcastMessage, setBroadcastMessage] = useState(null); // 💡 NEW: For success/error message
+    const [isBroadcasting, setIsBroadcasting] = useState(false); 
+    const [broadcastMessage, setBroadcastMessage] = useState(null); 
 
     // For calculated total deposit sum
     const [totalDepositSum, setTotalDepositSum] = useState(0); 
@@ -59,8 +67,6 @@ function UserList() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // Assuming your controller doesn't need a body, but including it just in case:
-                // body: JSON.stringify({ message: "Broadcast message trigger" }) 
             });
 
             const data = await response.json();
@@ -79,6 +85,12 @@ function UserList() {
             setTimeout(() => setBroadcastMessage(null), 8000); 
         }
     };
+
+    // Reset page on view change
+    useEffect(() => {
+        // You can add logic here if you want to reset all pages when the view changes,
+        // but often it's better to keep the page state persistent per-table.
+    }, [activeView]);
 
     // ========================================
     // DATA FETCHING & CALCULATION (Same as before)
@@ -143,106 +155,166 @@ function UserList() {
         return <p style={{ padding: "20px" }}>Loading Dashboard Data...</p>;
     }
 
+    // ========================================
+    // PAGINATION LOGIC HELPER
+    // ========================================
+
+    const paginateData = (data, currentPage) => {
+        const startIndex = (currentPage - 1) * ROWS_PER_PAGE;
+        const endIndex = startIndex + ROWS_PER_PAGE;
+        return data.slice(startIndex, endIndex);
+    };
+
+    const renderPaginationControls = (data, currentPage, setCurrentPage) => {
+        const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
+        
+        if (totalPages <= 1) return null;
+
+        return (
+            <div style={paginationContainerStyle}>
+                <button 
+                    onClick={() => setCurrentPage(currentPage - 1)} 
+                    disabled={currentPage === 1}
+                    style={paginationButtonStyle}
+                >
+                    &laquo; Previous
+                </button>
+                <span style={{ margin: '0 15px', fontWeight: 'bold' }}>
+                    Page {currentPage} of {totalPages}
+                </span>
+                <button 
+                    onClick={() => setCurrentPage(currentPage + 1)} 
+                    disabled={currentPage === totalPages}
+                    style={paginationButtonStyle}
+                >
+                    Next &raquo;
+                </button>
+            </div>
+        );
+    };
+
 
     // ========================================
-    // RENDERING LOGIC (The table rendering logic is unchanged, styles are added below)
+    // RENDERING LOGIC (Updated to use Pagination)
     // ========================================
     
     const renderActiveTable = () => {
-        // ... (Your existing renderActiveTable function logic here) ...
-        // We will keep the original implementation brief for clarity
+        let currentData = [];
+        let currentPage = 1;
+        let setCurrentPage = () => {};
+
         switch (activeView) {
             case VIEWS.USERS:
-                return (
-                    <>
-                        <h2>👥 Registered Users ({users.length})</h2>
-                        <table style={tableStyle}>
-                            <thead>
-                                <tr style={{ backgroundColor: "#f2f2f2" }}>
-                                    <th style={thStyle}>Username</th>
-                                    <th style={thStyle}>Phone Number</th>
-                                    <th style={thStyle}>Chat ID</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.length === 0 ? (
-                                    <tr><td colSpan="3" style={tdCenterStyle}>No users found</td></tr>
-                                ) : (
-                                    users.map((user) => (
-                                        <tr key={user._id}>
-                                            <td style={tdStyle}>{user.username}</td>
-                                            <td style={tdStyle}>{user.phoneNumber}</td>
-                                            <td style={tdStyle}>{user.chatId}</td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </>
-                );
+                currentData = users;
+                currentPage = userCurrentPage;
+                setCurrentPage = setUserCurrentPage;
+                break;
             case VIEWS.PENDING:
-                return (
-                    <>
-                        <h2>💰 Pending Transactions ({transactions.length})</h2>
-                        <table style={tableStyle}>
-                            <thead>
-                                <tr style={{ backgroundColor: "#007bff", color: 'white' }}>
-                                    <th style={thStyle}>Amount (ETB)</th>
-                                    <th style={thStyle}>Transaction Number</th>
-                                    <th style={thStyle}>Type</th>
-                                    <th style={thStyle}>Method</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transactions.length === 0 ? (
-                                    <tr><td colSpan="4" style={tdNoDataStyle}>No pending transactions found.</td></tr>
-                                ) : (
-                                    transactions.map((tx) => (
-                                        <tr key={tx._id} style={{ backgroundColor: '#f9f9f9' }}>
-                                            <td style={{ ...tdStyle, fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
-                                            <td style={tdStyle}>{tx.transactionNumber}</td>
-                                            <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{tx.type}</td>
-                                            <td style={tdStyle}>{tx.method}</td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </>
-                );
+                currentData = transactions;
+                currentPage = pendingCurrentPage;
+                setCurrentPage = setPendingCurrentPage;
+                break;
             case VIEWS.COMPLETED:
-                return (
-                    <>
-                        <h2>✅ Confirmed Deposit History ({completedTransactions.length})</h2>
-                        <table style={tableStyle}>
-                            <thead>
-                                <tr style={{ backgroundColor: "#17a2b8", color: 'white' }}>
-                                    <th style={thStyle}>Amount (ETB)</th>
-                                    <th style={thStyle}>Transaction Number</th>
-                                    <th style={thStyle}>Type</th>
-                                    <th style={thStyle}>Date Confirmed</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {completedTransactions.length === 0 ? (
-                                    <tr><td colSpan="4" style={tdNoDataStyleBlue}>No confirmed transactions in history.</td></tr>
-                                ) : (
-                                    completedTransactions.map((tx) => (
-                                        <tr key={tx._id} style={{ backgroundColor: '#f0faff' }}>
-                                            <td style={{ ...tdStyle, fontWeight: 'bold' }}>{tx.amount.toFixed(2)}</td>
-                                            <td style={tdStyle}>{tx.transactionNumber}</td>
-                                            <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{tx.type}</td>
-                                            <td style={tdStyle}>{new Date(tx.createdAt).toLocaleDateString()}</td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </>
-                );
+                currentData = completedTransactions;
+                currentPage = completedCurrentPage;
+                setCurrentPage = setCompletedCurrentPage;
+                break;
             default:
                 return <p>Select a view from the sidebar.</p>;
         }
+
+        const displayedData = paginateData(currentData, currentPage);
+
+        // Utility to render the table rows based on the current view
+        const renderRows = () => {
+            if (currentData.length === 0) {
+                 const colSpan = activeView === VIEWS.USERS || activeView === VIEWS.COMPLETED ? 4 : 5;
+                 const style = activeView === VIEWS.USERS ? tdCenterStyle : (activeView === VIEWS.PENDING ? tdNoDataStyle : tdNoDataStyleBlue);
+
+                return (
+                    <tr>
+                        <td colSpan={colSpan} style={style}>
+                            {activeView === VIEWS.USERS && "No users found"}
+                            {activeView === VIEWS.PENDING && "No pending transactions found."}
+                            {activeView === VIEWS.COMPLETED && "No confirmed transactions in history."}
+                        </td>
+                    </tr>
+                );
+            }
+
+            return displayedData.map((item) => {
+                switch (activeView) {
+                    case VIEWS.USERS:
+                        return (
+                            <tr key={item._id}>
+                                <td style={tdStyle}>{item.username}</td>
+                                <td style={tdStyle}>{item.phoneNumber}</td>
+                                <td style={tdStyle}>{item.chatId}</td>
+                                <td style={tdStyle}>{item.referredBy || 'N/A'}</td> {/* Added referredBy for completeness */}
+                            </tr>
+                        );
+                    case VIEWS.PENDING:
+                        return (
+                            <tr key={item._id} style={{ backgroundColor: '#f9f9f9' }}>
+                                <td style={{ ...tdStyle, fontWeight: 'bold' }}>{item.amount.toFixed(2)}</td>
+                                <td style={tdStyle}>{item.transactionNumber}</td>
+                                <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{item.type}</td>
+                                <td style={tdStyle}>{item.method}</td>
+                                <td style={tdStyle}>ACTION BUTTONS HERE</td> {/* Placeholder for Action buttons */}
+                            </tr>
+                        );
+                    case VIEWS.COMPLETED:
+                        return (
+                            <tr key={item._id} style={{ backgroundColor: '#f0faff' }}>
+                                <td style={{ ...tdStyle, fontWeight: 'bold' }}>{item.amount.toFixed(2)}</td>
+                                <td style={tdStyle}>{item.transactionNumber}</td>
+                                <td style={{ ...tdStyle, textTransform: 'capitalize' }}>{item.type}</td>
+                                <td style={tdStyle}>{new Date(item.createdAt).toLocaleDateString()}</td>
+                                <td style={tdStyle}>ACTION BUTTONS HERE</td> {/* Placeholder for Action buttons */}
+                            </tr>
+                        );
+                    default:
+                        return null;
+                }
+            });
+        };
+
+        // Render the main table structure
+        return (
+            <>
+                {/* Table Title */}
+                {activeView === VIEWS.USERS && <h2>👥 Registered Users ({currentData.length})</h2>}
+                {activeView === VIEWS.PENDING && <h2>💰 Pending Transactions ({currentData.length})</h2>}
+                {activeView === VIEWS.COMPLETED && <h2>✅ Confirmed Deposit History ({currentData.length})</h2>}
+
+                {/* Pagination Controls (Top) */}
+                {renderPaginationControls(currentData, currentPage, setCurrentPage)}
+
+                {/* Main Table */}
+                <table style={tableStyle}>
+                    <thead>
+                        <tr style={
+                            activeView === VIEWS.USERS ? { backgroundColor: "#f2f2f2" } : 
+                            activeView === VIEWS.PENDING ? { backgroundColor: "#007bff", color: 'white' } : 
+                            { backgroundColor: "#17a2b8", color: 'white' }
+                        }>
+                            <th style={thStyle}>Amount/Username</th> {/* Combined for brevity */}
+                            <th style={thStyle}>Phone/Txn Number</th>
+                            <th style={thStyle}>Chat ID/Type</th>
+                            <th style={thStyle}>Referred By/Method/Date</th>
+                            {/* Only Pending and Completed tables need an Action column */}
+                            {(activeView === VIEWS.PENDING || activeView === VIEWS.COMPLETED) && <th style={thStyle}>Actions</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {renderRows()}
+                    </tbody>
+                </table>
+                
+                {/* Pagination Controls (Bottom) */}
+                {renderPaginationControls(currentData, currentPage, setCurrentPage)}
+            </>
+        );
     };
 
 
@@ -334,13 +406,36 @@ const mainContentStyle = {
 const tableStyle = { 
     borderCollapse: "collapse", 
     width: "100%", 
-    marginBottom: "40px" 
+    marginBottom: "20px" 
 };
 const thStyle = { border: "1px solid #ddd", padding: "10px" };
 const tdStyle = { border: "1px solid #ddd", padding: "8px" };
 const tdCenterStyle = { textAlign: "center", padding: "8px" };
 const tdNoDataStyle = { textAlign: "center", padding: "10px", backgroundColor: '#fffbe6' };
 const tdNoDataStyleBlue = { textAlign: "center", padding: "10px", backgroundColor: '#e6f7ff' };
+
+// --- NEW STYLES FOR PAGINATION ---
+const paginationContainerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '10px 0',
+    marginBottom: '10px',
+    backgroundColor: '#e9ecef',
+    borderRadius: '4px'
+};
+
+const paginationButtonStyle = {
+    padding: '8px 15px',
+    margin: '0 5px',
+    backgroundColor: '#6c757d',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+    fontWeight: 'bold'
+};
 
 
 // Helper function for navigation button styling
