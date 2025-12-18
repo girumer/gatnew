@@ -66,7 +66,11 @@ function getMainMenu(user) {
             {
                 text: '📣 Join Channel',
                 url: process.env.telegram_chanel // Uses the URL directly from .env
-            }
+            },
+             { 
+          text: '🎧 Help Center', 
+          url: 'https://t.me/support_username' // Replace with your support link
+        }
         ]
 
   ];
@@ -89,7 +93,17 @@ function buildMainKeyboard(user) {
             url: `${process.env.FRONTEND_URL}/result?phone=${encodeURIComponent(user.phoneNumber)}&username=${encodeURIComponent(user.username)}`
           }
         }
-      ]
+      ],
+      [
+        { 
+          text: '📣 Join Our Channel', 
+          url:process.env.telegram_chanel // Ensure this is a full https://t.me/ link in .env
+        },
+        { 
+          text: '🎧 Help Center', 
+          url: 'https://t.me/support_username' // Replace with your support link
+        }
+      ],
     ]
   };
 }
