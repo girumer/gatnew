@@ -69,7 +69,7 @@ function getMainMenu(user) {
             },
              { 
           text: '🎧 Help Center', 
-          url: 'https://t.me/support_username' // Replace with your support link
+          url: `https://t.me/${process.env.support_username}` // Replace with your support link
         }
         ]
 
