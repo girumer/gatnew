@@ -114,10 +114,28 @@
 
   border-color: var(--danger-color);
 }
-.questions ul li input[type="radio"]:checked + .check + label.text-primary {
+.questions ul li input[type="radio"]:checked ~ label.text-primary {
     background-color: var(--primary-color) !important;
-    color: #ffffff !important; /* Text turns white when selected for contrast */
+    color: #ffffff !important; /* Text turns white when blue */
     border-color: var(--primary-color);
+}
+.questions ul li label.text-primary.correct {
+    background-color: var(--success-color) !important;
+    color: #ffffff !important; 
+    border-color: var(--success-color) !important;
+}
+
+/* 4. Study Mode: Wrong Answer (Red) */
+.questions ul li label.text-primary.wrong {
+    background-color: var(--danger-color) !important;
+    color: #ffffff !important; 
+    border-color: var(--danger-color) !important;
+}
+
+/* 5. Custom Check Indicator (The circle) */
+.questions ul li input[type="radio"]:checked ~ .check {
+    background-color: #ffffff; /* Keep circle white inside */
+    border-color: #ffffff;
 }
 /* Custom Check Div Styling */
 /* Custom Check Div Styling (FIXED FOR LEFT POSITION) */
