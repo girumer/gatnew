@@ -114,7 +114,11 @@
 
   border-color: var(--danger-color);
 }
-
+.questions ul li input[type="radio"]:checked + .check + label.text-primary {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important; /* Text turns white when selected for contrast */
+    border-color: var(--primary-color);
+}
 /* Custom Check Div Styling */
 /* Custom Check Div Styling (FIXED FOR LEFT POSITION) */
 .check {
