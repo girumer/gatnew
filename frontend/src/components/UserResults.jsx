@@ -9,7 +9,7 @@ const [deposits, setDeposits] = useState([]);
   useEffect(() => {
     if (!phone) return;
 
-    fetch(`${process.env.REACT_APP_BACKENDURL}/api/result?phone=${phone}`)
+    fetch(`${process.env.REACT_APP_BACKENDURL}/api/result?phone=${encodeURIComponent(phone)}`)
       .then(res => res.json())
       .then(data => setResults(data.results || []))
       .catch(err => console.error("Fetch error:", err));
