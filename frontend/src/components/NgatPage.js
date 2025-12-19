@@ -3,8 +3,8 @@ import './NgatPage.css';
 import { Link, useLocation } from 'react-router-dom';
 
 // Define all NGAT exam years/identifiers
-const ngatAllExams = ['GAT1', 'GAT2', 'GAT3', 'GAT1SAMPLE', 'GAT2SAMPLE', 'GAT3SAMPLE'];
-const ngatSampleExams = ['GAT1SAMPLE', 'GAT2SAMPLE', 'GAT3SAMPLE'];
+const ngatAllExams = ['GAT1', 'GAT2', 'GAT3', 'GAT4', 'GAT2SAMPLE', 'GAT3SAMPLE','GAT4SAMPLE'];
+const ngatSampleExams = ['GAT1SAMPLE', 'GAT2SAMPLE', 'GAT3SAMPLE','GAT4SAMPLE'];
 
 const NgatPage = () => {
     // Get URL parameters
