@@ -71,7 +71,13 @@ function getMainMenu(user) {
           text: '🎧 Help Center', 
           url: process.env.support_username // Replace with your support link
         }
-        ]
+        ],
+        [
+      { 
+        text: '🔗 Share with Friends', 
+        url: 'https://t.me/share/url?url=https://t.me/ETHIOEXAMS_bot&text=Check out this All In One Exam bot for NGAT and ERMP!' 
+      }
+    ]
 
   ];
 }
@@ -104,6 +110,12 @@ function buildMainKeyboard(user) {
           url: 'https://t.me/support_username' // Replace with your support link
         }
       ],
+      [
+      { 
+        text: '🔗 Share with Friends', 
+        url: 'https://t.me/share/url?url=https://t.me/ETHIOEXAMS_bot&text=Check out this All In One Exam bot for NGAT and ERMP!' 
+      }
+    ]
     ]
   };
 }
