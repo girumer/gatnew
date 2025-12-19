@@ -1,25 +1,31 @@
-/* --- Global Variables (Keep consistent with Quiz.css) --- */
+/* --- Global Variables --- */
 :root {
-  --primary-color: #007bff; /* Blue for primary actions/accents */
-  --secondary-color: #6c757d; /* Gray for secondary text/borders */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
   --background-light: #a8be79bd;
   --text-dark: #343a40;
   --card-background: #ffffff;
-  --success-color: #28a745; /* Green for correct/success */
+  --success-color: #28a745;
   --danger-color: #f30808;
   --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
   --border-radius-base: 8px;
 }
 
-/* --- Styles for the 'Questions' Container and Content --- */
+/* --- Animations --- */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
 
+/* --- Container Styles --- */
 .questions {
-    margin-bottom: 0px;
-    
+  margin-bottom: 0px;
+  user-select: none;
 }
-.questions {
-  user-select: none;   /* Prevents highlighting/copying */
-}
+
 .watermark {
   position: fixed;
   top: 40%;
@@ -31,170 +37,122 @@
   z-index: 9999;
 }
 
-.questions img {
-  pointer-events: none; /* Prevents right-click save on images */
-}
-/* Styling the Question Text (using text-light class from your component) */
+/* --- Question Typography --- */
 .questions h2.text-light {
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #e9ecef; /* Light gray background for question box */
+  background-color: #e9ecef;
   border-radius: var(--border-radius-base);
-  color: var(--text-dark) !important; /* Ensure visibility */
+  color: var(--text-dark) !important;
   line-height: 1.5;
 }
 
-/* Styling the Question Image */
 .questions img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--border-radius-base);
-    margin-bottom: 1.5rem !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-base);
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
 }
 
-/* Options List */
+/* --- Options List Structure --- */
 .questions ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Options Item */
-
-
-/* Hiding the default radio button */
-.questions ul li input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-/* Options Item (FIXED for horizontal alignment) */
 .questions ul li {
- display: flex !important; /* 🛑 GUARANTEE Flexbox alignment */
- align-items: center !important; /* Vertically centers the checkmark with the label text */
- margin-bottom: 15px;
-  position: relative; 
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 15px;
+  position: relative;
 }
-/* Styling the Label (which is the main clickable area) */
-.questions ul li label.text-primary {
-    flex-grow: 1 !important;
-    display: block !important;
-    padding: 12px 15px;
-    
-    /* --- CHANGED THESE LINES --- */
-    background-color: #ffffff !important; /* Forces White Background */
-    color: #000000 !important;            /* Forces Black Text */
-    border: 1px solid #ced4da;            /* Subtle gray border */
-    /* --------------------------- */
 
-    border-radius: var(--border-radius-base);
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
-    font-size: 1rem;
+/* Hide original radio */
+.questions ul li input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* --- The Label (The Option Box) --- */
+.questions ul li label.text-primary {
+  flex-grow: 1 !important;
+  display: block !important;
+  padding: 12px 15px;
+  
+  /* DEFAULT STATE: White Background, Black Text */
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
 }
 
 .questions ul li label.text-primary:hover {
-    background-color: #f8f9fa !important; /* Very light gray on hover */
-    border-color: var(--primary-color);
-}
-/* Correct answer style */
-.questions ul li label.correct {
-  background-color: var(--success-color);
- 
-  border-color: var(--success-color);
+  background-color: #f8f9fa !important;
+  border-color: var(--primary-color);
 }
 
-/* Wrong answer style */
-.questions ul li label.wrong {
-  background-color: var(--danger-color);
+/* --- Selection & Study Mode States --- */
 
-  border-color: var(--danger-color);
-}
+/* Selected State (Blue) */
 .questions ul li input[type="radio"]:checked ~ label.text-primary {
-    background-color: var(--primary-color) !important;
-    color: #ffffff !important; /* Text turns white when blue */
-    border-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-color);
 }
+
+/* Correct State (Green) */
 .questions ul li label.text-primary.correct {
-    background-color: var(--success-color) !important;
-    color: #ffffff !important; 
-    border-color: var(--success-color) !important;
+  background-color: var(--success-color) !important;
+  color: #ffffff !important;
+  border-color: var(--success-color) !important;
 }
 
-/* 4. Study Mode: Wrong Answer (Red) */
+/* Wrong State (Red + Shake) */
 .questions ul li label.text-primary.wrong {
-    background-color: var(--danger-color) !important;
-    color: #ffffff !important; 
-    border-color: var(--danger-color) !important;
+  background-color: var(--danger-color) !important;
+  color: #ffffff !important;
+  border-color: var(--danger-color) !important;
+  animation: shake 0.4s ease-in-out;
 }
 
-/* 5. Custom Check Indicator (The circle) */
-.questions ul li input[type="radio"]:checked ~ .check {
-    background-color: #ffffff; /* Keep circle white inside */
-    border-color: #ffffff;
-}
-/* Custom Check Div Styling */
-/* Custom Check Div Styling (FIXED FOR LEFT POSITION) */
+/* --- Custom Check Circle --- */
 .check {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--secondary-color);
-    border-radius: 50%;
-    position: static !important;
-    /* ✅ FIX: Remove absolute position, set to relative/static */
-    position: static; /* Let Flexbox position it */
-    right: auto;
-    
-    /* ✅ FIX: Add margin space between the checkmark and the label */
-    margin-right: 15px;
-    margin-left: 0; /* Resetting the old margin-left */
-
-    transition: background-color 0.3s, border-color 0.3s;
-    flex-shrink: 0; /* Prevents shrinking on smaller screens */
-}
-/* 3. Style the label and check div when the hidden input is checked */
-.questions ul li input[type="radio"]:checked + label.text-primary {
-    background-color: var(--primary-color);
-
-    border-color: var(--primary-color);
-    transform: scale(1.01);
-    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 50%;
+  position: static; 
+  margin-right: 15px;
+  transition: background-color 0.3s, border-color 0.3s;
+  flex-shrink: 0;
 }
 
-/* 4. Style the custom check indicator when checked */
-.questions ul li input[type="radio"]:checked ~ .check {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
+/* Make circle white when background is Blue, Green, or Red */
+.questions ul li input[type="radio"]:checked ~ .check,
+.questions ul li label.correct ~ .check,
+.questions ul li label.wrong ~ .check {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
-/* Styling the visual confirmation mark (inside .check) */
-.check.checked {
-    /* If you are using the Redux result to show a permanent mark */
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-}
-.check.checked::after {
-   
-   
-    font-size: 14px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-/* --- Desktop/Tablet Adjustments (Media Query) --- */
+/* --- Media Queries --- */
 @media (min-width: 768px) {
-    .questions h2.text-light {
-        font-size: 1.25rem;
-    }
-    .questions ul li label.text-primary {
-        padding: 15px 20px;
-        font-size: 1.05rem;
-    }
+  .questions h2.text-light {
+    font-size: 1.25rem;
+  }
+  .questions ul li label.text-primary {
+    padding: 15px 20px;
+    font-size: 1.05rem;
+  }
 }
