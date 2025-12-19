@@ -1,11 +1,10 @@
 /* --- Global Variables --- */
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --background-light: #a8be79bd;
+  --primary-color: #007bff;    /* Blue for selection */
+  --secondary-color: #6c757d;  /* Gray for borders */
   --text-dark: #343a40;
-  --success-color: #28a745; /* Solid Green */
-  --danger-color: #f30808;  /* Solid Red */
+  --success-color: #28a745;    /* Solid Green for correct */
+  --danger-color: #f30808;     /* Solid Red for wrong */
   --border-radius-base: 8px;
 }
 
@@ -18,23 +17,48 @@
   100% { transform: translateX(0); }
 }
 
+/* --- Container & General Styles --- */
 .questions {
+  margin-bottom: 0px;
   user-select: none;
 }
 
-/* Question Text Box */
+.watermark {
+  position: fixed;
+  top: 40%;
+  left: 30%;
+  opacity: 0.1; /* Set to visible if needed */
+  font-size: 3rem;
+  color: red;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 .questions h2.text-light {
   font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 20px;
   padding: 15px;
   background-color: #e9ecef;
   border-radius: var(--border-radius-base);
   color: var(--text-dark) !important;
+  line-height: 1.5;
 }
 
-/* Options List */
+.questions img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-base);
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+/* --- Options List --- */
 .questions ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .questions ul li {
@@ -44,15 +68,15 @@
   position: relative;
 }
 
-/* Hide Radio */
+/* Hide default radio */
 .questions ul li input[type="radio"] {
   display: none;
 }
 
-/* --- THE LABEL (The Full Background Box) --- */
+/* --- THE OPTION BOX (Label) --- */
 .questions ul li label.text-primary {
-  flex-grow: 1;
-  display: block;
+  flex-grow: 1 !important;
+  display: block !important;
   padding: 12px 15px;
   cursor: pointer;
   border-radius: var(--border-radius-base);
@@ -60,33 +84,43 @@
   font-size: 1rem;
   border: 1px solid var(--secondary-color);
   
-  /* DEFAULT: White Box, Black Text */
+  /* DEFAULT: White background, Black text */
   background-color: #ffffff !important;
   color: #000000 !important;
 }
 
-/* 1. Selection State (Blue) */
+.questions ul li label.text-primary:hover {
+  background-color: #f8f9fa !important;
+  border-color: var(--primary-color);
+}
+
+/* --- COLOR STATES (Priority Order) --- */
+
+/* 1. SELECTION: Blue background when clicked */
 .questions ul li input[type="radio"]:checked ~ label.text-primary {
   background-color: var(--primary-color) !important;
   color: #ffffff !important;
+  border-color: var(--primary-color);
 }
 
-/* 2. CORRECT STATE: Entire background turns GREEN */
-.questions ul li label.text-primary.correct {
-  background-color: var(--success-color) !important; 
+/* 2. CORRECT: Entire background turns GREEN (Overrides Blue) */
+.questions ul li label.text-primary.correct,
+.questions ul li input[type="radio"]:checked ~ label.text-primary.correct {
+  background-color: var(--success-color) !important;
   color: #ffffff !important;
   border-color: var(--success-color) !important;
 }
 
-/* 3. WRONG STATE: Entire background turns RED + Shake */
-.questions ul li label.text-primary.wrong {
+/* 3. WRONG: Entire background turns RED (Overrides Blue) + Shake */
+.questions ul li label.text-primary.wrong,
+.questions ul li input[type="radio"]:checked ~ label.text-primary.wrong {
   background-color: var(--danger-color) !important;
   color: #ffffff !important;
   border-color: var(--danger-color) !important;
   animation: shake 0.4s ease-in-out;
 }
 
-/* --- The Check Circle Indicator --- */
+/* --- Custom Check Circle --- */
 .check {
   width: 20px;
   height: 20px;
@@ -94,10 +128,10 @@
   border-radius: 50%;
   margin-right: 15px;
   flex-shrink: 0;
-  background-color: transparent;
+  transition: all 0.3s;
 }
 
-/* Make circle white when the box is Blue, Green, or Red */
+/* Circle turns white if background is Blue, Green, or Red */
 .questions ul li input[type="radio"]:checked ~ .check,
 .questions ul li label.correct ~ .check,
 .questions ul li label.wrong ~ .check {
@@ -105,9 +139,13 @@
   border-color: #ffffff !important;
 }
 
-/* Media Query */
+/* --- Media Queries --- */
 @media (min-width: 768px) {
+  .questions h2.text-light {
+    font-size: 1.25rem;
+  }
   .questions ul li label.text-primary {
     padding: 15px 20px;
+    font-size: 1.05rem;
   }
 }
