@@ -18,7 +18,7 @@ const VIEWS = {
 };
 
 // --- NEW CONSTANT FOR PAGINATION ---
-const ROWS_PER_PAGE = 5;
+const ROWS_PER_PAGE = 3;
 
 function UserList() {
     // --- State for Data ---
