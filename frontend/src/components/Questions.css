@@ -4,65 +4,37 @@
   --secondary-color: #6c757d;
   --background-light: #a8be79bd;
   --text-dark: #343a40;
-  --card-background: #ffffff;
-  --success-color: #28a745;
-  --danger-color: #f30808;
-  --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --success-color: #28a745; /* Solid Green */
+  --danger-color: #f30808;  /* Solid Red */
   --border-radius-base: 8px;
 }
 
 /* --- Animations --- */
 @keyframes shake {
   0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-8px); }
   100% { transform: translateX(0); }
 }
 
-/* --- Container Styles --- */
 .questions {
-  margin-bottom: 0px;
   user-select: none;
 }
 
-.watermark {
-  position: fixed;
-  top: 40%;
-  left: 30%;
-  opacity: 0;
-  font-size: 3rem;
-  color: red;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* --- Question Typography --- */
+/* Question Text Box */
 .questions h2.text-light {
   font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 20px;
   padding: 15px;
   background-color: #e9ecef;
   border-radius: var(--border-radius-base);
   color: var(--text-dark) !important;
-  line-height: 1.5;
 }
 
-.questions img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--border-radius-base);
-  margin-bottom: 1.5rem !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  pointer-events: none;
-}
-
-/* --- Options List Structure --- */
+/* Options List */
 .questions ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .questions ul li {
@@ -72,53 +44,41 @@
   position: relative;
 }
 
-/* Hide original radio */
+/* Hide Radio */
 .questions ul li input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+  display: none;
 }
 
-/* --- The Label (The Option Box) --- */
+/* --- THE LABEL (The Full Background Box) --- */
 .questions ul li label.text-primary {
-  flex-grow: 1 !important;
-  display: block !important;
+  flex-grow: 1;
+  display: block;
   padding: 12px 15px;
-  
-  /* DEFAULT STATE: White Background, Black Text */
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--border-radius-base);
   cursor: pointer;
+  border-radius: var(--border-radius-base);
   transition: all 0.2s ease;
   font-size: 1rem;
+  border: 1px solid var(--secondary-color);
+  
+  /* DEFAULT: White Box, Black Text */
+  background-color: #ffffff !important;
+  color: #000000 !important;
 }
 
-.questions ul li label.text-primary:hover {
-  background-color: #f8f9fa !important;
-  border-color: var(--primary-color);
-}
-
-/* --- Selection & Study Mode States --- */
-
-/* Selected State (Blue) */
+/* 1. Selection State (Blue) */
 .questions ul li input[type="radio"]:checked ~ label.text-primary {
   background-color: var(--primary-color) !important;
   color: #ffffff !important;
-  border-color: var(--primary-color);
 }
 
-/* Correct State (Green) */
+/* 2. CORRECT STATE: Entire background turns GREEN */
 .questions ul li label.text-primary.correct {
-  background-color: var(--success-color) !important;
+  background-color: var(--success-color) !important; 
   color: #ffffff !important;
   border-color: var(--success-color) !important;
 }
 
-/* Wrong State (Red + Shake) */
+/* 3. WRONG STATE: Entire background turns RED + Shake */
 .questions ul li label.text-primary.wrong {
   background-color: var(--danger-color) !important;
   color: #ffffff !important;
@@ -126,19 +86,18 @@
   animation: shake 0.4s ease-in-out;
 }
 
-/* --- Custom Check Circle --- */
+/* --- The Check Circle Indicator --- */
 .check {
   width: 20px;
   height: 20px;
   border: 2px solid var(--secondary-color);
   border-radius: 50%;
-  position: static; 
   margin-right: 15px;
-  transition: background-color 0.3s, border-color 0.3s;
   flex-shrink: 0;
+  background-color: transparent;
 }
 
-/* Make circle white when background is Blue, Green, or Red */
+/* Make circle white when the box is Blue, Green, or Red */
 .questions ul li input[type="radio"]:checked ~ .check,
 .questions ul li label.correct ~ .check,
 .questions ul li label.wrong ~ .check {
@@ -146,13 +105,9 @@
   border-color: #ffffff !important;
 }
 
-/* --- Media Queries --- */
+/* Media Query */
 @media (min-width: 768px) {
-  .questions h2.text-light {
-    font-size: 1.25rem;
-  }
   .questions ul li label.text-primary {
     padding: 15px 20px;
-    font-size: 1.05rem;
   }
 }
