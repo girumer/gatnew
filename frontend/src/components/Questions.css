@@ -84,17 +84,21 @@
     flex-grow: 1 !important;
     display: block !important;
     padding: 12px 15px;
-    border: 1px solid var(--secondary-color);
+    
+    /* --- CHANGED THESE LINES --- */
+    background-color: #ffffff !important; /* Forces White Background */
+    color: #000000 !important;            /* Forces Black Text */
+    border: 1px solid #ced4da;            /* Subtle gray border */
+    /* --------------------------- */
+
     border-radius: var(--border-radius-base);
     cursor: pointer;
-   
     transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
     font-size: 1rem;
-    color: var(--text-dark) !important;
 }
 
 .questions ul li label.text-primary:hover {
-
+    background-color: #f8f9fa !important; /* Very light gray on hover */
     border-color: var(--primary-color);
 }
 /* Correct answer style */
