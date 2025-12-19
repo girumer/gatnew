@@ -27,7 +27,7 @@ const [cheaked, setCheack] = useState(undefined);
 useEffect(() => {
   // Disable right-click context menu
   const handleContextMenu = (e) => e.preventDefault();
- // document.addEventListener("contextmenu", handleContextMenu);
+  document.addEventListener("contextmenu", handleContextMenu);
 
   // Disable copy shortcut
   const handleKeyDown = (e) => {
@@ -35,7 +35,7 @@ useEffect(() => {
       e.preventDefault();
     }
   };
- // document.addEventListener("keydown", handleKeyDown);
+ document.addEventListener("keydown", handleKeyDown);
 
   return () => {
     document.removeEventListener("contextmenu", handleContextMenu);
@@ -65,7 +65,7 @@ useEffect(() => {
 
   return (
     <div className='questions'>
-        <div className="watermark">Exam: {title}</div>
+        
      <h2 className='text-light'>{question?.question}</h2>
 
       {question?.image && (
