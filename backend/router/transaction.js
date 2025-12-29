@@ -1,15 +1,5 @@
-// router/transaction.js
-
 import { Router } from "express"; 
-const router = Router();            
-
-// ❌ DELETE THIS LINE (It is trying to access a non-existent 'default' export)
-// import transactionController from '../controllers/transactionController.js';
- 
-// ... other routes ...
-
-router.get('/all-transactions', getAllTransactions);
-// ✅ KEEP ONLY THIS LINE (The Correct Named Import)
+// 1. ALWAYS Put imports at the very top
 import { 
     parseTransaction, 
     getPendingTransactions, 
@@ -18,15 +8,21 @@ import {
     getAllTransactions  
 } from '../controllers/transactionController.js'; 
 
+const router = Router(); 
 
-// 1. Route for SMS Forwarder (Saves to PendingTransaction)
+// 2. Route for SMS Forwarder
 router.post("/parse-transaction", parseTransaction);
 
-// 2. Route for Admin/Listing (Retrieves pending transactions)
+// 3. Route for Admin/Listing
 router.get("/pending-transactions", getPendingTransactions);
 
-// 3. Route for Telegram Bot/Auto Confirmation (Deletes Pending, Creates Final)
+// 4. Route for Confirmation
 router.post("/auto-confirm", autoDepositConfirm);
+
+// 5. Route for Completed (The one you were missing/misplaced)
 router.get('/all-transactions', getAllTransactions);
-router.post('/brodcatst',broadcastToAllCustomers);
+
+// 6. Broadcast
+router.post('/brodcatst', broadcastToAllCustomers);
+
 export default router;
