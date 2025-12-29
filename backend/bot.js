@@ -158,18 +158,30 @@ bot.on('message', async (msg) => {
     const text = msg.text;
     let user;
 
-    // --- 1. HANDLE CONTACT REGISTRATION (Priority 1) ---
-    if (msg.contact?.phone_number && msg.contact?.first_name) {
-        const phoneNumber = msg.contact.phone_number;
+    // --- 1. HANDLE CONTACT REGISTRATION (With Security Check) ---
+    if (msg.contact) {
+        const contactChatId = msg.contact.user_id;
+        const senderChatId = msg.from.id;
+
+        // 🛡️ Security Check: Ensure they shared THEIR OWN number
+        if (!contactChatId || contactChatId !== senderChatId) {
+            return bot.sendMessage(chatId, '⚠️ Access Denied: Please share your OWN contact using the button below.', {
+                reply_markup: {
+                    keyboard: [[{ text: '📱 Send My Phone Number', request_contact: true }]],
+                    one_time_keyboard: true,
+                    resize_keyboard: true
+                }
+            });
+        }
+
+        const phoneNumber = msg.contact.phone_number.replace('+', '');
         const username = msg.contact.first_name;
 
         try {
             user = await User.findOne({ phoneNumber });
             if (user) {
-                if (!user.chatId) {
-                    user.chatId = chatId;
-                    await user.save();
-                }
+                user.chatId = chatId;
+                await user.save();
                 await bot.sendMessage(chatId, `👋 Welcome back, ${user.username}!`);
             } else {
                 user = new User({ username, phoneNumber, chatId });
@@ -177,32 +189,27 @@ bot.on('message', async (msg) => {
                 await bot.sendMessage(chatId, `✅ Registered successfully as ${username}!`);
             }
 
-            // Send main menu
-            await bot.sendMessage(chatId, 'Main menu:', {
+            return bot.sendMessage(chatId, 'Main menu:', {
                 reply_markup: buildMainKeyboard(user)
             });
-            return;
         } catch (err) {
             console.error('Registration error:', err);
-            await bot.sendMessage(chatId, '❌ Registration failed. Internal error.');
-            return;
+            return bot.sendMessage(chatId, '❌ Registration failed.');
         }
     }
 
-    // --- 2. CHECK FOR REGISTERED USER (Priority 2) ---
-    if (!user) {
-        user = await User.findOne({ chatId });
-    }
+    // --- 2. GET USER FOR OTHER MESSAGES ---
+    user = await User.findOne({ chatId });
     
     if (!user) {
         if (!text || text.startsWith('/')) return;
         return bot.sendMessage(chatId, '⚠️ Please use /start to register first.');
     }
     
-    // --- 3. AUTO-CONFIRM TRANSACTION (Priority 3) ---
+    // --- 3. AUTO-CONFIRM TRANSACTION (SMS Parsing) ---
     if (text && text.length > 20 && !text.startsWith('/')) {
         if (!user.lastDepositIntent) {
-            return bot.sendMessage(chatId, 'Please use the /exam_menu or upgrade buttons to begin a transaction.', {
+            return bot.sendMessage(chatId, 'Please use the /exam_menu to begin a transaction.', {
                 reply_markup: buildMainKeyboard(user)
             });
         }
@@ -222,29 +229,18 @@ bot.on('message', async (msg) => {
             const data = await response.json();
 
             if (response.ok) {
-                await bot.sendMessage(
-                    chatId, 
-                    data.message, // Use the complete, pre-formatted message string
-                    { parse_mode: 'Markdown' }
-                );
-                
+                await bot.sendMessage(chatId, data.message, { parse_mode: 'Markdown' });
                 await bot.sendMessage(chatId, `Your new wallet balance is ${data.wallet} ETB.`);
-                
                 await User.updateOne({ chatId }, { $unset: { lastDepositIntent: 1 } }); 
-
             } else {
-                await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}. Please try again or contact support.`);
+                await bot.sendMessage(chatId, `❌ **Deposit Failed!**\n\nReason: ${data.error}`);
             }
-
         } catch (error) {
-            console.error('Backend communication error:', error);
-            await bot.sendMessage(chatId, '❌ A connection error occurred. Please try again.');
+            console.error('Backend error:', error);
+            await bot.sendMessage(chatId, '❌ A connection error occurred.');
         }
-
-        return;
     }
 });
-
 // ✅ Side command: exam_menu (opens the exam inline menu)
 bot.onText(/\/exam_menu/, async (msg) => {
   const chatId = msg.chat.id;
