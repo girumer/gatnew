@@ -332,7 +332,7 @@ bot.onText(/\/upgrade_ngat/, async (msg) => {
     const keyboard = {
         inline_keyboard: [[
             { text: '📲 TELEBIRR', callback_data: 'pay_telebirr_ngat' },
-            { text: '🏦 CBE', callback_data: 'pay_cbe_ngat' }
+            { text: '🏦 CBEBIRR', callback_data: 'pay_cbe_ngat' }
         ]]
     };
 
@@ -498,7 +498,7 @@ bot.on('callback_query', async (query) => {
       const keyboard = {
         inline_keyboard: [[
           { text: '📲 TELEBIRR', callback_data: `pay_telebirr_${examName.toLowerCase()}` },
-          { text: '🏦 CBE', callback_data: `pay_cbe_${examName.toLowerCase()}` }
+          { text: '🏦 CBEBIRR', callback_data: `pay_cbe_${examName.toLowerCase()}` }
         ]]
       };
 
