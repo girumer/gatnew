@@ -300,7 +300,7 @@ bot.onText(/\/upgrade_ermp/, async (msg) => {
     const keyboard = {
         inline_keyboard: [[
             { text: '📲 TELEBIRR', callback_data: 'pay_telebirr_ermp' },
-            { text: '🏦 CBE', callback_data: 'pay_cbe_ermp' }
+            { text: '🏦 CBEBIRR', callback_data: 'pay_cbe_ermp' }
         ]]
     };
 
