@@ -1,7 +1,7 @@
 /* Container for the image page - slightly wider than the menu */
 .wide-container {
   max-width: 800px !important; 
-  width: 95%;
+  width: 100%;
 }
 
 .back-btn {
@@ -11,7 +11,7 @@
   font-weight: 600;
   cursor: pointer;
   padding: 5px 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: block;
   transition: transform 0.2s ease;
 }
@@ -23,17 +23,20 @@
 
 .image-card {
   background: #f8fafc;
-  border-radius: 16px;
-  padding: 10px;
+  border-radius: 0px;
+  padding: 0px;
   border: 1px solid #e2e8f0;
-  margin-top: 20px;
+  margin-top: 0px;
+  width: 100%;
+  height: 90%;
   overflow: hidden;
 }
 
 .full-width-image {
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  margin-left: 0px;
+  border-radius: 1px;
   display: block;
 }
 
