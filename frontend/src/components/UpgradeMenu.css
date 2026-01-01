@@ -1,0 +1,84 @@
+/* Container styling to center everything on the screen */
+.menu-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #bad0f2 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.menu-container {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(210, 174, 174, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.menu-header h2 {
+  font-size: 24px;
+  color: #1a202c;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.menu-header p {
+  color: #0b0b0b;
+  font-size: 14px;
+}
+
+/* Vertical Button Group */
+.button-vertical-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.attractive-menu-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  color: #2d3748;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover Effects */
+.attractive-menu-btn:hover {
+  transform: translateY(-3px);
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.btn-arrow {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.attractive-menu-btn:hover .btn-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Active/Click state */
+.attractive-menu-btn:active {
+  transform: translateY(1px);
+}

@@ -1,0 +1,47 @@
+/* Container for the image page - slightly wider than the menu */
+.wide-container {
+  max-width: 800px !important; 
+  width: 95%;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px 0;
+  margin-bottom: 10px;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover {
+  transform: translateX(-5px);
+  color: #1e40af;
+}
+
+.image-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.full-width-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.footer-note {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 15px;
+}

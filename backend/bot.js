@@ -76,7 +76,7 @@ function getMainMenu(user) {
       { 
         text: '🔗 Share with Friends', 
         url: 'https://t.me/share/url?url=https://t.me/ETHIOEXAMS_bot&text=Check out this All In One Exam bot for NGAT and ERMP!' 
-      }
+      },
     ]
 
   ];
@@ -114,6 +114,10 @@ function buildMainKeyboard(user) {
       { 
         text: '🔗 Share with Friends', 
         url: 'https://t.me/share/url?url=https://t.me/ETHIOEXAMS_bot&text=Check out this All In One Exam bot for NGAT and ERMP!' 
+      },
+      { 
+         text: '💡 Instructions', 
+         web_app: { url: `${process.env.FRONTEND_URL}/Upgrade` } 
       }
     ]
     ]
