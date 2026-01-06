@@ -91,7 +91,7 @@ export const broadcastToAllCustomers = async (req, res) => {
         
         // The text message to broadcast (your original message is fine)
         const message = `📢 ERMP & GAT Exam Prep Bot
-
+🎭Hello valued customers, the new updates GAT 6 and GAT 7 have been released. Please go and check them out!
 ✅ ERMP Exam Access – 300 ETB
 ✅ GAT Exam Access – 200 ETB
 
